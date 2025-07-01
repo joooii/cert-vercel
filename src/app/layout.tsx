@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Footer from "@/layouts/footer";
-import Header from "@/layouts/header";
+import NavigationBar from "@/layouts/navigationBar";
 
 export const metadata: Metadata = {
   title: "CERT-IS",
@@ -17,7 +17,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <header>
-          <Header />
+          <NavigationBar />
         </header>
         <main>{children}</main>
         <footer>
