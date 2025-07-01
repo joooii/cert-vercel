@@ -21,12 +21,13 @@ const NavigationBar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
-            <Link href="/" className="flex items-center group">
+            <Link href="/" className="flex items-center group ">
               <div className="relative w-10 h-10 mr-2">
                 <LogoSVG
                   width={30}
                   className="object-contain group-hover:scale-110 transition-transform duration-300 drop-shadow-lg"
                 />
+                <div className="absolute inset-0 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-[rgba(158,1,1,0.2)]"></div>
               </div>
               <div className="flex flex-col">
                 <span className="text-xl font-bold text-gray-900 tracking-wider drop-shadow-lg transition-colors duration-300">
