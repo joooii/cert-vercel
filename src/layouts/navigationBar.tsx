@@ -27,7 +27,7 @@ const NavigationBar = () => {
                   width={30}
                   className="object-contain group-hover:scale-110 transition-transform duration-300 drop-shadow-lg"
                 />
-                <div className="absolute inset-0 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-[rgba(158,1,1,0.2)]"></div>
+                <div className="absolute inset-0 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-cert-home-red-20"></div>
               </div>
               <div className="flex flex-col">
                 <span className="text-xl font-bold text-gray-900 tracking-wider drop-shadow-lg transition-colors duration-300">
@@ -47,10 +47,10 @@ const NavigationBar = () => {
             <Link
               key={item.name}
               href={item.href}
-              className={`px-4 py-2 text-sm mx-0.5 transition-all duration-300 rounded-lg relative group overflow-hidden hover:text-[#9E0101] hover:bg-[rgba(158,1,1,0.05)]
+              className={`px-4 py-2 text-sm mx-0.5 transition-all duration-300 rounded-lg relative group overflow-hidden hover:text-cert-home-red hover:bg-cert-home-red-5
               ${
                 pathname === item.href &&
-                "text-[#9E0101] bg-[rgba(158,1,1,0.05)] shadow-[0_4px_6px_-1px_rgba(158,1,1,0.1),0_2px_4px_-1px_rgba(158,1,1,0.06)]"
+                "text-cert-home-red bg-cert-home-red-5 shadow-cert-navbar"
               }
             `}
             >
@@ -64,13 +64,13 @@ const NavigationBar = () => {
                   }}
                 ></div>
               )}
-              <div className="absolute bg-[#9E0101] bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 transition-all duration-300 group-hover:w-full"></div>
+              <div className="absolute bg-cert-home-red bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 transition-all duration-300 group-hover:w-full"></div>
             </Link>
           ))}
 
           <div className="ml-2 pl-6 border-l border-gray-300 ">
             <button
-              className="flex items-center px-3 py-1.5 group text-sm border border-[#c78d88] rounded-md transition-all duration-300 hover:shadow-lg hover:bg-[#9E0101] hover:border-[#9E0101] shadow-[0_4px_6px_-1px_rgba(158,1,1,0.1),0_2px_4px_-1px_rgba(158,1,1,0.06)] "
+              className="flex items-center px-3 py-1.5 group text-sm border border-[#c78d88] rounded-md transition-all duration-300 shadow-cert-navbar over:shadow-lg hover:bg-cert-red hover:border-cert-home-red"
               onClick={() =>
                 window.open(
                   "https://docs.google.com/forms/d/e/1FAIpQLSdTj_umu9UGkrO6tPGB13lJGAAaDAF0X--1_GvnFEmFwYuCTg/viewform?usp=header",
@@ -80,9 +80,9 @@ const NavigationBar = () => {
             >
               <BugSVG
                 width={16}
-                className="text-[#9E0101] group-hover:text-white"
+                className="text-cert-home-red group-hover:text-white"
               />
-              <div className="text-[#9E0101] group-hover:text-white  ml-4">
+              <div className="text-cert-home-red group-hover:text-white ml-4">
                 Bug Report
               </div>
             </button>

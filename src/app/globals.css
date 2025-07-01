@@ -1,26 +1,215 @@
+/* Tailwind v4 CSS-First Configuration */
 @import "tailwindcss";
 
+/* 다크모드 설정 */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* 디자인 토큰 설정 */
+@theme {
+  /* 컨테이너 설정 */
+  --container-center: true;
+  --container-padding: 2rem;
+  --container-screen-2xl: 1400px;
+
+  /* CSS 변수 기반 색상들 */
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+
+  /* Primary 색상 */
+  --color-primary: #000000;
+  --color-primary-foreground: #ffffff;
+
+  /* Secondary 색상 */
+  --color-secondary: #111111;
+  --color-secondary-foreground: #f5f5f5;
+
+  /* Destructive 색상 */
+  --color-destructive: #dc2626;
+  --color-destructive-foreground: #fef2f2;
+
+  /* Muted 색상 */
+  --color-muted: #1a1a1a;
+  --color-muted-foreground: #a3a3a3;
+
+  /* Accent 색상 */
+  --color-accent: #dc2626;
+  --color-accent-foreground: #ffffff;
+
+  /* Popover 색상 */
+  --color-popover: #0a0a0a;
+  --color-popover-foreground: #f5f5f5;
+
+  /* Card 색상 */
+  --color-card: #0f0f0f;
+  --color-card-foreground: #f5f5f5;
+
+  /* Cert 커스텀 색상들 */
+  --color-cert-black: #000000;
+  --color-cert-darker: #0a0a0a;
+  --color-cert-dark: #111111;
+  --color-cert-card: #0f0f0f;
+  --color-cert-red: #dc2626;
+  --color-cert-light: #ffffff;
+  --color-cert-gray: #737373;
+  --color-cert-accent: #3b82f6;
+  --color-cert-border: #262626;
+  --color-cert-muted: #404040;
+  --color-cert-home-red: #9e0101;
+  --color-cert-home-red-5: rgba(158, 1, 1, 0.05);
+  --color-cert-home-red-10: rgba(158, 1, 1, 0.1);
+  --color-cert-home-red-20: rgba(158, 1, 1, 0.2);
+
+  /* Border Radius (CSS 변수 기반) */
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  /* 애니메이션 키프레임 */
+  --animation-accordion-down: accordion-down 0.2s ease-out;
+  --animation-accordion-up: accordion-up 0.2s ease-out;
+  --animation-fade-in: fade-in 0.6s ease-out;
+  --animation-slide-in: slide-in 0.3s ease-out;
+  --animation-glow: glow 2s ease-in-out infinite;
+  --animation-pulse-glow: pulse-glow 2s ease-in-out infinite;
+
+  /* 배경 이미지 */
+  --background-gradient-radial: radial-gradient(var(--tw-gradient-stops));
+  --background-gradient-conic: conic-gradient(
+    from 180deg at 50% 50%,
+    var(--tw-gradient-stops)
+  );
+
+  /* NavBar Shadow 커스텀 */
+  --shadow-cert-navbar: 0 4px 6px -1px rgba(158, 1, 1, 0.1),
+    0 2px 4px -1px rgba(158, 1, 1, 0.06);
+}
+
+/* CSS 변수 정의 (루트에서) */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --border: 220 13% 91%;
+  --input: 220 13% 91%;
+  --ring: 224 71% 4%;
+  --background: 0 0% 100%;
+  --foreground: 224 71% 4%;
+  --radius: 0.5rem;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* 다크모드 CSS 변수 */
+.dark {
+  --border: 215 28% 17%;
+  --input: 215 28% 17%;
+  --ring: 216 12% 84%;
+  --background: 224 71% 4%;
+  --foreground: 213 31% 91%;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* 키프레임 애니메이션 정의 */
+@keyframes accordion-down {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
   }
 }
 
+@keyframes accordion-up {
+  from {
+    height: var(--radix-accordion-content-height);
+  }
+  to {
+    height: 0;
+  }
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-in {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes glow {
+  0%,
+  100% {
+    box-shadow: 0 0 5px rgba(220, 38, 38, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(220, 38, 38, 0.8);
+  }
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* 기본 스타일 */
+/* * {
+  border-color: hsl(var(--border));
+} */
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+}
+
+/* 애니메이션 유틸리티 클래스 */
+@layer utilities {
+  .animate-accordion-down {
+    animation: accordion-down 0.2s ease-out;
+  }
+
+  .animate-accordion-up {
+    animation: accordion-up 0.2s ease-out;
+  }
+
+  .animate-fade-in {
+    animation: fade-in 0.6s ease-out;
+  }
+
+  .animate-slide-in {
+    animation: slide-in 0.3s ease-out;
+  }
+
+  .animate-glow {
+    animation: glow 2s ease-in-out infinite;
+  }
+
+  .animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  /* 배경 이미지 유틸리티 */
+  .bg-gradient-radial {
+    background-image: radial-gradient(var(--tw-gradient-stops));
+  }
+
+  .bg-gradient-conic {
+    background-image: conic-gradient(
+      from 180deg at 50% 50%,
+      var(—tw-gradient-stops)
+    );
+  }
 }

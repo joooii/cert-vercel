@@ -64,8 +64,8 @@ const Home = () => {
             <div className="absolute top-1/3 right-20 animate-bounce opacity-20">
               <EyeSVG width={30} />
             </div>
-            <div className="absolute bottom-1/3 left-20 animate-bounce opacity-15 text-[#9E0101]">
-              <BugSVG width={30} className="" />
+            <div className="absolute bottom-1/3 left-20 animate-bounce opacity-15 text-cert-home-red">
+              <BugSVG width={30} />
             </div>
           </>
         </section>
@@ -142,10 +142,10 @@ const Home = () => {
                   {upcomingEvents.map((event, index) => (
                     <div
                       key={index}
-                      className="flex items-start p-3 bg-gray-50 rounded-lg border-l-4 border-[#9E0101]"
+                      className="flex items-start p-3 bg-gray-50 rounded-lg border-l-4 border-cert-home-red"
                     >
                       <div className="flex-shrink-0 mr-3">
-                        <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold bg-[#9E0101]">
+                        <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold bg-cert-home-red">
                           {event.date}
                         </div>
                       </div>
@@ -162,7 +162,7 @@ const Home = () => {
                 </div>
                 <div className="mt-6 pt-3 border-t border-gray-200">
                   <Link href={"/schedule"}>
-                    <button className="w-full rounded-md py-2.5 border border-[rgba(158,1,1,0.2)] text-[#9E0101] hover:bg-[rgba(158,1,1,0.1)] cursor-pointer">
+                    <button className="w-full rounded-md py-2.5 border  border-cert-home-red-20  text-cert-home-red hover:bg-cert-home-red-10 cursor-pointer">
                       전체 일정 보기
                     </button>
                   </Link>
@@ -215,7 +215,7 @@ const Home = () => {
               <div className="text-4xl font-bold mb-8">
                 <span>사이버보안 전문가 양성을 통한</span>
                 <br />
-                <span className="text-[#9E0101]">디지털 세상 보호</span>
+                <span className="text-cert-home-red">디지털 세상 보호</span>
               </div>
               <div className="text-lg text-gray-500 max-w-4xl mx-auto">
                 급변하는 사이버 위협 환경에서 우리나라의 정보보안을 책임질
@@ -279,7 +279,7 @@ const Home = () => {
                     </span>
                   </div>
                 </div>
-                <button className="w-full rounded-md py-2.5 bg-[#9E0101] text-white hover:opacity-90 cursor-pointer">
+                <button className="w-full rounded-md py-2.5 bg-cert-home-red text-white hover:opacity-90 cursor-pointer">
                   지원하기
                 </button>
               </div>
