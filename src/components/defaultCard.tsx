@@ -4,7 +4,7 @@ interface CardProps {
   svgComponent: React.ReactNode;
 }
 
-const Card = ({ title, text, svgComponent }: CardProps) => {
+const DefaultCard = ({ title, text, svgComponent }: CardProps) => {
   return (
     <div className="rounded-lg border bg-white border-gray-200 shadow-sm">
       <div className="flex flex-col space-y-1.5 p-6 text-center pb-6 items-center">
@@ -21,4 +21,4 @@ const Card = ({ title, text, svgComponent }: CardProps) => {
     </div>
   );
 };
-export default Card;
+export default DefaultCard;

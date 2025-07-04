@@ -97,11 +97,11 @@ const Calendar = () => {
               className={`
                 relative p-2 text-center text-sm rounded cursor-pointer
                 ${isCurrentMonth ? "text-gray-900" : "text-gray-400"}
-                ${isToday ? "text-white font-bold bg-cert-home-red" : ""}
+                ${isToday ? "text-white font-bold bg-cert-dark-red" : ""}
                 ${!isToday && !hasEvent ? "hover:bg-gray-100" : ""}
                 ${
                   hasEvent
-                    ? "border bg-cert-home-red-5 border-cert-home-red-20"
+                    ? "border bg-cert-dark-red-5 border-cert-dark-red-20"
                     : ""
                 }
                 `}
@@ -109,7 +109,7 @@ const Calendar = () => {
             >
               {day.getDate()}
               {hasEvent && (
-                <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-1 rounded-full bg-cert-home-red"></div>
+                <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-1 rounded-full bg-cert-dark-red"></div>
               )}
             </div>
           );

@@ -2,7 +2,7 @@ import LogoSVG from "@/icons/logo-white.svg";
 
 const Footer = () => {
   return (
-    <footer className="sticky bottom-0 w-full bg-white text-gray-900 py-6 px-4 sm:px-6 lg:px-8 border-t border-gray-200">
+    <footer className="w-full bg-white text-gray-900 py-6 px-4 sm:px-6 lg:px-8 border-t border-gray-200">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="flex items-center space-x-3 mb-4 md:mb-0">
@@ -15,10 +15,7 @@ const Footer = () => {
             </div>
           </div>
           <div className="text-center md:text-right">
-            <p className="text-xs text-gray-500">
-              {/* © 2025 CERT-IS. 하나씩 버그를 잡으며 디지털 공간을 보호합니다. */}
-              © 2007. PKNU CERT-IS.
-            </p>
+            <p className="text-xs text-gray-500">© 2007. PKNU CERT-IS.</p>
           </div>
         </div>
       </div>

@@ -1,7 +1,6 @@
 import Link from "next/link";
-import Badge from "@/components/badge";
 import TypingAnimation from "@/components/typingAnimation";
-import Card from "@/components/card";
+import DefaultCard from "@/components/defaultCard";
 import LogoSVG from "@/icons/logo-white.svg";
 import ShieldSVG from "@/icons/shield.svg";
 import LockSVG from "@/icons/lock.svg";
@@ -15,6 +14,7 @@ import ThunderSVG from "@/icons/thunder.svg";
 import GlobeSVG from "@/icons/globe.svg";
 import ServerSVG from "@/icons/server.svg";
 import Calendar from "@/components/calendar";
+import SectionBadge from "@/components/sectionBadge";
 
 // 캘린더 동적 이벤트 생성 -> 이 부분은 추후 /schedule 과 연동하여 제거될 변수입니다
 const generateUpcomingEvents = () => {
@@ -64,7 +64,7 @@ const Home = () => {
             <div className="absolute top-1/3 right-20 animate-bounce opacity-20">
               <EyeSVG width={30} />
             </div>
-            <div className="absolute bottom-1/3 left-20 animate-bounce opacity-15 text-cert-home-red">
+            <div className="absolute bottom-1/3 left-20 animate-bounce opacity-15 text-cert-dark-red">
               <BugSVG width={30} />
             </div>
           </>
@@ -73,7 +73,7 @@ const Home = () => {
         {/* 2p */}
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-[13%] text-center">
           <div className="flex flex-col items-center mb-24">
-            <Badge text={"About CERT-IS"} />
+            <SectionBadge text={"About CERT-IS"} />
             <div className="text-3xl md:text-5xl font-bold mb-8">
               사이버 보안의 최전선
             </div>
@@ -84,28 +84,28 @@ const Home = () => {
             </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <Card
+            <DefaultCard
               title={"Penetration Testing"}
               text={
                 "실제 시스템 취약점 분석과 모의해킹을 통한 보안 강화 기법을 학습합니다"
               }
               svgComponent={<ShieldSVG width={64} />}
             />
-            <Card
+            <DefaultCard
               title={"Cryptography"}
               text={
                 "암호학 이론과 실습을 통한 데이터 보호 기술 및 암호화 시스템을 구축합니다"
               }
               svgComponent={<LockSVG width={64} />}
             />
-            <Card
+            <DefaultCard
               title={"Digital Forensics"}
               text={
                 "디지털 증거 수집과 분석을 통한 사이버 범죄 수사 기법을 연구합니다"
               }
               svgComponent={<EyeSVG width={64} />}
             />
-            <Card
+            <DefaultCard
               title={"Incident Response"}
               text={
                 "보안 사고 대응과 복구를 위한 체계적인 프로세스와 절차를 학습합니다"
@@ -118,7 +118,7 @@ const Home = () => {
         {/* 3p */}
         <section className=" max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-[13%] text-center">
           <div className="flex flex-col items-center mb-24">
-            <Badge text={"Schedule"} />
+            <SectionBadge text={"Schedule"} />
             <div className="text-4xl font-bold mb-8">이번 달 주요 일정</div>
             <div className="text-lg text-gray-500 max-w-4xl mx-auto">
               동아리 활동과 교육 스케줄을 확인하세요
@@ -142,10 +142,10 @@ const Home = () => {
                   {upcomingEvents.map((event, index) => (
                     <div
                       key={index}
-                      className="flex items-start p-3 bg-gray-50 rounded-lg border-l-4 border-cert-home-red"
+                      className="flex items-start p-3 bg-gray-50 rounded-lg border-l-4 border-cert-dark-red"
                     >
                       <div className="flex-shrink-0 mr-3">
-                        <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold bg-cert-home-red">
+                        <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold bg-cert-dark-red">
                           {event.date}
                         </div>
                       </div>
@@ -162,7 +162,7 @@ const Home = () => {
                 </div>
                 <div className="mt-6 pt-3 border-t border-gray-200">
                   <Link href={"/schedule"}>
-                    <button className="w-full rounded-md py-2.5 border  border-cert-home-red-20  text-cert-home-red hover:bg-cert-home-red-10 cursor-pointer">
+                    <button className="w-full rounded-md py-2.5 border  border-cert-dark-red-20  text-cert-dark-red hover:bg-cert-dark-red-10 cursor-pointer">
                       전체 일정 보기
                     </button>
                   </Link>
@@ -175,29 +175,29 @@ const Home = () => {
         {/* 5p */}
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-[13%] text-center">
           <div className="flex flex-col items-center mb-24">
-            <Badge text={"Platform"} />
+            <SectionBadge text={"Platform"} />
             <div className="text-4xl font-bold mb-8">동아리 플랫폼</div>
             <div className="text-lg text-gray-500 max-w-4xl mx-auto">
               체계적인 학습 관리와 효율적인 협업을 위한 통합 플랫폼을 제공합니다
             </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <Card
+            <DefaultCard
               title={"People"}
               text={"보안 전문가들과의 네트워킹"}
               svgComponent={<PeopleSVG />}
             />
-            <Card
+            <DefaultCard
               title={"Schedule"}
               text={"체계적인 교육 일정 관리"}
               svgComponent={<ScheduleSVG width={48} />}
             />
-            <Card
+            <DefaultCard
               title={"Study"}
               text={"최신 보안 기술 연구 자료"}
               svgComponent={<StudySVG width={48} />}
             />
-            <Card
+            <DefaultCard
               title={"Blog"}
               text={"보안 지식 공유와 소통"}
               svgComponent={<BlogSVG />}
@@ -210,12 +210,12 @@ const Home = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
               <div className="flex flex-col items-start mb-2">
-                <Badge text={"Our Mission"} />
+                <SectionBadge text={"Our Mission"} />
               </div>
               <div className="text-4xl font-bold mb-8">
                 <span>사이버보안 전문가 양성을 통한</span>
                 <br />
-                <span className="text-cert-home-red">디지털 세상 보호</span>
+                <span className="text-cert-dark-red">디지털 세상 보호</span>
               </div>
               <div className="text-lg text-gray-500 max-w-4xl mx-auto">
                 급변하는 사이버 위협 환경에서 우리나라의 정보보안을 책임질
@@ -259,7 +259,7 @@ const Home = () => {
                 </div>
                 <div className="p-1">
                   <div className="mb-8 text-gray-500 leading-relaxed">
-                    사이버보안의 미래를 함께 만들어갈 동료를 찾습니다. <br />{" "}
+                    사이버보안의 미래를 함께 만들어갈 동료를 찾습니다. <br />
                     열정과 도전정신이 있다면 언제든 환영합니다!
                   </div>
                 </div>
@@ -279,7 +279,7 @@ const Home = () => {
                     </span>
                   </div>
                 </div>
-                <button className="w-full rounded-md py-2.5 bg-cert-home-red text-white hover:opacity-90 cursor-pointer">
+                <button className="w-full rounded-md py-2.5 bg-cert-dark-red text-white hover:opacity-90 cursor-pointer">
                   지원하기
                 </button>
               </div>

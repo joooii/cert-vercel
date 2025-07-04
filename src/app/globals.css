@@ -57,10 +57,10 @@
   --color-cert-accent: #3b82f6;
   --color-cert-border: #262626;
   --color-cert-muted: #404040;
-  --color-cert-home-red: #9e0101;
-  --color-cert-home-red-5: rgba(158, 1, 1, 0.05);
-  --color-cert-home-red-10: rgba(158, 1, 1, 0.1);
-  --color-cert-home-red-20: rgba(158, 1, 1, 0.2);
+  --color-cert-dark-red: #9e0101;
+  --color-cert-dark-red-5: rgba(158, 1, 1, 0.05);
+  --color-cert-dark-red-10: rgba(158, 1, 1, 0.1);
+  --color-cert-dark-red-20: rgba(158, 1, 1, 0.2);
 
   /* Border Radius (CSS 변수 기반) */
   --radius-lg: var(--radius);
