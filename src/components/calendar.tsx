@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import AngleSVG from "@/icons/angle.svg";
+import AngleSVG from "/public/icons/angle.svg";
 
 const Calendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());

@@ -7,9 +7,9 @@ import {
   getStatusDateInfo,
 } from "@/utils/study/studyHelper";
 
-import DownloadGraySVG from "/public/download-gray.svg";
-import PdfSVG from "/public/pdf.svg";
-import CalendarGraySVG from "/public/calendar-gray.svg";
+import DownloadGraySVG from "/public/icons/download-gray.svg";
+import PdfSVG from "/public/icons/pdf.svg";
+import CalendarGraySVG from "/public/icons/calendar-gray.svg";
 
 export default function SCStudyContent({ currentFilters }: StudyContentProps) {
   const ITEMS_PER_PAGE = 6; // 페이지당 아이템 수

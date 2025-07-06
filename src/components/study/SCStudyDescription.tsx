@@ -1,11 +1,11 @@
 "server-only";
-import StudySVG from "/public/study.svg";
+import TerminalSVG from "/public/icons/terminal.svg";
 
 export default function SCStudyDescription() {
   return (
     <div className="mb-4">
       <div className="flex items-center mb-4">
-        <StudySVG className="w-8 h-8 mr-4 text-red-500" />
+        <TerminalSVG className="w-8 h-8 mr-4 text-red-500" />
         <h1 className="text-3xl font-bold text-gray-900">Study</h1>
       </div>
       <p className="text-gray-600 text-lg">

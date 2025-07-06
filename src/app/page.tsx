@@ -1,18 +1,18 @@
 import Link from "next/link";
 import TypingAnimation from "@/components/typingAnimation";
 import DefaultCard from "@/components/defaultCard";
-import LogoSVG from "@/icons/logo-white.svg";
-import ShieldSVG from "@/icons/shield.svg";
-import LockSVG from "@/icons/lock.svg";
-import EyeSVG from "@/icons/eye.svg";
-import PeopleSVG from "@/icons/people.svg";
-import ScheduleSVG from "@/icons/scheduel.svg";
-import StudySVG from "@/icons/study.svg";
-import BlogSVG from "@/icons/blog.svg";
-import BugSVG from "@/icons/bug.svg";
-import ThunderSVG from "@/icons/thunder.svg";
-import GlobeSVG from "@/icons/globe.svg";
-import ServerSVG from "@/icons/server.svg";
+import LogoSVG from "/public/icons/logo-white.svg";
+import ShieldSVG from "/public/icons/shield.svg";
+import LockSVG from "/public/icons/lock.svg";
+import EyeSVG from "/public/icons/eye.svg";
+import PeopleSVG from "/public/icons/people.svg";
+import ScheduleSVG from "/public/icons/scheduel.svg";
+import StudySVG from "/public/icons/study.svg";
+import BlogSVG from "/public/icons/blog.svg";
+import BugSVG from "/public/icons/bug.svg";
+import ThunderSVG from "/public/icons/thunder.svg";
+import GlobeRedSVG from "/public/icons/globe-red.svg";
+import ServerSVG from "/public/icons/server.svg";
 import Calendar from "@/components/calendar";
 import SectionBadge from "@/components/sectionBadge";
 
@@ -230,7 +230,7 @@ const Home = () => {
                   </span>
                 </div>
                 <div className="flex flex-row items-center">
-                  <GlobeSVG />
+                  <GlobeRedSVG />
                   <span className="my-2 mx-3">
                     국내 보안 컨퍼런스 참가 및 발표
                   </span>
