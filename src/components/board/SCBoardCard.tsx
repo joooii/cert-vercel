@@ -1,5 +1,5 @@
 import Link from "next/link";
-import ThunderSVG from "@/icons/thunder-blue.svg";
+import ThunderSVG from "@/icons/thunder.svg";
 import InfoSVG from "@/icons/info.svg";
 import AlertTriangleSVG from "@/icons/alert-triangle.svg";
 import ThumbsUpSVG from "@/icons/thumbs-up.svg";
@@ -40,7 +40,7 @@ const getPriorityIcon = (priority: string) => {
     case "medium":
       return <InfoSVG />;
     default:
-      return <ThunderSVG />;
+      return <ThunderSVG className="text-cert-accent" />;
   }
 };
 
@@ -96,11 +96,11 @@ export default function BoardCard({
               <span className="font-medium text-gray-700">{author}</span>
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-1 hover:text-cert-red transition-colors">
-                  <EyeSVG className="w-4 h-4" />
+                  <EyeSVG className="w-4 text-cert-dark-red" />
                   <span>{views}</span>
                 </div>
                 <div className="flex items-center gap-1 hover:text-cert-red transition-colors">
-                  <ThumbsUpSVG className="w-4 h-4" />
+                  <ThumbsUpSVG className="w-4 text-cert-dark-red" />
                   <span>{likes}</span>
                 </div>
               </div>
