@@ -6,10 +6,10 @@ import DefaultButton from "@/components/ui/defaultButton";
 const categories = [
   "전체",
   "공지사항",
-  "보안분석",
+  "보안이슈",
   "기술자료",
   "스터디",
-  "자유게시판",
+  "프로젝트",
 ];
 
 interface BoardCategoryProps {

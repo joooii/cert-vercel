@@ -2,7 +2,6 @@ import Link from "next/link";
 import ThunderSVG from "@/icons/thunder-blue.svg";
 import InfoSVG from "@/icons/info.svg";
 import AlertTriangleSVG from "@/icons/alert-triangle.svg";
-import ChatSVG from "@/icons/chat.svg";
 import ThumbsUpSVG from "@/icons/thumbs-up.svg";
 import EyeSVG from "@/icons/eye.svg";
 import DefaultBadge from "@/components/ui/defaultBadge";
@@ -25,14 +24,12 @@ const getCategoryColor = (category: string) => {
   switch (category) {
     case "공지사항":
       return "bg-red-50 text-red-600 border-red-200";
-    case "보안분석":
+    case "보안이슈":
       return "bg-orange-50 text-orange-600 border-orange-200";
     case "기술자료":
       return "bg-blue-50 text-blue-600 border-blue-200";
-    case "스터디":
-      return "bg-green-50 text-green-600 border-green-200";
     default:
-      return "bg-gray-50 text-gray-600 border-gray-200";
+      return "bg-green-50 text-green-600 border-green-200";
   }
 };
 
@@ -57,7 +54,6 @@ export default function BoardCard({
   date,
   views,
   likes,
-  comments,
   isNotice,
 }: BoardCardProps) {
   return (
@@ -106,10 +102,6 @@ export default function BoardCard({
                 <div className="flex items-center gap-1 hover:text-cert-red transition-colors">
                   <ThumbsUpSVG className="w-4 h-4" />
                   <span>{likes}</span>
-                </div>
-                <div className="flex items-center gap-1 hover:text-cert-red transition-colors">
-                  <ChatSVG className="w-4 h-4" />
-                  <span>{comments}</span>
                 </div>
               </div>
             </div>

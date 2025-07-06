@@ -20,7 +20,7 @@ export const mockBoardContents = [
       "최근 발견된 Apache 웹서버 취약점에 대한 상세 분석과 대응 방안을 공유합니다...",
     author: "김보안",
     date: "2024-01-14",
-    category: "보안분석",
+    category: "보안이슈",
     views: 189,
     likes: 25,
     comments: 8,
