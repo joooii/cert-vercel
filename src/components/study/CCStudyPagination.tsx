@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
+import AngleSVG from "/public/icons/angle.svg";
 
 interface PaginationProps {
   currentPage: number;
@@ -76,19 +77,7 @@ export default function CCStudyPagination({
             : "text-gray-700 hover:bg-gray-100"
         }`}
       >
-        <svg
-          className="w-4 h-4"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M15 19l-7-7 7-7"
-          />
-        </svg>
+        <AngleSVG className="w-3 h-3 rotate-90"></AngleSVG>
       </button>
 
       {/* 페이지 번호들 */}
@@ -118,19 +107,7 @@ export default function CCStudyPagination({
             : "text-gray-700 hover:bg-gray-100"
         }`}
       >
-        <svg
-          className="w-4 h-4"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M9 5l7 7-7 7"
-          />
-        </svg>
+        <AngleSVG className="w-3 h-3 rotate-270"></AngleSVG>
       </button>
     </div>
   );
