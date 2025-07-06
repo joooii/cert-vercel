@@ -1,5 +1,5 @@
 import Link from "next/link";
-
+import { getPageNumbers } from "@/utils/paginationUtils";
 interface BoardPaginationProps {
   currentPage: number;
   totalItems: number;
@@ -19,41 +19,6 @@ export default function BoardPagination({
 
   if (totalPages <= 1) return null;
 
-  const getPageNumbers = () => {
-    const pageNumbers = [];
-    const maxVisiblePages = 5;
-    const halfVisible = Math.floor(maxVisiblePages / 2);
-    let startPage = Math.max(1, currentPage - halfVisible);
-    let endPage = Math.min(totalPages, currentPage + halfVisible);
-
-    if (totalPages <= maxVisiblePages) {
-      startPage = 1;
-      endPage = totalPages;
-    } else {
-      if (currentPage <= halfVisible) {
-        endPage = maxVisiblePages;
-      } else if (currentPage + halfVisible >= totalPages) {
-        startPage = totalPages - maxVisiblePages + 1;
-      }
-    }
-
-    for (let i = startPage; i <= endPage; i++) {
-      pageNumbers.push(i);
-    }
-
-    if (startPage > 1) {
-      pageNumbers.unshift("...");
-      pageNumbers.unshift(1);
-    }
-
-    if (endPage < totalPages) {
-      pageNumbers.push("...");
-      pageNumbers.push(totalPages);
-    }
-
-    return pageNumbers;
-  };
-
   const createPageUrl = (page: number) => {
     const params = {
       ...(currentSearch && { title: currentSearch }),
@@ -65,7 +30,7 @@ export default function BoardPagination({
     return `/board${query ? `?${query}` : ""}`;
   };
 
-  const pageNumbers = getPageNumbers();
+  const pageNumbers = getPageNumbers(currentPage, totalPages);
 
   return (
     <div className="flex items-center justify-center gap-2 mt-8">
