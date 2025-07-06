@@ -9,19 +9,19 @@ import PlusSVG from "@/icons/plus.svg";
 const ITEMS_PER_PAGE = 4;
 
 interface BoardPageProps {
-  searchParams: {
+  searchParams: Promise<{
     page?: string;
     title?: string;
     category?: string;
-  };
+  }>;
 }
 
-export function generateMetadata({
+export async function generateMetadata({
   searchParams,
 }: {
   searchParams: { title?: string; category?: string };
-}): Metadata {
-  const { title, category } = searchParams;
+}): Promise<Metadata> {
+  const { title, category } = await searchParams;
 
   return {
     title: `${title ? `${title} - ` : ""}Security Board`,
@@ -29,8 +29,8 @@ export function generateMetadata({
   };
 }
 
-export default function BoardPage({ searchParams }: BoardPageProps) {
-  const { page, title, category } = searchParams;
+export default async function BoardPage({ searchParams }: BoardPageProps) {
+  const { page, title, category } = await searchParams;
 
   const currentPage = parseInt(page || "1", 10);
   const currentSearch = title || "";
@@ -47,6 +47,7 @@ export default function BoardPage({ searchParams }: BoardPageProps) {
 
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
+
   const paginatedContents = filteredContents.slice(startIndex, endIndex);
 
   return (
