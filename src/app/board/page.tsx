@@ -11,7 +11,7 @@ const ITEMS_PER_PAGE = 4;
 interface BoardPageProps {
   searchParams: Promise<{
     page?: string;
-    title?: string;
+    search?: string;
     category?: string;
   }>;
 }
@@ -19,27 +19,28 @@ interface BoardPageProps {
 export async function generateMetadata({
   searchParams,
 }: {
-  searchParams: { title?: string; category?: string };
+  searchParams: Promise<{ search?: string; category?: string }>;
 }): Promise<Metadata> {
-  const { title, category } = await searchParams;
+  const { search, category } = await searchParams;
 
   return {
-    title: `${title ? `${title} - ` : ""}Security Board`,
+    title: `${search ? `${search} - ` : ""}Security Board`,
     description: `보안 게시판${category ? ` - ${category}` : ""}`,
   };
 }
 
 export default async function BoardPage({ searchParams }: BoardPageProps) {
-  const { page, title, category } = await searchParams;
+  const { page, search, category } = await searchParams;
 
   const currentPage = parseInt(page || "1", 10);
-  const currentSearch = title || "";
+  const currentSearch = search || "";
   const currentCategory = category || "전체";
 
   const filteredContents = mockBoardContents.filter((content) => {
-    const matchedSearch = content.title
-      .toLowerCase()
-      .includes(currentSearch.toLowerCase());
+    const matchedSearch =
+      content.title.toLowerCase().includes(currentSearch.toLowerCase()) ||
+      content.author.toLowerCase().includes(currentSearch.toLowerCase()) ||
+      content.content.toLowerCase().includes(currentSearch.toLowerCase());
     const matchedCategory =
       currentCategory === "전체" || content.category === currentCategory;
     return matchedSearch && matchedCategory;
