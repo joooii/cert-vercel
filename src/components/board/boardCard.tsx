@@ -3,7 +3,6 @@
 import ThunderSVG from "@/icons/thunder-blue.svg";
 import InfoSVG from "@/icons/info.svg";
 import AlertTriangleSVG from "@/icons/alert-triangle.svg";
-import ChatSVG from "@/icons/chat.svg";
 import ThumbsUpSVG from "@/icons/thumbs-up.svg";
 import EyeSVG from "@/icons/eye.svg";
 import DefaultBadge from "@/components/ui/defaultBadge";
@@ -23,6 +22,7 @@ interface BoardCardProps {
   priority: string;
 }
 
+// 통일성이 필요한 css 묶음
 const getCategoryColor = (category: string) => {
   switch (category) {
     case "공지사항":
@@ -59,7 +59,6 @@ const BoardCard = ({
   date,
   views,
   likes,
-  comments,
   isNotice,
 }: BoardCardProps) => {
   const router = useRouter();
@@ -114,10 +113,6 @@ const BoardCard = ({
               <div className="flex items-center gap-1 hover:text-cert-red transition-colors">
                 <ThumbsUpSVG className="w-4 h-4" />
                 <span>{likes}</span>
-              </div>
-              <div className="flex items-center gap-1 hover:text-cert-red transition-colors">
-                <ChatSVG className="w-4 h-4" />
-                <span>{comments}</span>
               </div>
             </div>
           </div>
