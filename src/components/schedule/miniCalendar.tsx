@@ -3,7 +3,7 @@
 import { useState } from "react";
 import AngleSVG from "@/icons/angle.svg";
 
-const Calendar = () => {
+const MiniCalendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
 
   const today = new Date();
@@ -118,4 +118,4 @@ const Calendar = () => {
     </div>
   );
 };
-export default Calendar;
+export default MiniCalendar;

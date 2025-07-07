@@ -6,22 +6,20 @@ import ShieldSVG from "@/icons/shield.svg";
 import LockSVG from "@/icons/lock.svg";
 import EyeSVG from "@/icons/eye.svg";
 import PeopleSVG from "@/icons/people.svg";
-import ScheduleSVG from "@/icons/scheduel.svg";
+import ScheduleSVG from "@/icons/schedule.svg";
 import StudySVG from "@/icons/study.svg";
 import BlogSVG from "@/icons/blog.svg";
 import BugSVG from "@/icons/bug.svg";
 import ThunderSVG from "@/icons/thunder.svg";
 import GlobeSVG from "@/icons/globe.svg";
 import ServerSVG from "@/icons/server.svg";
-import Calendar from "@/components/calendar";
+import Calendar from "@/components/schedule/calendar";
 import SectionBadge from "@/components/sectionBadge";
 
 // 캘린더 동적 이벤트 생성 -> 이 부분은 추후 /schedule 과 연동하여 제거될 변수입니다
 const generateUpcomingEvents = () => {
   const today = new Date();
   const currentMonth = today.getMonth();
-  const currentYear = today.getFullYear();
-
   return [
     {
       date: 5,
@@ -132,7 +130,7 @@ const Home = () => {
               <div className="flex flex-col space-y-1.5 p-6 w-[28rem] text-center pb-6">
                 <div className="flex flex-row">
                   <div className="mb-6">
-                    <ScheduleSVG width={24} />
+                    <ScheduleSVG width={24} className="stroke-cert-dark-red" />
                   </div>
                   <div className="text-xl ml-3 font-bold tracking-tight text-gray-900">
                     다가오는 일정
@@ -190,7 +188,9 @@ const Home = () => {
             <DefaultCard
               title={"Schedule"}
               text={"체계적인 교육 일정 관리"}
-              svgComponent={<ScheduleSVG width={48} />}
+              svgComponent={
+                <ScheduleSVG width={48} className="stroke-cert-dark-red" />
+              }
             />
             <DefaultCard
               title={"Study"}
