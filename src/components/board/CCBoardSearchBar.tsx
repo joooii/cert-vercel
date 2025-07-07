@@ -6,7 +6,6 @@ import DefaultSearchBar from "@/components/ui/defaultSearchBar";
 import SearchSVG from "@/icons/search.svg";
 
 const DEBOUNCE_DELAY = 200;
-
 interface BoardSearchBarProps {
   initialValue: string;
 }
@@ -51,7 +50,7 @@ export default function BoardSearchBar({ initialValue }: BoardSearchBarProps) {
         placeholder="제목,내용,작성자로 검색하세요..."
         value={searchInput}
         onChange={(e) => setSearchInput(e.target.value)}
-        className="pl-10 bg-white border-gray-300 text-gray-900 placeholder:text-gray-400 focus:border-cert-red"
+        className="pl-10"
       />
     </div>
   );
