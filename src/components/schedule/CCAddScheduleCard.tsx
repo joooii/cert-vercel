@@ -22,10 +22,10 @@ export default function CCAddScheduleCard() {
         >
           일정 추가
         </button>
-        {isOpenModal && (
-          <ScheduleFormModal closeModal={() => setIsOpenModal(false)} />
-        )}
       </div>
+      {isOpenModal && (
+        <ScheduleFormModal closeModal={() => setIsOpenModal(false)} />
+      )}
     </div>
   );
 }

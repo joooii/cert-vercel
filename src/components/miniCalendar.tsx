@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import AngleSVG from "@/icons/angle.svg";
+import { DAY_NAMES, MONTH_NAMES } from "@/utils/scheduleUtils";
 
 const MiniCalendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -29,23 +30,6 @@ const MiniCalendar = () => {
     [new Date(year, month, 12).toDateString()]: "CTF 대회",
   };
 
-  const monthNames = [
-    "1월",
-    "2월",
-    "3월",
-    "4월",
-    "5월",
-    "6월",
-    "7월",
-    "8월",
-    "9월",
-    "10월",
-    "11월",
-    "12월",
-  ];
-
-  const dayNames = ["일", "월", "화", "수", "목", "금", "토"];
-
   const prevMonth = () => {
     setCurrentDate(new Date(year, month - 1, 1));
   };
@@ -64,7 +48,7 @@ const MiniCalendar = () => {
           <AngleSVG className="rotate-90" width={13} />
         </button>
         <h3 className="text-lg font-semibold text-gray-900">
-          {year}년 {monthNames[month]}
+          {year}년 {MONTH_NAMES[month]}
         </h3>
         <button
           onClick={nextMonth}
@@ -75,7 +59,7 @@ const MiniCalendar = () => {
       </div>
 
       <div className="grid grid-cols-7 gap-1 mb-2">
-        {dayNames.map((day) => (
+        {DAY_NAMES.map((day) => (
           <div
             key={day}
             className="text-center text-xs font-medium text-gray-600 p-2"

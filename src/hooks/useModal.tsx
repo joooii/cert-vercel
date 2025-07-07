@@ -4,9 +4,8 @@ import { useEffect, useRef, useState } from "react";
 
 export const useModal = () => {
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
-  const openModal = () => setIsOpenModal(true);
-  const closeModal = () => setIsOpenModal(false);
 
+  // 모달 내 드롭다운
   const [isActivityDropdownOpen, setIsActivityDropdownOpen] =
     useState<boolean>(false);
   const [isStartTimeDropdownOpen, setIsStartTimeDropdownOpen] =
@@ -20,17 +19,6 @@ export const useModal = () => {
   const dropdownOutsideRef = useRef<HTMLDivElement | null>(null);
   const startTimeDropdownRef = useRef<HTMLDivElement | null>(null);
   const endTimeDropdownRef = useRef<HTMLDivElement | null>(null);
-
-  // 30분 간격으로 시간 배열 생성 (09:00 ~ 22:00)
-  const timeOptions = [];
-  for (let hour = 9; hour <= 22; hour++) {
-    for (let minute = 0; minute < 60; minute += 30) {
-      const timeString = `${hour.toString().padStart(2, "0")}:${minute
-        .toString()
-        .padStart(2, "0")}`;
-      timeOptions.push(timeString);
-    }
-  }
 
   const toggleDropdown = () => {
     setIsActivityDropdownOpen((prev) => !prev);
@@ -49,12 +37,12 @@ export const useModal = () => {
     setIsActivityDropdownOpen(false);
   };
 
-  const handleStartTimeSelect = (time: string) => {
+  const handleStartTime = (time: string) => {
     setSelectedStartTime(time);
     setIsStartTimeDropdownOpen(false);
   };
 
-  const handleEndTimeSelect = (time: string) => {
+  const handleEndTime = (time: string) => {
     setSelectedEndTime(time);
     setIsEndTimeDropdownOpen(false);
   };
@@ -83,6 +71,7 @@ export const useModal = () => {
       setIsEndTimeDropdownOpen(false);
     }
   };
+
   useEffect(() => {
     if (
       isActivityDropdownOpen ||
@@ -105,17 +94,14 @@ export const useModal = () => {
     toggleStartTimeDropdown,
     selectedStartTime,
     isStartTimeDropdownOpen,
-    timeOptions,
-    handleStartTimeSelect,
+    handleStartTime,
     endTimeDropdownRef,
     toggleEndTimeDropdown,
     selectedEndTime,
     isEndTimeDropdownOpen,
-    handleEndTimeSelect,
+    handleEndTime,
     addSchedule,
     isOpenModal,
     setIsOpenModal,
-    openModal,
-    closeModal,
   };
 };

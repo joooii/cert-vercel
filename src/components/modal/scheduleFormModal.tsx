@@ -1,8 +1,11 @@
 "use client";
 
+import { useEffect } from "react";
 import AngleSVG from "@/icons/angle.svg";
 import { useModal } from "@/hooks/useModal";
 import { ScheduleInfo } from "@/types/schedule";
+import { useSchedule } from "@/hooks/useSchedule";
+import { getTypeLabel } from "@/utils/scheduleUtils";
 
 interface ModalProps {
   closeModal: () => void;
@@ -19,15 +22,23 @@ const ScheduleFormModal = ({ closeModal, schedule }: ModalProps) => {
     toggleStartTimeDropdown,
     selectedStartTime,
     isStartTimeDropdownOpen,
-    timeOptions,
-    handleStartTimeSelect,
+    handleStartTime,
     endTimeDropdownRef,
     toggleEndTimeDropdown,
     selectedEndTime,
     isEndTimeDropdownOpen,
-    handleEndTimeSelect,
+    handleEndTime,
     addSchedule,
   } = useModal();
+  const { timeOptions } = useSchedule();
+
+  useEffect(() => {
+    if (schedule) {
+      handleActivity(getTypeLabel(schedule.type));
+      handleStartTime(schedule.startTime);
+      handleEndTime(schedule.endTime);
+    }
+  }, [schedule]);
 
   return (
     <div className="fixed inset-0 bg-black/80 flex justify-center items-center z-20">
@@ -86,15 +97,17 @@ const ScheduleFormModal = ({ closeModal, schedule }: ModalProps) => {
                 {isActivityDropdownOpen && (
                   <>
                     <div className="absolute border border-gray-300 p-1 bg-white w-full  rounded-md ">
-                      {["정기 모임", "회의", "스터디"].map((label) => (
-                        <button
-                          key={label}
-                          onClick={() => handleActivity(label)}
-                          className="flex h-10 w-full rounded-md px-3 py-2 text-gray-900 hover:bg-cert-red hover:text-white"
-                        >
-                          {label}
-                        </button>
-                      ))}
+                      {["정기 모임", "회의", "스터디", "컨퍼런스"].map(
+                        (label) => (
+                          <button
+                            key={label}
+                            onClick={() => handleActivity(label)}
+                            className="flex h-10 w-full rounded-md px-3 py-2 text-gray-900 hover:bg-cert-red hover:text-white"
+                          >
+                            {label}
+                          </button>
+                        )
+                      )}
                     </div>
                   </>
                 )}
@@ -116,7 +129,7 @@ const ScheduleFormModal = ({ closeModal, schedule }: ModalProps) => {
                     {timeOptions.map((time) => (
                       <button
                         key={time}
-                        onClick={() => handleStartTimeSelect(time)}
+                        onClick={() => handleStartTime(time)}
                         defaultValue={schedule?.startTime ?? ""}
                         className="flex h-10 w-full rounded-md px-3 py-2 text-gray-900 hover:bg-red-500 hover:text-white"
                       >
@@ -140,7 +153,7 @@ const ScheduleFormModal = ({ closeModal, schedule }: ModalProps) => {
                     {timeOptions.map((time) => (
                       <button
                         key={time}
-                        onClick={() => handleEndTimeSelect(time)}
+                        onClick={() => handleEndTime(time)}
                         defaultValue={schedule?.endTime ?? ""}
                         className="flex h-10 w-full rounded-md px-3 py-2 text-gray-900 hover:bg-red-500 hover:text-white"
                       >

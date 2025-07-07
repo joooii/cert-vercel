@@ -8,12 +8,12 @@ import {
   formatDateString,
   formatKoreanDate,
   generateCalendarDays,
-  getReservationByDate,
+  getScheduleByDate,
   getTypeColor,
 } from "@/utils/scheduleUtils";
 import { useSearchParams, useRouter } from "next/navigation";
 
-const Calendar = () => {
+export default function Calendar() {
   const router = useRouter();
   const currentParams = useSearchParams();
 
@@ -80,13 +80,13 @@ const Calendar = () => {
         {days.map((day, index) => {
           const isToday = day.toDateString() === today.toDateString();
           const isCurrentMonth = day.getMonth() === month;
-          const schedule = getReservationByDate(day, schedules);
+          const schedule = getScheduleByDate(day, schedules);
 
           return (
             <div
               key={index}
               onClick={() => handleDateClick(day)}
-              className={`relative min-h-[80px] p-2 border border-gray-100 cursor-pointer transition-all duration-200 hover:bg-gray-100
+              className={`relative min-h-[5.5rem] p-2 border border-gray-100 cursor-pointer transition-all duration-200 hover:bg-gray-100
                 ${
                   isCurrentMonth
                     ? "text-gray-900 bg-white"
@@ -95,20 +95,24 @@ const Calendar = () => {
                 ${isToday ? "text-red-700 border" : ""}
                 ${
                   schedule
-                    ? "border bg-cert-dark-red-5 border-cert-dark-red-20"
+                    ? "border bg-gray-300/10 border-cert-dark-red-20"
                     : "hover:bg-gray-100"
                 }
               `}
-              title={schedule?.title}
+              title={schedule[0]?.title}
             >
               <div>{day.getDate()}</div>
-              {schedule && (
+              {schedule.length > 0 && (
                 <div
                   className={`text-xs mt-1 text-center rounded-sm p-1 ${getTypeColor(
-                    schedule.type
+                    schedule[0].type
                   )}`}
                 >
-                  {schedule.title}
+                  <span className="whitespace-pre-line">
+                    {schedule.length === 1
+                      ? schedule[0].title
+                      : `${schedule[0].title}\n외 ${schedule.length - 1}개`}
+                  </span>
                 </div>
               )}
             </div>
@@ -117,6 +121,4 @@ const Calendar = () => {
       </div>
     </div>
   );
-};
-
-export default Calendar;
+}

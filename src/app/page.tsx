@@ -13,7 +13,7 @@ import BugSVG from "@/icons/bug.svg";
 import ThunderSVG from "@/icons/thunder.svg";
 import GlobeSVG from "@/icons/globe.svg";
 import ServerSVG from "@/icons/server.svg";
-import Calendar from "@/components/schedule/calendar";
+import MiniCalendar from "@/components/miniCalendar";
 import SectionBadge from "@/components/sectionBadge";
 
 // 캘린더 동적 이벤트 생성 -> 이 부분은 추후 /schedule 과 연동하여 제거될 변수입니다
@@ -124,7 +124,7 @@ const Home = () => {
           </div>
           <div className="flex flex-col lg:flex-row gap-18 items-center justify-center">
             <div className="max-w-sm mx-auto lg:mx-0">
-              <Calendar />
+              <MiniCalendar />
             </div>
             <div className="bg-white border border-gray-200 rounded-2xl p-3 shadow-sm">
               <div className="flex flex-col space-y-1.5 p-6 w-[28rem] text-center pb-6">

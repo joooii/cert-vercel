@@ -5,7 +5,7 @@ import ScheduleSVG from "@/icons/schedule.svg";
 export default function SCScheduleContent() {
   return (
     <div className="mb-12">
-      <div className="flex gap-3 mb-4 mt-40 flex-col">
+      <div className="flex gap-3 mb-4 flex-col">
         <div className="flex flex-row">
           <ScheduleSVG width={32} className="stroke-cert-dark-red" />
           <p className="text-3xl font-bold text-gray-900 ml-3">Schedule</p>

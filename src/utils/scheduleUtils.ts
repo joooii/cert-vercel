@@ -1,3 +1,5 @@
+import { ScheduleInfo } from "@/types/schedule";
+
 export const getTypeLabel = (type: string) => {
   switch (type) {
     case "meeting":
@@ -107,7 +109,10 @@ export const generateCalendarDays = (currentDate: Date): Date[] => {
 /**
  * 특정 날짜의 예약 정보를 찾는 함수
  */
-export const getReservationByDate = (targetDate: Date, reservations: any[]) => {
+export const getScheduleByDate = (
+  targetDate: Date,
+  schedules: ScheduleInfo[]
+) => {
   const target = formatDateString(targetDate);
-  return reservations.find((r) => r.date === target);
+  return schedules.filter((s) => s.date === target);
 };
