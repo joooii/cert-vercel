@@ -5,22 +5,10 @@ import AlertTriangleSVG from "@/icons/alert-triangle.svg";
 import ThumbsUpSVG from "@/icons/thumbs-up.svg";
 import EyeSVG from "@/icons/eye.svg";
 import DefaultBadge from "@/components/ui/defaultBadge";
+import { BoardCategoryType, BoardPriorityType } from "@/types/board";
+import { BoardContent } from "@/types/board";
 
-interface BoardCardProps {
-  id: number;
-  title: string;
-  content: string;
-  author: string;
-  date: string;
-  category: string;
-  views: number;
-  likes: number;
-  comments: number;
-  isNotice: boolean;
-  priority: string;
-}
-
-const getCategoryColor = (category: string) => {
+const getCategoryColor = (category: BoardCategoryType) => {
   switch (category) {
     case "공지사항":
       return "bg-red-50 text-red-600 border-red-200";
@@ -33,7 +21,7 @@ const getCategoryColor = (category: string) => {
   }
 };
 
-const getPriorityIcon = (priority: string) => {
+const getPriorityIcon = (priority: BoardPriorityType) => {
   switch (priority) {
     case "high":
       return <AlertTriangleSVG />;
@@ -55,7 +43,7 @@ export default function BoardCard({
   views,
   likes,
   isNotice,
-}: BoardCardProps) {
+}: BoardContent) {
   return (
     <Link href={`/board/${id}`}>
       <div

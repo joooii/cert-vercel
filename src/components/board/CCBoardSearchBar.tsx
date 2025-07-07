@@ -5,6 +5,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import DefaultSearchBar from "@/components/ui/defaultSearchBar";
 import SearchSVG from "@/icons/search.svg";
 
+const DEBOUNCE_DELAY = 200;
+
 interface BoardSearchBarProps {
   initialValue: string;
 }
@@ -37,7 +39,7 @@ export default function BoardSearchBar({ initialValue }: BoardSearchBarProps) {
       const queryString = params.toString();
       const newUrl = queryString ? `/board?${queryString}` : "/board";
       router.push(newUrl);
-    }, 300);
+    }, DEBOUNCE_DELAY);
 
     return () => clearTimeout(debounceTimer);
   }, [searchInput, router, searchParams]);

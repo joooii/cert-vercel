@@ -2,18 +2,10 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import DefaultButton from "@/components/ui/defaultButton";
-
-const categories = [
-  "전체",
-  "공지사항",
-  "보안이슈",
-  "기술자료",
-  "스터디",
-  "프로젝트",
-];
+import { boardCategories, BoardCategoryType } from "@/types/board";
 
 interface BoardCategoryProps {
-  selectedCategory: string;
+  selectedCategory: BoardCategoryType;
 }
 
 export default function BoardCategory({
@@ -22,7 +14,7 @@ export default function BoardCategory({
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const handleCategoryChange = (category: string) => {
+  const handleCategoryChange = (category: BoardCategoryType) => {
     const params = new URLSearchParams(searchParams);
 
     if (category === "전체") {
@@ -39,7 +31,7 @@ export default function BoardCategory({
 
   return (
     <div className="flex gap-2 flex-wrap">
-      {categories.map((category) => (
+      {boardCategories.map((category) => (
         <DefaultButton
           key={category}
           variant={selectedCategory === category ? "default" : "outline"}

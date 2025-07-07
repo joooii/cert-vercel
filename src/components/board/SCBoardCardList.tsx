@@ -1,20 +1,7 @@
 import BoardCard from "@/components/board/SCBoardCard";
 import DefaultNoneResultUi from "@/components/ui/defaultNoneResultUi";
 import ShieldSVG from "@/icons/shield.svg";
-
-interface BoardContent {
-  id: number;
-  title: string;
-  content: string;
-  author: string;
-  date: string;
-  category: string;
-  views: number;
-  likes: number;
-  comments: number;
-  isNotice: boolean;
-  priority: string;
-}
+import { BoardContent } from "@/types/board";
 
 export default function BoardCardList({
   contents,

@@ -1,4 +1,6 @@
-export const mockBoardContents = [
+import { BoardContent } from "@/types/board";
+
+export const mockBoardContents: BoardContent[] = [
   {
     id: 1,
     title: "2024년 상반기 CTF 대회 참가 안내",

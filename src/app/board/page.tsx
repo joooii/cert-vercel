@@ -5,6 +5,7 @@ import BoardCategory from "@/components/board/CCBoardCategory";
 import BoardCardList from "@/components/board/SCBoardCardList";
 import BoardPagination from "@/components/board/SCBoardPagination";
 import PlusSVG from "@/icons/plus.svg";
+import { boardCategories, BoardCategoryType } from "@/types/board";
 
 const ITEMS_PER_PAGE = 4;
 
@@ -15,6 +16,9 @@ interface BoardPageProps {
     category?: string;
   }>;
 }
+const isValidCategory = (category: string): category is BoardCategoryType => {
+  return boardCategories.includes(category as BoardCategoryType);
+};
 
 export async function generateMetadata({
   searchParams,
@@ -23,9 +27,13 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { search, category } = await searchParams;
 
+  const validCategory =
+    category && isValidCategory(category) ? category : "전체";
   return {
     title: `${search ? `${search} - ` : ""}Security Board`,
-    description: `보안 게시판${category ? ` - ${category}` : ""}`,
+    description: `보안 게시판${
+      validCategory !== "전체" ? ` - ${validCategory}` : ""
+    }`,
   };
 }
 
@@ -34,7 +42,8 @@ export default async function BoardPage({ searchParams }: BoardPageProps) {
 
   const currentPage = parseInt(page || "1", 10);
   const currentSearch = search || "";
-  const currentCategory = category || "전체";
+  const currentCategory: BoardCategoryType =
+    category && isValidCategory(category) ? category : "전체";
 
   const filteredContents = mockBoardContents.filter((content) => {
     const matchedSearch =
