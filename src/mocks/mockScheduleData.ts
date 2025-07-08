@@ -7,7 +7,9 @@ export const mockScheduleData = () => {
     {
       id: 1,
       title: "보안 세미나",
-      date: new Date(currentYear, currentMonth, 5).toISOString().split("T")[0],
+      date: new Date(currentYear, currentMonth + 1, 5)
+        .toISOString()
+        .split("T")[0],
       startTime: "14:00",
       endTime: "16:00",
       location: "동아리방",
@@ -16,7 +18,9 @@ export const mockScheduleData = () => {
     {
       id: 7,
       title: "보안 세미나2",
-      date: new Date(currentYear, currentMonth, 5).toISOString().split("T")[0],
+      date: new Date(currentYear, currentMonth + 1, 5)
+        .toISOString()
+        .split("T")[0],
       startTime: "14:00",
       endTime: "16:00",
       location: "동아리방",

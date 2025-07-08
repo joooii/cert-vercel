@@ -1,29 +1,29 @@
-import { ScheduleInfo } from "@/types/schedule";
+import { ScheduleInfo, SCHEDULE_TYPES, ScheduleType } from "@/types/schedule";
 
-export const getTypeLabel = (type: string) => {
+export const getTypeLabel = (type: ScheduleType) => {
   switch (type) {
-    case "meeting":
+    case SCHEDULE_TYPES.MEETING:
       return "회의";
-    case "workshop":
+    case SCHEDULE_TYPES.WORKSHOP:
       return "정기 모임";
-    case "study":
+    case SCHEDULE_TYPES.STUDY:
       return "스터디";
-    case "conference":
+    case SCHEDULE_TYPES.CONFERENCE:
       return "컨퍼런스";
     default:
       return "기타";
   }
 };
 
-export const getTypeColor = (type: string) => {
+export const getTypeColor = (type: ScheduleType) => {
   switch (type) {
-    case "meeting":
+    case SCHEDULE_TYPES.MEETING:
       return "bg-purple-50 text-purple-600 border-purple-200";
-    case "workshop":
+    case SCHEDULE_TYPES.WORKSHOP:
       return "bg-red-50 text-red-600 border-red-200";
-    case "study":
+    case SCHEDULE_TYPES.STUDY:
       return "bg-blue-50 text-blue-600 border-blue-200";
-    case "conference":
+    case SCHEDULE_TYPES.CONFERENCE:
       return "bg-green-50 text-green-600 border-green-200";
     default:
       return "bg-gray-50 text-gray-600 border-gray-200";
@@ -46,17 +46,18 @@ export const MONTH_NAMES = [
   "10월",
   "11월",
   "12월",
-];
+] as const;
 
-export const DAY_NAMES = ["일", "월", "화", "수", "목", "금", "토"];
+export const DAY_NAMES = ["일", "월", "화", "수", "목", "금", "토"] as const;
 
 /**
  * 날짜를 YYYY-MM-DD 형태의 문자열로 변환
  */
-export const formatDateString = (date: Date): string => {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
+export const formatDateString = (date: Date | string): string => {
+  const d = typeof date === "string" ? new Date(date) : date;
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
 };
 
@@ -110,9 +111,9 @@ export const generateCalendarDays = (currentDate: Date): Date[] => {
  * 특정 날짜의 예약 정보를 찾는 함수
  */
 export const getScheduleByDate = (
-  targetDate: Date,
+  targetDate: Date | string,
   schedules: ScheduleInfo[]
-) => {
+): ScheduleInfo[] => {
   const target = formatDateString(targetDate);
   return schedules.filter((s) => s.date === target);
 };

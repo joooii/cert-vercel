@@ -13,7 +13,7 @@ interface ModalProps {
 }
 const ScheduleFormModal = ({ closeModal, schedule }: ModalProps) => {
   const {
-    dropdownOutsideRef,
+    activityDropdownRef,
     toggleDropdown,
     selectedActivity,
     isActivityDropdownOpen,
@@ -31,6 +31,8 @@ const ScheduleFormModal = ({ closeModal, schedule }: ModalProps) => {
     addSchedule,
   } = useModal();
   const { timeOptions } = useSchedule();
+
+  const ACTIVITY_LABELS = ["정기 모임", "회의", "스터디", "컨퍼런스"];
 
   useEffect(() => {
     if (schedule) {
@@ -83,7 +85,7 @@ const ScheduleFormModal = ({ closeModal, schedule }: ModalProps) => {
                 />
               </div>
 
-              <div className="relative z-10" ref={dropdownOutsideRef}>
+              <div className="relative z-10" ref={activityDropdownRef}>
                 <p className="text-sm mb-1.5">활동 유형</p>
                 <button
                   onClick={toggleDropdown}
@@ -97,17 +99,15 @@ const ScheduleFormModal = ({ closeModal, schedule }: ModalProps) => {
                 {isActivityDropdownOpen && (
                   <>
                     <div className="absolute border border-gray-300 p-1 bg-white w-full  rounded-md ">
-                      {["정기 모임", "회의", "스터디", "컨퍼런스"].map(
-                        (label) => (
-                          <button
-                            key={label}
-                            onClick={() => handleActivity(label)}
-                            className="flex h-10 w-full rounded-md px-3 py-2 text-gray-900 hover:bg-cert-red hover:text-white"
-                          >
-                            {label}
-                          </button>
-                        )
-                      )}
+                      {ACTIVITY_LABELS.map((label) => (
+                        <button
+                          key={label}
+                          onClick={() => handleActivity(label)}
+                          className="flex h-10 w-full rounded-md px-3 py-2 text-gray-900 hover:bg-cert-red hover:text-white"
+                        >
+                          {label}
+                        </button>
+                      ))}
                     </div>
                   </>
                 )}

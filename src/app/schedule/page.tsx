@@ -5,9 +5,7 @@ import SCScheduleList from "@/components/schedule/SCScheduleList";
 import Calendar from "@/components/schedule/calendar";
 
 interface SearchPageProps {
-  searchParams: {
-    date?: string;
-  };
+  searchParams: Promise<{ date?: string }>;
 }
 
 export default async function SchedulePage({ searchParams }: SearchPageProps) {
