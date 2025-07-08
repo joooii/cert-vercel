@@ -25,7 +25,7 @@ export default async function SchedulePage({ searchParams }: SearchPageProps) {
             <SCScheduleInfo selectedDate={selectedDate} />
           </div>
         </div>
-        <SCScheduleList />
+        <SCScheduleList date={(await searchParams).date} />
       </div>
     </div>
   );

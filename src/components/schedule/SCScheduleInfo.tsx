@@ -29,18 +29,18 @@ export default function SCScheduleInfo({ selectedDate }: SCScheduleInfoProps) {
     : null;
 
   return (
-    <div className="mt-6 p-6 rounded-lg border bg-white border-gray-200 shadow-sm h-min">
+    <div className="mt-6 p-6 rounded-lg border bg-white border-gray-200 shadow-sm h-min ">
       <p className="text-lg font-semibold mb-4">
         {formattedSelectedDate ? `${formattedSelectedDate} 일정` : "일정"}
       </p>
-      <div className="space-y-4">
+      <div className="space-y-4 max-h-[35rem] overflow-y-auto">
         {selectedDateSchedules.length === 0 ? (
           <p className="text-gray-500 text-center p-3">
             선택한 날짜에 일정이 없습니다.
           </p>
         ) : (
           selectedDateSchedules.map((schedule) => (
-            <div key={schedule.id} className="text-sm text-gray-700">
+            <div key={schedule.id} className="text-sm text-gray-700 ">
               <div className="relative flex items-start justify-between border p-3 rounded-lg border-gray-200 bg-gray-50">
                 <div className="flex-1">
                   <p className="text-md font-semibold text-gray-700 mb-3">

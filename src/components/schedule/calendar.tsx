@@ -145,14 +145,26 @@ export default function Calendar() {
   const router = useRouter();
   const currentParams = useSearchParams();
 
+  const handleMonthChange = useCallback(
+    (newDate: Date) => {
+      const params = new URLSearchParams(currentParams);
+
+      params.set("date", formatDateString(newDate));
+      router.replace(`?${params.toString()}`);
+      setCurrentDate(newDate);
+    },
+    [currentParams, router]
+  );
+
   const handleDateClick = useCallback(
     (date: Date) => {
       const selected = formatDateString(date);
       const params = new URLSearchParams(currentParams);
+
       if (params.get("date") !== selected) {
         params.set("date", selected);
-        router.replace(`?${params.toString()}`);
       }
+      router.replace(`?${params.toString()}`);
     },
     [currentParams, router]
   );
@@ -168,10 +180,14 @@ export default function Calendar() {
 
   const prevMonth = () => {
     setCurrentDate(new Date(year, month - 1, date));
+    const newDate = new Date(year, month - 1, date);
+    handleMonthChange(newDate);
   };
 
   const nextMonth = () => {
     setCurrentDate(new Date(year, month + 1, date));
+    const newDate = new Date(year, month + 1, date);
+    handleMonthChange(newDate);
   };
 
   return (
@@ -217,7 +233,7 @@ export default function Calendar() {
             <div
               key={index}
               onClick={() => handleDateClick(day)}
-              className={`relative min-h-[5.5rem] p-2 border border-gray-100 cursor-pointer transition-all duration-200 hover:bg-gray-100
+              className={`relative min-h-[8rem] p-2 border border-gray-100 cursor-pointer transition-all duration-200 hover:bg-gray-100
                 ${
                   isCurrentMonth
                     ? "text-gray-900 bg-white"
@@ -225,7 +241,7 @@ export default function Calendar() {
                 }
                 ${isToday ? "text-red-700 border" : ""}
                 ${
-                  schedule
+                  schedule.length > 0
                     ? "border bg-gray-300/10 border-cert-dark-red-20"
                     : "hover:bg-gray-100"
                 }
@@ -234,16 +250,22 @@ export default function Calendar() {
             >
               <div>{day.getDate()}</div>
               {schedule.length > 0 && (
-                <div
-                  className={`text-xs mt-1 text-center rounded-sm p-1 ${getTypeColor(
-                    schedule[0].type
-                  )}`}
-                >
-                  <span className="whitespace-pre-line">
-                    {schedule.length === 1
-                      ? schedule[0].title
-                      : `${schedule[0].title}\n외 ${schedule.length - 1}개`}
-                  </span>
+                <div className="mt-1 space-y-1">
+                  {schedule.slice(0, 3).map((s, idx) => (
+                    <div
+                      key={idx}
+                      className={`text-xs text-center rounded-sm p-1 ${getTypeColor(
+                        s.type
+                      )}`}
+                    >
+                      {s.title}
+                    </div>
+                  ))}
+                  {schedule.length > 3 && (
+                    <div className="text-xs text-center text-gray-500 p-0.5">
+                      + {schedule.length - 3}개 더보기
+                    </div>
+                  )}
                 </div>
               )}
             </div>

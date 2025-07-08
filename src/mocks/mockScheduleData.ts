@@ -76,5 +76,49 @@ export const mockScheduleData = () => {
       location: "보안랩 A",
       type: "workshop" as const,
     },
+    {
+      id: 8,
+      title: "포렌식 워크샵",
+      date: new Date(currentYear, currentMonth, today.getDate() + 7)
+        .toISOString()
+        .split("T")[0],
+      startTime: "13:00",
+      endTime: "17:00",
+      location: "보안랩 A",
+      type: "workshop" as const,
+    },
+    {
+      id: 9,
+      title: "포렌식 워크샵",
+      date: new Date(currentYear, currentMonth, today.getDate() + 7)
+        .toISOString()
+        .split("T")[0],
+      startTime: "13:00",
+      endTime: "17:00",
+      location: "보안랩 A",
+      type: "workshop" as const,
+    },
+    {
+      id: 10,
+      title: "포렌식 워크샵",
+      date: new Date(currentYear, currentMonth, today.getDate() + 7)
+        .toISOString()
+        .split("T")[0],
+      startTime: "13:00",
+      endTime: "17:00",
+      location: "보안랩 A",
+      type: "workshop" as const,
+    },
+    {
+      id: 11,
+      title: "포렌식 워크샵",
+      date: new Date(currentYear, currentMonth, today.getDate() + 7)
+        .toISOString()
+        .split("T")[0],
+      startTime: "13:00",
+      location: "보안랩 A",
+      endTime: "17:00",
+      type: "workshop" as const,
+    },
   ];
 };
