@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { RefObject, useEffect } from "react";
 import AngleSVG from "@/icons/angle.svg";
 import { useModal } from "@/hooks/useModal";
 import { ScheduleInfo } from "@/types/schedule";
@@ -10,8 +10,9 @@ import { getTypeLabel } from "@/utils/scheduleUtils";
 interface ModalProps {
   closeModal: () => void;
   schedule?: ScheduleInfo;
+  modalRef: RefObject<HTMLDivElement | null>;
 }
-const ScheduleFormModal = ({ closeModal, schedule }: ModalProps) => {
+const ScheduleFormModal = ({ closeModal, schedule, modalRef }: ModalProps) => {
   const {
     activityDropdownRef,
     toggleDropdown,
@@ -43,8 +44,11 @@ const ScheduleFormModal = ({ closeModal, schedule }: ModalProps) => {
   }, [schedule]);
 
   return (
-    <div className="fixed inset-0 bg-black/80 flex justify-center items-center z-20">
-      <div className="rounded-lg border bg-white border-gray-200 shadow-sm w-96 relative">
+    <div
+      ref={modalRef}
+      className="fixed inset-0 bg-black/80 flex justify-center items-center z-20 "
+    >
+      <div className="rounded-lg border bg-white border-gray-200 shadow-sm w-96 relative animate-pop-in">
         <div className="flex flex-col space-y-1.5 p-6 text-center pb-6">
           <div className="flex flex-col space-y-1.5 text-center sm:text-left">
             <button

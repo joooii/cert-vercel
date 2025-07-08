@@ -16,9 +16,11 @@ export const useModal = () => {
   const [selectedStartTime, setSelectedStartTime] = useState<string>("선택");
   const [selectedEndTime, setSelectedEndTime] = useState<string>("선택");
 
-  const dropdownOutsideRef = useRef<HTMLDivElement | null>(null);
+  const activityDropdownRef = useRef<HTMLDivElement | null>(null);
   const startTimeDropdownRef = useRef<HTMLDivElement | null>(null);
   const endTimeDropdownRef = useRef<HTMLDivElement | null>(null);
+
+  const modalOutsideRef = useRef<HTMLDivElement | null>(null);
 
   const toggleDropdown = () => {
     setIsActivityDropdownOpen((prev) => !prev);
@@ -53,8 +55,8 @@ export const useModal = () => {
 
   const handleClickDropdownOutside = (e: MouseEvent) => {
     if (
-      dropdownOutsideRef.current &&
-      !dropdownOutsideRef.current.contains(e.target as Node)
+      activityDropdownRef.current &&
+      !activityDropdownRef.current.contains(e.target as Node)
     ) {
       setIsActivityDropdownOpen(false);
     }
@@ -84,8 +86,29 @@ export const useModal = () => {
       window.removeEventListener("click", handleClickDropdownOutside);
   }, [isActivityDropdownOpen, isStartTimeDropdownOpen, isEndTimeDropdownOpen]);
 
+  useEffect(() => {
+    const clickedModalOutside = (e: MouseEvent) => {
+      if (modalOutsideRef.current && e.target === modalOutsideRef.current) {
+        setIsOpenModal(false);
+      }
+    };
+    const handleKeydown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setIsOpenModal(false);
+      }
+    };
+    if (isOpenModal) {
+      document.addEventListener("mousedown", clickedModalOutside);
+      document.addEventListener("keydown", handleKeydown);
+    }
+    return () => {
+      document.removeEventListener("mousedown", clickedModalOutside);
+      document.removeEventListener("keydown", handleKeydown);
+    };
+  }, [isOpenModal]);
+
   return {
-    dropdownOutsideRef,
+    activityDropdownRef,
     toggleDropdown,
     selectedActivity,
     isActivityDropdownOpen,
@@ -103,5 +126,6 @@ export const useModal = () => {
     addSchedule,
     isOpenModal,
     setIsOpenModal,
+    modalOutsideRef,
   };
 };
