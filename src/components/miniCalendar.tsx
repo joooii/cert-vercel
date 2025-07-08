@@ -1,28 +1,32 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import AngleSVG from "@/icons/angle.svg";
 import { DAY_NAMES, MONTH_NAMES } from "@/utils/scheduleUtils";
 
 const MiniCalendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
 
-  const today = new Date();
+  const today = useMemo(() => new Date(), []);
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
 
-  const firstDay = new Date(year, month, 1);
-  const lastDay = new Date(year, month + 1, 0);
-  const startDate = new Date(firstDay);
-  startDate.setDate(startDate.getDate() - firstDay.getDay());
+  const days = useMemo(() => {
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
+    const startDate = new Date(firstDay);
+    startDate.setDate(startDate.getDate() - firstDay.getDay());
 
-  const days = [];
-  const current = new Date(startDate);
+    const daysArray = [];
+    const current = new Date(startDate);
 
-  while (current <= lastDay || days.length % 7 !== 0) {
-    days.push(new Date(current));
-    current.setDate(current.getDate() + 1);
-  }
+    while (current <= lastDay || daysArray.length % 7 !== 0) {
+      daysArray.push(new Date(current));
+      current.setDate(current.getDate() + 1);
+    }
+
+    return daysArray;
+  }, [year, month]);
 
   // 동적 이벤트 생성 - 현재 달 기준
   const events = {
