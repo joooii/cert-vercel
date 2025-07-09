@@ -1,50 +1,38 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import AngleSVG from "@/icons/angle.svg";
+import { DAY_NAMES, MONTH_NAMES } from "@/utils/scheduleUtils";
 
-const Calendar = () => {
+const MiniCalendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
 
-  const today = new Date();
+  const today = useMemo(() => new Date(), []);
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
 
-  const firstDay = new Date(year, month, 1);
-  const lastDay = new Date(year, month + 1, 0);
-  const startDate = new Date(firstDay);
-  startDate.setDate(startDate.getDate() - firstDay.getDay());
+  const days = useMemo(() => {
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
+    const startDate = new Date(firstDay);
+    startDate.setDate(startDate.getDate() - firstDay.getDay());
 
-  const days = [];
-  const current = new Date(startDate);
+    const daysArray = [];
+    const current = new Date(startDate);
 
-  while (current <= lastDay || days.length % 7 !== 0) {
-    days.push(new Date(current));
-    current.setDate(current.getDate() + 1);
-  }
+    while (current <= lastDay || daysArray.length % 7 !== 0) {
+      daysArray.push(new Date(current));
+      current.setDate(current.getDate() + 1);
+    }
+
+    return daysArray;
+  }, [year, month]);
 
   // 동적 이벤트 생성 - 현재 달 기준
   const events = {
     [new Date(year, month, 5).toDateString()]: "보안 세미나",
     [new Date(year, month, 12).toDateString()]: "CTF 대회",
   };
-
-  const monthNames = [
-    "1월",
-    "2월",
-    "3월",
-    "4월",
-    "5월",
-    "6월",
-    "7월",
-    "8월",
-    "9월",
-    "10월",
-    "11월",
-    "12월",
-  ];
-
-  const dayNames = ["일", "월", "화", "수", "목", "금", "토"];
 
   const prevMonth = () => {
     setCurrentDate(new Date(year, month - 1, 1));
@@ -64,7 +52,7 @@ const Calendar = () => {
           <AngleSVG className="rotate-90" width={13} />
         </button>
         <h3 className="text-lg font-semibold text-gray-900">
-          {year}년 {monthNames[month]}
+          {year}년 {MONTH_NAMES[month]}
         </h3>
         <button
           onClick={nextMonth}
@@ -75,7 +63,7 @@ const Calendar = () => {
       </div>
 
       <div className="grid grid-cols-7 gap-1 mb-2">
-        {dayNames.map((day) => (
+        {DAY_NAMES.map((day) => (
           <div
             key={day}
             className="text-center text-xs font-medium text-gray-600 p-2"
@@ -118,4 +106,4 @@ const Calendar = () => {
     </div>
   );
 };
-export default Calendar;
+export default MiniCalendar;
