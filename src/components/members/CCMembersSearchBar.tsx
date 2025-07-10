@@ -6,11 +6,13 @@ import DefaultSearchBar from "@/components/ui/defaultSearchBar";
 import SearchSVG from "@/icons/search.svg";
 
 const DEBOUNCE_DELAY = 200;
-interface BoardSearchBarProps {
+interface MembersSearchBarProps {
   currentSearch: string;
 }
 
-export default function BoardSearchBar({ currentSearch }: BoardSearchBarProps) {
+export default function MembersSearchBar({
+  currentSearch,
+}: MembersSearchBarProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [searchInput, setSearchInput] = useState<string>(currentSearch);
@@ -20,7 +22,6 @@ export default function BoardSearchBar({ currentSearch }: BoardSearchBarProps) {
     setSearchInput(currentSearch);
   }, [currentSearch]);
 
-  // 디바운싱 처리
   useEffect(() => {
     if (prevSearchInput.current === searchInput) return;
     prevSearchInput.current = searchInput;
@@ -33,10 +34,9 @@ export default function BoardSearchBar({ currentSearch }: BoardSearchBarProps) {
       } else {
         params.delete("search");
       }
-      params.delete("page"); // 검색 시 첫 페이지로
 
       const queryString = params.toString();
-      const newUrl = queryString ? `/board?${queryString}` : "/board";
+      const newUrl = queryString ? `/members?${queryString}` : "/members";
       router.push(newUrl);
     }, DEBOUNCE_DELAY);
 
@@ -47,7 +47,7 @@ export default function BoardSearchBar({ currentSearch }: BoardSearchBarProps) {
     <div className="relative flex-1">
       <SearchSVG className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
       <DefaultSearchBar
-        placeholder="제목,내용,작성자로 검색하세요..."
+        placeholder="이름,전공,기술 스택으로 검색하세요..."
         value={searchInput}
         onChange={(e) => setSearchInput(e.target.value)}
         className="pl-10"

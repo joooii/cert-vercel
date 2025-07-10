@@ -6,7 +6,7 @@ import ThumbsUpSVG from "@/icons/thumbs-up.svg";
 import EyeSVG from "@/icons/eye.svg";
 import DefaultBadge from "@/components/ui/defaultBadge";
 import { BoardCategoryType, BoardPriorityType } from "@/types/board";
-import { BoardContent } from "@/types/board";
+import { BoardDataType } from "@/types/board";
 
 const getCategoryColor = (category: BoardCategoryType) => {
   switch (category) {
@@ -43,7 +43,7 @@ export default function BoardCard({
   views,
   likes,
   isNotice,
-}: BoardContent) {
+}: BoardDataType) {
   return (
     <Link href={`/board/${id}`}>
       <div

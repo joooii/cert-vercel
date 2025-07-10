@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { mockBoardContents } from "@/mocks/mockBoardContents";
+import { mockBoardData } from "@/mocks/mockBoardData";
 import BoardSearchBar from "@/components/board/CCBoardSearchBar";
 import BoardCategory from "@/components/board/CCBoardCategory";
 import BoardCardList from "@/components/board/SCBoardCardList";
@@ -45,7 +45,7 @@ export default async function BoardPage({ searchParams }: BoardPageProps) {
   const currentCategory: BoardCategoryType =
     category && isValidCategory(category) ? category : "전체";
 
-  const filteredContents = mockBoardContents.filter((content) => {
+  const filteredContents = mockBoardData.filter((content) => {
     const matchedSearch =
       content.title.toLowerCase().includes(currentSearch.toLowerCase()) ||
       content.author.toLowerCase().includes(currentSearch.toLowerCase()) ||
@@ -63,7 +63,7 @@ export default async function BoardPage({ searchParams }: BoardPageProps) {
   return (
     <div className="space-y-6">
       <div className="mb-6 flex flex-col sm:flex-row gap-4">
-        <BoardSearchBar initialValue={currentSearch} />
+        <BoardSearchBar currentSearch={currentSearch} />
         <BoardCategory selectedCategory={currentCategory} />
         <button className="inline-flex items-center gap-2 px-4 py-2 bg-cert-red text-white rounded-md hover:bg-cert-red/80">
           <PlusSVG className="w-4 h-4" />새 글 작성
