@@ -4,12 +4,8 @@ import type {
   SemesterType,
   TechniqueType,
   StatusType,
+  StudySearchParams,
 } from "@/types/study";
-
-// 타입 가드 함수들 (영어 값 체크)
-export function isSemesterType(value: string): value is SemesterType {
-  return value === "all" || value === "2025-2";
-}
 
 export function isTechniqueType(value: string): value is TechniqueType {
   const validTechniques: TechniqueType[] = [
@@ -172,3 +168,49 @@ export const calculateParticipationRate = (
   if (max === 0) return 0;
   return Math.round((current / max) * 100);
 };
+
+export function parseSearchParams(
+  searchParams?: StudySearchParams | null
+): CurrentFilters {
+  if (!searchParams) {
+    return {
+      search: "",
+      semester: "all" as SemesterType,
+      technique: "all" as TechniqueType,
+      status: "all" as StatusType,
+      page: 1,
+    };
+  }
+
+  return {
+    search: searchParams.search || "",
+    semester: (searchParams.semester as SemesterType) || "all",
+    technique: (searchParams.technique as TechniqueType) || "all",
+    status: (searchParams.status as StatusType) || "all",
+    page: parseInt(searchParams.page || "1", 10),
+  };
+}
+
+/**
+ * 페이지 URL 생성 유틸리티 함수
+ */
+export function createPageUrl(
+  page: number,
+  searchParams: StudySearchParams
+): string {
+  const params = new URLSearchParams();
+  const safeSearchParams = searchParams || {};
+  Object.entries(safeSearchParams).forEach(([key, value]) => {
+    if (value && key !== "page") {
+      params.set(key, value);
+    }
+  });
+
+  // 페이지 파라미터 설정
+  if (page > 1) {
+    params.set("page", page.toString());
+  }
+
+  const queryString = params.toString();
+  return queryString ? `?${queryString}` : "";
+}
