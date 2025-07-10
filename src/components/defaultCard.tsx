@@ -1,6 +1,6 @@
 interface CardProps {
   title: string;
-  text: string;
+  text?: string;
   svgComponent: React.ReactNode;
 }
 

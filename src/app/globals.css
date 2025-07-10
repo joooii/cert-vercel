@@ -74,6 +74,7 @@
   --animation-slide-in: slide-in 0.3s ease-out;
   --animation-glow: glow 2s ease-in-out infinite;
   --animation-pulse-glow: pulse-glow 2s ease-in-out infinite;
+  --animation-pop-in: pop-in 0.2s ease-out;
 
   /* 배경 이미지 */
   --background-gradient-radial: radial-gradient(var(--tw-gradient-stops));
@@ -165,6 +166,17 @@
   }
 }
 
+@keyframes pop-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 /* 기본 스타일 */
 /* * {
   border-color: hsl(var(--border));
@@ -199,6 +211,10 @@ body {
 
   .animate-pulse-glow {
     animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  .animate-pop-in {
+    animation: pop-in 0.3s ease-out;
   }
 
   /* 배경 이미지 유틸리티 */

@@ -1,11 +1,84 @@
-const BoardPage = () => {
-  return (
-    <div className="my-[20%] text-center">
-      <div className="text-6xl md:text-8xl font-bold mb-8 animate-fade-in">
-        <span className="text-gray-900 drop-shadow-lg">Board</span>
-      </div>
-    </div>
-  );
+import { Metadata } from "next";
+import { mockBoardContents } from "@/mocks/mockBoardContents";
+import BoardSearchBar from "@/components/board/CCBoardSearchBar";
+import BoardCategory from "@/components/board/CCBoardCategory";
+import BoardCardList from "@/components/board/SCBoardCardList";
+import BoardPagination from "@/components/board/SCBoardPagination";
+import PlusSVG from "@/icons/plus.svg";
+import { boardCategories, BoardCategoryType } from "@/types/board";
+
+const ITEMS_PER_PAGE = 4;
+
+interface BoardPageProps {
+  searchParams: Promise<{
+    page?: string;
+    search?: string;
+    category?: string;
+  }>;
+}
+const isValidCategory = (category: string): category is BoardCategoryType => {
+  return boardCategories.includes(category as BoardCategoryType);
 };
 
-export default BoardPage;
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<{ search?: string; category?: string }>;
+}): Promise<Metadata> {
+  const { search, category } = await searchParams;
+
+  const validCategory =
+    category && isValidCategory(category) ? category : "전체";
+  return {
+    title: `${search ? `${search} - ` : ""}Security Board`,
+    description: `보안 게시판${
+      validCategory !== "전체" ? ` - ${validCategory}` : ""
+    }`,
+  };
+}
+
+export default async function BoardPage({ searchParams }: BoardPageProps) {
+  const { page, search, category } = await searchParams;
+
+  const currentPage = parseInt(page || "1", 10);
+  const currentSearch = search || "";
+  const currentCategory: BoardCategoryType =
+    category && isValidCategory(category) ? category : "전체";
+
+  const filteredContents = mockBoardContents.filter((content) => {
+    const matchedSearch =
+      content.title.toLowerCase().includes(currentSearch.toLowerCase()) ||
+      content.author.toLowerCase().includes(currentSearch.toLowerCase()) ||
+      content.content.toLowerCase().includes(currentSearch.toLowerCase());
+    const matchedCategory =
+      currentCategory === "전체" || content.category === currentCategory;
+    return matchedSearch && matchedCategory;
+  });
+
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+
+  const paginatedContents = filteredContents.slice(startIndex, endIndex);
+
+  return (
+    <div className="space-y-6">
+      <div className="mb-6 flex flex-col sm:flex-row gap-4">
+        <BoardSearchBar initialValue={currentSearch} />
+        <BoardCategory selectedCategory={currentCategory} />
+        <button className="inline-flex items-center gap-2 px-4 py-2 bg-cert-red text-white rounded-md hover:bg-cert-red/80">
+          <PlusSVG className="w-4 h-4" />새 글 작성
+        </button>
+      </div>
+
+      <BoardCardList contents={paginatedContents} />
+
+      <BoardPagination
+        currentPage={currentPage}
+        totalItems={filteredContents.length}
+        itemsPerPage={ITEMS_PER_PAGE}
+        currentSearch={currentSearch}
+        currentCategory={currentCategory}
+      />
+    </div>
+  );
+}
