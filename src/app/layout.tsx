@@ -15,11 +15,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="overscroll-none">
+      <body className="overscroll-none flex flex-col min-h-screen">
         <header>
           <NavigationBar />
         </header>
-        <main>{children}</main>
+        <main className="flex-1">{children}</main>
         <footer>
           <Footer />
         </footer>
