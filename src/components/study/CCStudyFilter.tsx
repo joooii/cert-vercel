@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState, useTransition, useRef, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Search, ChevronDown, Plus } from "lucide-react";
 import type {
@@ -24,6 +24,9 @@ export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
 
+  // 검색 디바운스를 위한 ref
+  const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
   // 로컬 상태
   const [showSemesterDropdown, setShowSemesterDropdown] =
     useState<boolean>(false);
@@ -32,34 +35,50 @@ export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
   const [showStatusDropdown, setShowStatusDropdown] = useState<boolean>(false);
 
   // URL 파라미터 업데이트 함수 (영어 값으로 저장)
-  const updateFilter = (key: FilterKey, value: string): void => {
-    const params = new URLSearchParams(searchParams);
+  const updateFilter = useCallback(
+    (key: FilterKey, value: string): void => {
+      const params = new URLSearchParams(searchParams);
 
-    if (value === "all" || value === "") {
-      params.delete(key);
-    } else {
-      params.set(key, value);
-    }
+      if (value === "all" || value === "") {
+        params.delete(key);
+      } else {
+        params.set(key, value);
+      }
 
-    params.delete("page");
+      // 필터 변경 시 페이지를 1로 리셋
+      params.delete("page");
 
-    startTransition(() => {
-      router.push(`/study?${params.toString()}`);
-    });
-  };
+      startTransition(() => {
+        router.push(`/study?${params.toString()}`);
+      });
+    },
+    [searchParams, router]
+  );
 
-  // 검색 디바운스 처리
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const searchTerm: string = e.target.value;
+  // 검색 디바운스 처리 (개선된 버전)
+  const handleSearchChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>): void => {
+      const searchTerm: string = e.target.value;
 
-    if (window.searchTimeout) {
-      clearTimeout(window.searchTimeout);
-    }
+      // 이전 타이머 클리어
+      if (searchTimeoutRef.current) {
+        clearTimeout(searchTimeoutRef.current);
+      }
 
-    window.searchTimeout = window.setTimeout(() => {
-      updateFilter("search", searchTerm);
-    }, 300);
-  };
+      // 새 타이머 설정
+      searchTimeoutRef.current = setTimeout(() => {
+        updateFilter("search", searchTerm);
+      }, 300);
+    },
+    [updateFilter]
+  );
+
+  // 드롭다운 닫기 함수
+  const closeAllDropdowns = useCallback(() => {
+    setShowSemesterDropdown(false);
+    setShowTechniqueDropdown(false);
+    setShowStatusDropdown(false);
+  }, []);
 
   return (
     <div className="mb-4">
@@ -109,7 +128,7 @@ export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
                   className="w-full px-4 py-2 text-left hover:bg-gray-50 text-gray-900 first:rounded-t-lg last:rounded-b-lg text-sm"
                   onClick={() => {
                     updateFilter("semester", option);
-                    setShowSemesterDropdown(false);
+                    closeAllDropdowns();
                   }}
                 >
                   {SEMESTER_LABELS[option]}
@@ -144,7 +163,7 @@ export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
                   className="w-full px-4 py-2 text-left hover:bg-gray-50 text-gray-900 first:rounded-t-lg last:rounded-b-lg text-sm"
                   onClick={() => {
                     updateFilter("technique", option);
-                    setShowTechniqueDropdown(false);
+                    closeAllDropdowns();
                   }}
                 >
                   {TECHNIQUE_LABELS[option]}
@@ -179,7 +198,7 @@ export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
                   className="w-full px-4 py-2 text-left hover:bg-gray-50 text-gray-900 first:rounded-t-lg last:rounded-b-lg text-sm"
                   onClick={() => {
                     updateFilter("status", option);
-                    setShowStatusDropdown(false);
+                    closeAllDropdowns();
                   }}
                 >
                   {STATUS_LABELS[option]}

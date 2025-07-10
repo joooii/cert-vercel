@@ -3,26 +3,15 @@ import SCStudyDescription from "@/components/study/SCStudyDescription";
 import CCStudyFilter from "@/components/study/CCStudyFilter";
 import SCStudyContent from "@/components/study/SCStudyContent";
 import SCStudySkeleton from "@/components/study/SCStudySkeleton";
-import type {
-  StudyPageProps,
-  CurrentFilters,
-  SemesterType,
-  TechniqueType,
-  StatusType,
-} from "@/types/study";
+import type { StudyPageProps, CurrentFilters } from "@/types/study";
+import { parseSearchParams } from "@/utils/study/studyHelper";
 
 export default async function StudyPage({ searchParams }: StudyPageProps) {
   // 🚀 Next.js 15: searchParams를 await 해서 사용
   const resolvedSearchParams = await searchParams;
 
-  // URL에서 필터 파라미터 추출 (타입 안전성 확보)
-  const filters: CurrentFilters = {
-    search: resolvedSearchParams.search || "",
-    semester: (resolvedSearchParams.semester as SemesterType) || "all",
-    technique: (resolvedSearchParams.technique as TechniqueType) || "all",
-    status: (resolvedSearchParams.status as StatusType) || "all",
-    page: parseInt(resolvedSearchParams.page || "1", 10),
-  };
+  // URL에서 필터 파라미터 추출 (안전한 파싱 사용)
+  const filters: CurrentFilters = parseSearchParams(resolvedSearchParams);
 
   return (
     <div className="min-h-screen bg-gray-50 pt-20">
@@ -35,7 +24,8 @@ export default async function StudyPage({ searchParams }: StudyPageProps) {
 
         {/* 콘텐츠 - Suspense로 감싼 카드 그리드 */}
         <Suspense fallback={<SCStudySkeleton />}>
-          <SCStudyContent currentFilters={filters} />
+          {/* SCStudyContent에 Promise searchParams 전달 */}
+          <SCStudyContent searchParams={searchParams} />
         </Suspense>
       </div>
     </div>
