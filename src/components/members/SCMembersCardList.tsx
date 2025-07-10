@@ -11,7 +11,7 @@ export default function MembersCardList({ members }: MembersCardListProps) {
   if (members.length === 0) {
     return (
       <DefaultNoneResultUi
-        icon={<MembersSVG />}
+        icon={<MembersSVG className="text-cert-dark-red" />}
         title="검색 결과가 없습니다"
         description="다른 검색어나 필터를 시도해보세요."
       />
