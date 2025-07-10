@@ -9,7 +9,7 @@ export const membersRoleCategories = [
 export type MembersRoleCategoryType = (typeof membersRoleCategories)[number];
 
 // 더 많은 카테고리 추가가능
-export const membersGradeCategories = [1, 2, 3, 4] as const;
+export const membersGradeCategories = ["1", "2", "3", "4"] as const;
 export type MembersGradeCategoryType = (typeof membersGradeCategories)[number];
 
 export interface MembersDataType {

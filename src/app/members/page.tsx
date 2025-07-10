@@ -3,6 +3,12 @@ import MembersSearchBar from "@/components/members/CCMembersSearchBar";
 import MembersGradeDropdown from "@/components/members/CCMembersGradeDown";
 import MembersRoleDropdown from "@/components/members/CCMembersRoleDropDown";
 import { mockMembersData } from "@/mocks/mockMembersData";
+import {
+  MembersRoleCategoryType,
+  MembersGradeCategoryType,
+  membersGradeCategories,
+  membersRoleCategories,
+} from "@/types/members";
 
 interface MembersPageProps {
   searchParams: Promise<{
@@ -12,12 +18,21 @@ interface MembersPageProps {
   }>;
 }
 
+function isValidRole(role: string): role is MembersRoleCategoryType {
+  return membersRoleCategories.includes(role as MembersRoleCategoryType);
+}
+function isValidGrade(grade: string): grade is MembersGradeCategoryType {
+  return membersGradeCategories
+    .toString()
+    .includes(grade as MembersGradeCategoryType);
+}
+
 export default async function MembersPage({ searchParams }: MembersPageProps) {
   const { role, search, grade } = await searchParams;
 
-  const currentRole = role || "";
+  const currentRole = role && isValidRole(role) ? role : "전체";
   const currentSearch = search || "";
-  const currentGrade = grade || "";
+  const currentGrade = grade && isValidGrade(grade) ? grade : "전체";
 
   const filteredMembers = mockMembersData.filter((member) => {
     const matchedSearch =
@@ -29,8 +44,6 @@ export default async function MembersPage({ searchParams }: MembersPageProps) {
       );
 
     const matchedRole = (() => {
-      if (!currentRole || currentRole === "") return true;
-
       switch (currentRole) {
         case "회장":
           return member.role === "회장";
@@ -48,7 +61,7 @@ export default async function MembersPage({ searchParams }: MembersPageProps) {
     })();
 
     const matchedGrade =
-      currentGrade === "" || member.grade.toString() === currentGrade;
+      currentGrade === "전체" || member.grade === currentGrade;
 
     return matchedSearch && matchedRole && matchedGrade;
   });

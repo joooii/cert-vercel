@@ -10,23 +10,23 @@ interface DropdownOption {
   label: string;
 }
 
-interface MembersDropdownProps {
-  value: string;
-  onValueChange: (value: string) => void;
+interface MembersDropdownProps<T> {
+  value: T;
+  onValueChange: (value: T) => void;
   options: DropdownOption[];
   placeholder: string;
   className?: string;
   disabled?: boolean;
 }
 
-export default function MembersDropdown({
+export default function MembersDropdow<T>({
   value,
   onValueChange,
   options,
   placeholder,
   className,
   disabled = false,
-}: MembersDropdownProps) {
+}: MembersDropdownProps<T>) {
   const [isOpen, setIsOpen] = React.useState(false);
 
   const selectedOption = options.find((option) => option.value === value);
@@ -57,11 +57,11 @@ export default function MembersDropdown({
           <div className="absolute top-full left-0 right-0 z-50 mt-1 max-h-60 overflow-auto rounded-md border border-gray-200 bg-white shadow-lg">
             {options.map((option) => (
               <button
-                key={option.value}
+                key={option.value as string}
                 type="button"
                 className="w-full px-3 py-2 text-left text-sm text-gray-900 hover:bg-gray-50 focus:bg-gray-50 focus:outline-none"
                 onClick={() => {
-                  onValueChange(option.value);
+                  onValueChange(option.value as T);
                   setIsOpen(false);
                 }}
               >

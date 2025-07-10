@@ -12,15 +12,15 @@ export default function MembersCard({ members }: MembersCardProps) {
   const getRoleStyle = (role: MembersRoleCategoryType) => {
     switch (role) {
       case "회장":
-        return "bg-cert-red/10 text-cert-red border-cert-red/20";
+        return "bg-cert-red/20 text-cert-dark-red border-cert-red";
       case "부회장":
-        return "bg-orange-50 text-orange-600 border-orange-200";
+        return "bg-orange-100 text-orange-800 border-orange-600";
       case "임원진":
-        return "bg-blue-50 text-blue-600 border-blue-200";
+        return "bg-blue-100 text-blue-800 border-blue-600";
       case "스터디장":
-        return "bg-purple-50 text-purple-600 border-purple-200";
+        return "bg-purple-100 text-purple-800 border-purple-600";
       default:
-        return "bg-gray-50 text-gray-600 border-gray-200";
+        return "bg-gray-100 text-gray-800 border-gray-600";
     }
   };
 

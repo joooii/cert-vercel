@@ -2,7 +2,10 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useTransition } from "react";
-import { membersRoleCategories } from "@/types/members";
+import {
+  membersRoleCategories,
+  MembersRoleCategoryType,
+} from "@/types/members";
 import MembersDropdown from "@/components/members/CCMembersDropdown";
 
 const roleOptions = [
@@ -20,7 +23,7 @@ export default function MembersRoleDropdown() {
 
   const currentRole = searchParams.get("role") || "";
 
-  const handleRoleChange = (value: string) => {
+  const handleRoleChange = (value: MembersRoleCategoryType) => {
     const params = new URLSearchParams(searchParams);
     if (value) {
       params.set("role", value);
@@ -35,7 +38,7 @@ export default function MembersRoleDropdown() {
 
   return (
     <MembersDropdown
-      value={currentRole}
+      value={currentRole as MembersRoleCategoryType}
       onValueChange={handleRoleChange}
       options={roleOptions}
       placeholder="직책"

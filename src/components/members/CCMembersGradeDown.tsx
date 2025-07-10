@@ -4,6 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useTransition } from "react";
 import { membersGradeCategories } from "@/types/members";
 import MembersDropdown from "@/components/members/CCMembersDropdown";
+import { MembersGradeCategoryType } from "@/types/members";
 
 const gradeOptions = [
   { value: "", label: "전체" },
@@ -20,7 +21,7 @@ export default function MembersGradeDropdown() {
 
   const currentGrade = searchParams.get("grade") || "";
 
-  const handleGradeChange = (value: string) => {
+  const handleGradeChange = (value: MembersGradeCategoryType) => {
     const params = new URLSearchParams(searchParams);
     if (value) {
       params.set("grade", value);
@@ -35,7 +36,7 @@ export default function MembersGradeDropdown() {
 
   return (
     <MembersDropdown
-      value={currentGrade}
+      value={currentGrade as MembersGradeCategoryType}
       onValueChange={handleGradeChange}
       options={gradeOptions}
       placeholder="학년"
