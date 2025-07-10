@@ -1,3 +1,5 @@
+"server-only";
+
 import type { StudyMaterial, CurrentFilters } from "@/types/study";
 import { STATUS_LABELS, AUTHOR_STATUS_LABELS } from "@/types/study";
 import CCStudyPagination from "@/components/study/CCStudyPagination";

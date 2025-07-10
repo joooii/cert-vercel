@@ -1,4 +1,4 @@
-"use server";
+"server-only";
 
 import { resetStudyFilters } from "@/actions/study/StudySearchServerAction";
 
