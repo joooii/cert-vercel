@@ -9,7 +9,7 @@ const navBarList = [
   { name: "Schedule", href: "/schedule" },
   { name: "Study", href: "/study" },
   { name: "Blog", href: "/blog" },
-  { name: "People", href: "/people" },
+  { name: "Members", href: "/members" },
   { name: "User", href: "/user" },
 ];
 const NavigationBar = () => {
