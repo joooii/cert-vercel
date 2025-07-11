@@ -6,7 +6,7 @@ import BoardCardList from "@/components/board/SCBoardCardList";
 import BoardPagination from "@/components/board/SCBoardPagination";
 import PlusSVG from "@/icons/plus.svg";
 import { boardCategories, BoardCategoryType } from "@/types/board";
-
+import { filterBoardData } from "@/utils/boardUtils";
 const ITEMS_PER_PAGE = 4;
 
 interface BoardPageProps {
@@ -45,15 +45,11 @@ export default async function BoardPage({ searchParams }: BoardPageProps) {
   const currentCategory: BoardCategoryType =
     category && isValidCategory(category) ? category : "전체";
 
-  const filteredContents = mockBoardData.filter((content) => {
-    const matchedSearch =
-      content.title.toLowerCase().includes(currentSearch.toLowerCase()) ||
-      content.author.toLowerCase().includes(currentSearch.toLowerCase()) ||
-      content.content.toLowerCase().includes(currentSearch.toLowerCase());
-    const matchedCategory =
-      currentCategory === "전체" || content.category === currentCategory;
-    return matchedSearch && matchedCategory;
-  });
+  const filteredContents = filterBoardData(
+    mockBoardData,
+    currentSearch,
+    currentCategory
+  );
 
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;

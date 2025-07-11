@@ -6,7 +6,7 @@ import {
   MembersDataType,
 } from "@/types/members";
 
-export const getRoleBadgeStyle = (role: MembersRoleCategoryType) => {
+export const getRoleBadgeStyle = (role: MembersRoleCategoryType | "전체") => {
   switch (role) {
     case "회장":
       return "bg-cert-red/20 text-cert-dark-red border-cert-red";
@@ -21,7 +21,7 @@ export const getRoleBadgeStyle = (role: MembersRoleCategoryType) => {
   }
 };
 
-export const getRoleBorderStyle = (role: MembersRoleCategoryType) => {
+export const getRoleBorderStyle = (role: MembersRoleCategoryType | "전체") => {
   switch (role) {
     case "회장":
       return "hover:border-cert-red group-hover:border-cert-red";
@@ -78,7 +78,7 @@ const filterBySearch = (member: MembersDataType, search: string) => {
 // 역할 필터
 const filterByRole = (
   member: MembersDataType,
-  role: MembersRoleCategoryType
+  role: MembersRoleCategoryType | "전체"
 ) => {
   switch (role) {
     case "회장":
@@ -97,7 +97,10 @@ const filterByRole = (
 };
 
 // 학년 필터
-const filterByGrade = (member: MembersDataType, grade: string) => {
+const filterByGrade = (
+  member: MembersDataType,
+  grade: MembersGradeCategoryType | "전체"
+) => {
   return grade === "전체" || member.grade === grade;
 };
 
@@ -105,8 +108,8 @@ const filterByGrade = (member: MembersDataType, grade: string) => {
 export const filterMembers = (
   members: MembersDataType[],
   search: string,
-  role: MembersRoleCategoryType,
-  grade: MembersGradeCategoryType
+  role: MembersRoleCategoryType | "전체",
+  grade: MembersGradeCategoryType | "전체"
 ) => {
   return members.filter(
     (member) =>
