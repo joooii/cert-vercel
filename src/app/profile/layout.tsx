@@ -1,5 +1,5 @@
 import PageLayout from "@/layouts/pageLayout";
-import ShieldSVG from "@/icons/shield.svg";
+import ShieldSVG from "/public/icons/shield.svg";
 
 export default function ProfileLayout({
   children,

@@ -1,5 +1,5 @@
 import PageLayout from "@/layouts/pageLayout";
-import ScheduleSVG from "@/icons/schedule.svg";
+import ScheduleSVG from "/public/icons/schedule.svg";
 
 export default function ScheduleLayout({
   children,

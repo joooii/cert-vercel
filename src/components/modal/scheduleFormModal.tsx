@@ -1,7 +1,7 @@
 "use client";
 
 import { RefObject, useEffect } from "react";
-import AngleSVG from "@/icons/angle.svg";
+import AngleSVG from "/public/icons/angle.svg";
 import { useModal } from "@/hooks/useModal";
 import { ScheduleInfo } from "@/types/schedule";
 import { useSchedule } from "@/hooks/useSchedule";

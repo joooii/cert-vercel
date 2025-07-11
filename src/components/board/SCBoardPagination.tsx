@@ -1,5 +1,5 @@
 import Link from "next/link";
-import AngleSVG from "@/icons/angle.svg";
+import AngleSVG from "/public/icons/angle.svg";
 import { getPageNumbers } from "@/utils/paginationUtils";
 import { BoardCategoryType } from "@/types/board";
 

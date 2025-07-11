@@ -1,6 +1,6 @@
 "use client";
 
-import AddSVG from "@/icons/add.svg";
+import AddSVG from "/public/icons/add.svg";
 import { useModal } from "@/hooks/useModal";
 import ScheduleFormModal from "@/components/modal/scheduleFormModal";
 
