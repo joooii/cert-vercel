@@ -1,5 +1,6 @@
 import DefaultBadge from "@/components/ui/defaultBadge";
-import { MembersDataType, MembersRoleCategoryType } from "@/types/members";
+import { MembersDataType } from "@/types/members";
+import { getRoleBadgeStyle, getRoleBorderStyle } from "@/utils/membersUtils";
 import Image from "next/image";
 import GithubSVG from "@/icons/github.svg";
 import EmailSVG from "@/icons/email.svg";
@@ -9,36 +10,6 @@ interface MembersCardProps {
 }
 
 export default function MembersCard({ members }: MembersCardProps) {
-  const getRoleBadgeStyle = (role: MembersRoleCategoryType) => {
-    switch (role) {
-      case "회장":
-        return "bg-cert-red/20 text-cert-dark-red border-cert-red";
-      case "부회장":
-        return "bg-orange-100 text-orange-800 border-orange-600";
-      case "임원진":
-        return "bg-blue-100 text-blue-800 border-blue-600";
-      case "스터디장":
-        return "bg-purple-100 text-purple-800 border-purple-600";
-      default:
-        return "bg-gray-100 text-gray-800 border-gray-600";
-    }
-  };
-
-  const getRoleBorderStyle = (role: MembersRoleCategoryType) => {
-    switch (role) {
-      case "회장":
-        return "hover:border-cert-red group-hover:border-cert-red";
-      case "부회장":
-        return "hover:border-orange-600 group-hover:border-orange-600";
-      case "임원진":
-        return "hover:border-blue-600 group-hover:border-blue-600";
-      case "스터디장":
-        return "hover:border-purple-600 group-hover:border-purple-600";
-      default:
-        return "hover:border-gray-600 group-hover:border-gray-600";
-    }
-  };
-
   return (
     <div
       className={`bg-white border border-gray-200 rounded-lg p-6 transition-all duration-300 group transform hover:-translate-y-2 hover:shadow-2xl hover:shadow-gray-300/50 shadow-sm ${getRoleBorderStyle(

@@ -6,6 +6,7 @@ import DefaultSearchBar from "@/components/ui/defaultSearchBar";
 import SearchSVG from "@/icons/search.svg";
 
 const DEBOUNCE_DELAY = 200;
+
 interface MembersSearchBarProps {
   currentSearch: string;
 }

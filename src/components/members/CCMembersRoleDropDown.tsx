@@ -2,19 +2,9 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useTransition } from "react";
-import {
-  membersRoleCategories,
-  MembersRoleCategoryType,
-} from "@/types/members";
+import { MembersRoleCategoryType } from "@/types/members";
+import { roleOptions } from "@/utils/membersUtils";
 import MembersDropdown from "@/components/members/CCMembersDropdown";
-
-const roleOptions = [
-  { value: "", label: "전체" },
-  ...membersRoleCategories.map((role) => ({
-    value: role,
-    label: role,
-  })),
-];
 
 export default function MembersRoleDropdown() {
   const router = useRouter();

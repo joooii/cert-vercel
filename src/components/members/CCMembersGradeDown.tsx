@@ -2,17 +2,9 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useTransition } from "react";
-import { membersGradeCategories } from "@/types/members";
 import MembersDropdown from "@/components/members/CCMembersDropdown";
 import { MembersGradeCategoryType } from "@/types/members";
-
-const gradeOptions = [
-  { value: "", label: "전체" },
-  ...membersGradeCategories.map((grade) => ({
-    value: grade.toString(),
-    label: `${grade}학년`,
-  })),
-];
+import { gradeOptions } from "@/utils/membersUtils";
 
 export default function MembersGradeDropdown() {
   const router = useRouter();
