@@ -3,7 +3,7 @@ import { MembersDataType, MembersRoleCategoryType } from "@/types/members";
 import Image from "next/image";
 import GithubSVG from "@/icons/github.svg";
 import EmailSVG from "@/icons/email.svg";
-import LogoSVG from "@/icons/logo-white.svg";
+
 interface MembersCardProps {
   members: MembersDataType;
 }
@@ -24,7 +24,7 @@ export default function MembersCard({ members }: MembersCardProps) {
     }
   };
 
-  const getRoleBorderstyle = (role: MembersRoleCategoryType) => {
+  const getRoleBorderStyle = (role: MembersRoleCategoryType) => {
     switch (role) {
       case "회장":
         return "hover:border-cert-red group-hover:border-cert-red";
@@ -41,14 +41,14 @@ export default function MembersCard({ members }: MembersCardProps) {
 
   return (
     <div
-      className={`bg-white border border-gray-200 rounded-lg p-6 transition-all duration-300 group ${getRoleBorderstyle(
+      className={`bg-white border border-gray-200 rounded-lg p-6 transition-all duration-300 group transform hover:-translate-y-2 hover:shadow-2xl hover:shadow-gray-300/50 shadow-sm ${getRoleBorderStyle(
         members.role
-      )} flex flex-col h-full `}
+      )} flex flex-col h-full`}
     >
       <div className="flex-1">
         <div className="text-center mb-4">
           <div
-            className={`relative mb-4 w-25 h-25 mx-auto rounded-full border-2 border-gray-200 flex items-center justify-center text-lg font-medium text-gray-600 transition-colors ${getRoleBorderstyle(
+            className={`relative mb-4 w-20 h-20 mx-auto rounded-full border-2 border-gray-200 flex items-center justify-center text-lg font-medium text-gray-600 transition-colors duration-300 ${getRoleBorderStyle(
               members.role
             )}`}
           >
@@ -59,6 +59,7 @@ export default function MembersCard({ members }: MembersCardProps) {
                 width={80}
                 height={80}
                 priority={false}
+                className="rounded-full object-cover"
               />
             ) : (
               <div>{members.name}</div>
@@ -104,11 +105,13 @@ export default function MembersCard({ members }: MembersCardProps) {
       </div>
 
       <div className="flex justify-center gap-3 pt-4 border-t border-gray-100 mt-auto">
-        <button className="h-8 w-8 flex items-center justify-center text-gray-400 hover:text-cert-red transition-colors">
+        <button
+          className={`h-8 w-8 flex items-center justify-center text-gray-400 hover:text-cert-black transition-colors duration-300 cursor-pointer`}
+        >
           <EmailSVG className="w-4 h-4" />
         </button>
         {members.github && (
-          <button className="h-8 w-8 flex items-center justify-center text-gray-400 hover:text-cert-red transition-colors">
+          <button className="h-8 w-8 flex items-center justify-center text-gray-400 hover:text-cert-black  transition-colors duration-300 cursor-pointer">
             <GithubSVG className="w-4 h-4" />
           </button>
         )}

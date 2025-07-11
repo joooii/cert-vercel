@@ -1,5 +1,5 @@
 "use client";
-import * as React from "react";
+import { useState } from "react";
 import ChevronDownSVG from "@/icons/angle.svg";
 import { cn } from "@/lib/utils";
 import DefaultButton from "@/components/ui/defaultButton";
@@ -23,7 +23,7 @@ export default function MembersDropdow<T>({
   className,
   disabled = false,
 }: MembersDropdownProps<T>) {
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const selectedOption = options.find((option) => option.value === value);
   return (
     <div className={cn("relative", className)}>
@@ -32,7 +32,7 @@ export default function MembersDropdow<T>({
         size="default"
         className={cn(
           "w-full justify-between text-left font-normal transition-all duration-200 cursor-pointer",
-          "border-gray-300 bg-gray-50/50 hover:border-cert-red hover:bg-cert-dark-red-5 hover:text-cert-black",
+          "border-gray-300 bg-gray-50/50 hover:border-cert-red hover:bg-gray-100   hover:text-cert-black",
           "focus:border-cert-red focus:ring-2 focus:ring-cert-red/20",
           disabled && "cursor-not-allowed opacity-50 bg-cert-dark-red-5"
         )}
