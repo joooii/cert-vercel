@@ -100,7 +100,9 @@ const Home = () => {
               text={
                 "디지털 증거 수집과 분석을 통한 사이버 범죄 수사 기법을 연구합니다"
               }
-              svgComponent={<EyeSVG width={64} />}
+              svgComponent={
+                <EyeSVG width={64} className="text-cert-dark-red" />
+              }
             />
             <DefaultCard
               title={"Incident Response"}

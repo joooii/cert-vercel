@@ -1,12 +1,12 @@
 import { Metadata } from "next";
-import { mockBoardContents } from "@/mocks/mockBoardContents";
+import { mockBoardData } from "@/mocks/mockBoardData";
 import BoardSearchBar from "@/components/board/CCBoardSearchBar";
 import BoardCategory from "@/components/board/CCBoardCategory";
 import BoardCardList from "@/components/board/SCBoardCardList";
 import BoardPagination from "@/components/board/SCBoardPagination";
 import PlusSVG from "@/icons/plus.svg";
 import { boardCategories, BoardCategoryType } from "@/types/board";
-
+import { filterBoardData } from "@/utils/boardUtils";
 const ITEMS_PER_PAGE = 4;
 
 interface BoardPageProps {
@@ -45,15 +45,11 @@ export default async function BoardPage({ searchParams }: BoardPageProps) {
   const currentCategory: BoardCategoryType =
     category && isValidCategory(category) ? category : "전체";
 
-  const filteredContents = mockBoardContents.filter((content) => {
-    const matchedSearch =
-      content.title.toLowerCase().includes(currentSearch.toLowerCase()) ||
-      content.author.toLowerCase().includes(currentSearch.toLowerCase()) ||
-      content.content.toLowerCase().includes(currentSearch.toLowerCase());
-    const matchedCategory =
-      currentCategory === "전체" || content.category === currentCategory;
-    return matchedSearch && matchedCategory;
-  });
+  const filteredContents = filterBoardData(
+    mockBoardData,
+    currentSearch,
+    currentCategory
+  );
 
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
@@ -63,7 +59,7 @@ export default async function BoardPage({ searchParams }: BoardPageProps) {
   return (
     <div className="space-y-6">
       <div className="mb-6 flex flex-col sm:flex-row gap-4">
-        <BoardSearchBar initialValue={currentSearch} />
+        <BoardSearchBar currentSearch={currentSearch} />
         <BoardCategory selectedCategory={currentCategory} />
         <button className="inline-flex items-center gap-2 px-4 py-2 bg-cert-red text-white rounded-md hover:bg-cert-red/80">
           <PlusSVG className="w-4 h-4" />새 글 작성

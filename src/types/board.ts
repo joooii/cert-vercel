@@ -13,7 +13,7 @@ export const boardPriorities = ["high", "medium", "low"] as const;
 
 export type BoardPriorityType = (typeof boardPriorities)[number];
 
-export interface BoardContent {
+export interface BoardDataType {
   id: number;
   title: string;
   content: string;
