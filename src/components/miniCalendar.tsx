@@ -1,7 +1,7 @@
 "use client";
 
+import AngleSVG from "/public/icons/angle.svg";
 import { useMemo, useState } from "react";
-import AngleSVG from "@/icons/angle.svg";
 import { DAY_NAMES, MONTH_NAMES } from "@/utils/scheduleUtils";
 
 const MiniCalendar = () => {

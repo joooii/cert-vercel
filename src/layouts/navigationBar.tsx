@@ -1,7 +1,7 @@
 import Link from "next/link";
 import BugReport from "@/components/nav/bugReport";
 import NavBarItems from "@/components/nav/navBarItems";
-import LogoSVG from "@/icons/logo-white.svg";
+import LogoSVG from "/public/icons/logo-white.svg";
 
 const navBarList = [
   { name: "Home", href: "/" },

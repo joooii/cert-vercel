@@ -1,4 +1,4 @@
-import BugSVG from "@/icons/bug.svg";
+import BugSVG from "/public/icons/bug.svg";
 
 const BugReport = () => {
   return (

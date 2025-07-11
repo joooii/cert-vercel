@@ -19,7 +19,7 @@
   --color-foreground: hsl(var(--foreground));
 
   /* Primary 색상 */
-  --color-primary: #000000;
+  --color-primary: #dc2626;
   --color-primary-foreground: #ffffff;
 
   /* Secondary 색상 */
