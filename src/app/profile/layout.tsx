@@ -1,5 +1,5 @@
 import PageLayout from "@/layouts/pageLayout";
-import ShieldSVG from "/public/icons/shield.svg";
+import ProfileSVG from "/public/icons/profile.svg";
 
 export default function ProfileLayout({
   children,
@@ -11,7 +11,7 @@ export default function ProfileLayout({
       <PageLayout
         title={"Profile"}
         description={"개인 정보와 활동 내역을 관리하세요."}
-        icon={<ShieldSVG />}
+        icon={<ProfileSVG />}
       >
         {children}
       </PageLayout>

@@ -10,7 +10,7 @@ import { getTypeLabel } from "@/utils/scheduleUtils";
 interface ModalProps {
   closeModal: () => void;
   schedule?: ScheduleInfo;
-  modalRef: RefObject<HTMLDivElement | null>;
+  modalRef?: RefObject<HTMLDivElement | null>;
 }
 const ScheduleFormModal = ({ closeModal, schedule, modalRef }: ModalProps) => {
   const {
