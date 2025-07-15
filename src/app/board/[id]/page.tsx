@@ -5,34 +5,26 @@ import { mockBoardData } from "@/mocks/mockBoardData";
 import { mockBoardDetailData } from "@/mocks/mockBoardDetailData";
 import { getCategoryColor } from "@/utils/boardUtils";
 import DownloadButton from "@/components/board/detail/SCDownloadButton";
-import {
-  Calendar,
-  Eye,
-  Heart,
-  MessageCircle,
-  Pin,
-  Tag,
-  Download,
-} from "lucide-react";
+import { Calendar, Eye, Heart, Pin, Tag, Download } from "lucide-react";
 import DefaultBadge from "@/components/ui/defaultBadge";
 
 import KebabMenuButton from "@/components/board/detail/CCKebabMenu";
 import LikeButton from "@/components/board/detail/CCLikeButton";
 import BookmarkButton from "@/components/board/detail/CCBookmarkButton";
-import PostShareButton from "@/components/board/detail/CCShareButton";
+import ShareButton from "@/components/board/detail/CCShareButton";
 
 async function getDataById(id: string) {
-  const postId = parseInt(id, 10);
-  const basePost = mockBoardData.find((item) => item.id === postId);
-  const detailPost = mockBoardDetailData.find((item) => item.id === postId);
+  const dataId = parseInt(id, 10); // id 파라미터 정수화
+  const baseData = mockBoardData.find((item) => item.id === dataId);
+  const detailData = mockBoardDetailData.find((item) => item.id === dataId);
 
-  if (!basePost || !detailPost) {
+  if (!baseData || !detailData) {
     return null;
   }
 
   return {
-    ...basePost,
-    ...detailPost,
+    ...baseData,
+    ...detailData,
   };
 }
 
@@ -42,9 +34,9 @@ export async function generateMetadata({
 }: {
   params: { id: string };
 }): Promise<Metadata> {
-  const post = await getDataById(params.id);
+  const data = await getDataById(params.id);
 
-  if (!post) {
+  if (!data) {
     return {
       title: "게시글을 찾을 수 없습니다",
       description: "요청하신 게시글을 찾을 수 없습니다.",
@@ -52,14 +44,14 @@ export async function generateMetadata({
   }
 
   return {
-    title: `${post.title} - Security Board`,
-    description: post.content.substring(0, 160) + "...",
+    title: `${data.title} - Security Board`,
+    description: data.content.substring(0, 160) + "...",
     openGraph: {
-      title: post.title,
-      description: post.content.substring(0, 160) + "...",
+      title: data.title,
+      description: data.content.substring(0, 160) + "...",
       type: "article",
-      authors: [post.author],
-      tags: post.tags,
+      authors: [data.author],
+      tags: data.tags,
     },
   };
 }
@@ -107,9 +99,9 @@ export default async function DetailPage({
 }: {
   params: { id: string };
 }) {
-  const post = await getDataById(params.id);
+  const data = await getDataById(params.id);
 
-  if (!post) {
+  if (!data) {
     notFound();
   }
 
@@ -122,56 +114,52 @@ export default async function DetailPage({
         <div className="p-6 pb-0">
           <div className="flex  items-start justify-between mb-4">
             <div className="flex items-center gap-3">
-              {post.isNotice && <Pin className="w-4 h-4 text-cert-red" />}
+              {data.isNotice && <Pin className="w-4 h-4 text-cert-red" />}
               <DefaultBadge
                 variant="outline"
-                className={getCategoryColor(post.category)}
+                className={getCategoryColor(data.category)}
               >
-                {post.category}
+                {data.category}
               </DefaultBadge>
             </div>
-            <KebabMenuButton currentUrl={"board"} currentId={post.id} />
+            <KebabMenuButton currentUrl={"board"} currentId={data.id} />
           </div>
 
           <h1 className="text-3xl font-bold text-gray-900 mb-6 leading-tight">
-            {post.title}
+            {data.title}
           </h1>
 
           <div className="flex items-center justify-between ">
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 font-medium">
-                  {post.authorInfo.initials}
+                  {data.authorInfo.initials}
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
                     <span className="font-medium text-gray-900">
-                      {post.author}
+                      {data.author}
                     </span>
                     <DefaultBadge variant="outline" className="text-xs">
-                      {post.authorInfo.role}
+                      {data.authorInfo.role}
                     </DefaultBadge>
                   </div>
                   <div className="flex items-center gap-2 text-sm text-gray-500">
                     <Calendar className="w-3 h-3" />
-                    {post.date}
+                    {data.date}
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className="flex items-center gap-4 text-sm text-gray-500 ">
+            <div className="flex items-center gap-4 text-sm text-cert-dark-red ">
               <div className="flex items-center gap-1">
-                <Eye className="w-4 h-4" />
-                {post.views}
+                <Eye className="w-4 h-4 " />
+                {data.views}
               </div>
               <div className="flex items-center gap-1">
                 <Heart className="w-4 h-4" />
-                {post.likes}
-              </div>
-              <div className="flex items-center gap-1">
-                <MessageCircle className="w-4 h-4" />
-                {post.comments}
+                {data.likes}
               </div>
             </div>
           </div>
@@ -181,7 +169,7 @@ export default async function DetailPage({
         <div className="p-6 ">
           {/* 태그 */}
           <div className="flex gap-2 mb-8 pt-6 border-t border-gray-300">
-            {post.tags.map((tag) => (
+            {data.tags.map((tag) => (
               <DefaultBadge
                 key={tag}
                 className="text-xs bg-gray-100 text-gray-600 hover:bg-gray-200 cursor-pointer"
@@ -194,18 +182,18 @@ export default async function DetailPage({
 
           {/* 마크다운 콘텐츠 (서버 컴포넌트) */}
           <div className="max-w-none mb-8">
-            <PostContentRenderer content={post.detailContent} />
+            <PostContentRenderer content={data.detailContent} />
           </div>
 
           {/* 첨부파일 */}
-          {post.attachments && post.attachments.length > 0 && (
+          {data.attachments && data.attachments.length > 0 && (
             <div className="border-t border-gray-300 pt-6 mb-6">
               <h4 className="font-medium text-gray-900 mb-4 flex items-center gap-2">
                 <Download className="w-4 h-4" />
-                첨부파일 ({post.attachments.length})
+                첨부파일 ({data.attachments.length})
               </h4>
               <div className="space-y-3">
-                {post.attachments.map((file, index) => (
+                {data.attachments.map((file, index) => (
                   <div
                     key={index}
                     className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
@@ -225,10 +213,10 @@ export default async function DetailPage({
 
           <div className="flex items-center justify-between pt-6 border-t border-gray-300">
             <div className="flex gap-4">
-              <LikeButton currentLikes={post.likes} />
+              <LikeButton currentLikes={data.likes} />
               <BookmarkButton />
             </div>
-            <PostShareButton />
+            <ShareButton />
           </div>
         </div>
       </div>
