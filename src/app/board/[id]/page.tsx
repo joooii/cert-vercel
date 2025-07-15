@@ -1,9 +1,10 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import Link from "next/link";
+import BackToListButton from "@/components/board/detail/SCBackToListButton";
 import { mockBoardData } from "@/mocks/mockBoardData";
 import { mockBoardDetailData } from "@/mocks/mockBoardDetailData";
 import { getCategoryColor } from "@/utils/boardUtils";
+import DownloadButton from "@/components/board/detail/SCDownloadButton";
 import {
   Calendar,
   Eye,
@@ -12,18 +13,15 @@ import {
   Pin,
   Tag,
   Download,
-  ArrowLeft,
-  Edit,
 } from "lucide-react";
 import DefaultBadge from "@/components/ui/defaultBadge";
-import DefaultButton from "@/components/ui/defaultButton";
 
-import PostActionMenu from "@/components/board/detail/CCPostActionMenu";
-import PostLikeButton from "@/components/board/detail/CCLikeButton";
+import KebabMenuButton from "@/components/board/detail/CCKebabMenu";
+import LikeButton from "@/components/board/detail/CCLikeButton";
 import BookmarkButton from "@/components/board/detail/CCBookmarkButton";
 import PostShareButton from "@/components/board/detail/CCShareButton";
 
-async function getPostById(id: string) {
+async function getDataById(id: string) {
   const postId = parseInt(id, 10);
   const basePost = mockBoardData.find((item) => item.id === postId);
   const detailPost = mockBoardDetailData.find((item) => item.id === postId);
@@ -44,7 +42,7 @@ export async function generateMetadata({
 }: {
   params: { id: string };
 }): Promise<Metadata> {
-  const post = await getPostById(params.id);
+  const post = await getDataById(params.id);
 
   if (!post) {
     return {
@@ -95,32 +93,6 @@ function getFileIcon(type: string) {
   return "📎";
 }
 
-// 서버 컴포넌트들
-function BackToListButton() {
-  return (
-    <Link href="/board">
-      <DefaultButton
-        variant="outline"
-        className="text-gray-600 hover:text-cert-red"
-      >
-        <ArrowLeft className="w-4 h-4 mr-2" />
-        목록으로 돌아가기
-      </DefaultButton>
-    </Link>
-  );
-}
-
-function PostEditButton({ postId }: { postId: number }) {
-  return (
-    <Link href={`/board/${postId}/edit`}>
-      <button className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 rounded flex items-center gap-2">
-        <Edit className="w-4 h-4" />
-        수정
-      </button>
-    </Link>
-  );
-}
-
 function PostContentRenderer({ content }: { content: string }) {
   return (
     <div
@@ -130,30 +102,12 @@ function PostContentRenderer({ content }: { content: string }) {
   );
 }
 
-function FileDownloadButton({
-  fileName,
-  fileId,
-}: {
-  fileName: string;
-  fileId?: string;
-}) {
-  return (
-    <a href={`/api/download/${fileId || fileName}`} download>
-      <DefaultButton variant="outline" size="sm">
-        <Download className="w-4 h-4 mr-2" />
-        다운로드
-      </DefaultButton>
-    </a>
-  );
-}
-
-// 서버 컴포넌트 - 메인 페이지
-export default async function PostDetailPage({
+export default async function DetailPage({
   params,
 }: {
   params: { id: string };
 }) {
-  const post = await getPostById(params.id);
+  const post = await getDataById(params.id);
 
   if (!post) {
     notFound();
@@ -161,14 +115,12 @@ export default async function PostDetailPage({
 
   return (
     <div className="space-y-6">
-      {/* 뒤로가기 버튼 (서버 컴포넌트) */}
-      <BackToListButton />
-
+      <BackToListButton currentUrl={"board"} />
       {/* 게시글 카드 */}
-      <div className="bg-white border border-gray-200 rounded-lg shadow-lg">
+      <div className=" bg-white border border-gray-200 rounded-lg shadow-lg mt-6 ">
         {/* 게시글 헤더 */}
-        <div className="p-6 border-b border-gray-100">
-          <div className="flex items-start justify-between mb-4">
+        <div className="p-6 pb-0">
+          <div className="flex  items-start justify-between mb-4">
             <div className="flex items-center gap-3">
               {post.isNotice && <Pin className="w-4 h-4 text-cert-red" />}
               <DefaultBadge
@@ -178,15 +130,14 @@ export default async function PostDetailPage({
                 {post.category}
               </DefaultBadge>
             </div>
-            {/* 액션 메뉴 (클라이언트 컴포넌트) */}
-            <PostActionMenu postId={post.id} />
+            <KebabMenuButton currentUrl={"board"} currentId={post.id} />
           </div>
 
           <h1 className="text-3xl font-bold text-gray-900 mb-6 leading-tight">
             {post.title}
           </h1>
 
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between ">
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 font-medium">
@@ -209,7 +160,7 @@ export default async function PostDetailPage({
               </div>
             </div>
 
-            <div className="flex items-center gap-4 text-sm text-gray-500">
+            <div className="flex items-center gap-4 text-sm text-gray-500 ">
               <div className="flex items-center gap-1">
                 <Eye className="w-4 h-4" />
                 {post.views}
@@ -227,9 +178,9 @@ export default async function PostDetailPage({
         </div>
 
         {/* 게시글 본문 */}
-        <div className="p-6">
+        <div className="p-6 ">
           {/* 태그 */}
-          <div className="flex flex-wrap gap-2 mb-8">
+          <div className="flex gap-2 mb-8 pt-6 border-t border-gray-300">
             {post.tags.map((tag) => (
               <DefaultBadge
                 key={tag}
@@ -248,7 +199,7 @@ export default async function PostDetailPage({
 
           {/* 첨부파일 */}
           {post.attachments && post.attachments.length > 0 && (
-            <div className="border-t border-gray-100 pt-6 mb-6">
+            <div className="border-t border-gray-300 pt-6 mb-6">
               <h4 className="font-medium text-gray-900 mb-4 flex items-center gap-2">
                 <Download className="w-4 h-4" />
                 첨부파일 ({post.attachments.length})
@@ -265,21 +216,18 @@ export default async function PostDetailPage({
                       <p className="text-sm text-gray-500">{file.size}</p>
                     </div>
                     {/* 파일 다운로드 버튼 (서버 컴포넌트) */}
-                    <FileDownloadButton fileName={file.name} />
+                    <DownloadButton fileName={file.name} />
                   </div>
                 ))}
               </div>
             </div>
           )}
 
-          {/* 액션 버튼들 */}
-          <div className="flex items-center justify-between pt-6 border-t border-gray-100">
-            <div className="flex items-center gap-3">
-              {/* 좋아요 버튼 (클라이언트 컴포넌트) */}
-              <PostLikeButton postId={post.id} initialLikes={post.likes} />
+          <div className="flex items-center justify-between pt-6 border-t border-gray-300">
+            <div className="flex gap-4">
+              <LikeButton currentLikes={post.likes} />
               <BookmarkButton />
             </div>
-            {/* 공유 버튼 (클라이언트 컴포넌트) */}
             <PostShareButton />
           </div>
         </div>

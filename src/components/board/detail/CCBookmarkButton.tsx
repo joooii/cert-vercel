@@ -4,11 +4,11 @@ import DefaultButton from "@/components/ui/defaultButton";
 import { Bookmark } from "lucide-react";
 
 export default function BookmarkButton() {
-  const [isBookmarked, setIsBookmarked] = useState(false);
+  const [isBookmarked, setIsBookmarked] = useState<boolean>(false);
 
-  const handleBookmark = async () => {
+  const handleBookmark = () => {
     setIsBookmarked(!isBookmarked);
-    // API 호출: await fetch(`/api/bookmarks`, { method: 'POST', body: JSON.stringify({postId}) })
+    // API 호출: await fetch(`/api/bookmarks`.....
   };
 
   return (
@@ -16,11 +16,9 @@ export default function BookmarkButton() {
       variant="outline"
       size="sm"
       onClick={handleBookmark}
-      className={
-        isBookmarked ? "bg-yellow-50 text-yellow-600 border-yellow-200" : ""
-      }
+      className={isBookmarked ? "bg-cert-red text-white border-cert-red" : ""}
     >
-      <Bookmark className="w-4 h-4 mr-2" />
+      <Bookmark className="h-4 w-4 mr-2" />
       북마크
     </DefaultButton>
   );

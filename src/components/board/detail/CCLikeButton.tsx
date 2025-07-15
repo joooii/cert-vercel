@@ -3,22 +3,18 @@ import { useState } from "react";
 import DefaultButton from "@/components/ui/defaultButton";
 import { Heart } from "lucide-react";
 
-interface PostLikeButtonProps {
-  postId: number;
-  initialLikes: number;
+interface LikeButtonProps {
+  currentLikes: number;
 }
 
-export default function PostLikeButton({
-  postId,
-  initialLikes,
-}: PostLikeButtonProps) {
-  const [isLiked, setIsLiked] = useState(false);
-  const [likes, setLikes] = useState(initialLikes);
+export default function LikeButton({ currentLikes }: LikeButtonProps) {
+  const [isLiked, setIsLiked] = useState<boolean>(false);
+  const [likes, setLikes] = useState<number>(currentLikes);
 
-  const handleLike = async () => {
+  const handleLike = () => {
     setIsLiked(!isLiked);
     setLikes(isLiked ? likes - 1 : likes + 1);
-    // API 호출: await fetch(`/api/posts/${postId}/like`, { method: 'POST' })
+    // API 호출: await fetch(`/api/posts/${postId}/like`...
   };
 
   return (
