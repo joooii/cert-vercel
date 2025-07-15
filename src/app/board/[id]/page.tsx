@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import BackToListButton from "@/components/board/detail/SCBackToListButton";
+import MarkdownRenderer from "@/components/ui/SCMarkdownRenderer";
 import { mockBoardData } from "@/mocks/mockBoardData";
 import { mockBoardDetailData } from "@/mocks/mockBoardDetailData";
 import { getCategoryColor } from "@/utils/boardUtils";
@@ -14,7 +15,7 @@ import BookmarkButton from "@/components/board/detail/CCBookmarkButton";
 import ShareButton from "@/components/board/detail/CCShareButton";
 
 async function getDataById(id: string) {
-  const dataId = parseInt(id, 10); // id 파라미터 정수화
+  const dataId = parseInt(id, 10);
   const baseData = mockBoardData.find((item) => item.id === dataId);
   const detailData = mockBoardDetailData.find((item) => item.id === dataId);
 
@@ -56,42 +57,13 @@ export async function generateMetadata({
   };
 }
 
-// 마크다운 렌더링 함수 (서버에서 처리)
-function renderMarkdown(markdown: string) {
-  return markdown
-    .replace(/^# (.*$)/gm, '<h1 class="text-3xl font-bold mb-4">$1</h1>')
-    .replace(/^## (.*$)/gm, '<h2 class="text-2xl font-bold mb-3">$1</h2>')
-    .replace(/^### (.*$)/gm, '<h3 class="text-xl font-bold mb-2">$1</h3>')
-    .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
-    .replace(/\*(.*?)\*/g, "<em>$1</em>")
-    .replace(
-      /```([\s\S]*?)```/g,
-      '<pre class="bg-gray-100 p-4 rounded-lg overflow-x-auto"><code>$1</code></pre>'
-    )
-    .replace(
-      /`([^`]+)`/g,
-      '<code class="bg-gray-100 px-2 py-1 rounded">$1</code>'
-    )
-    .replace(/^\- (.*$)/gm, '<li class="ml-4">$1</li>')
-    .replace(/\n/g, "<br>");
-}
-
-// 파일 아이콘 함수
+// 파일 아이콘 함수(변경 가능)
 function getFileIcon(type: string) {
   if (type.includes("pdf")) return "📄";
   if (type.includes("excel") || type.includes("spreadsheet")) return "📊";
   if (type.includes("word") || type.includes("document")) return "📝";
   if (type.includes("image")) return "🖼️";
   return "📎";
-}
-
-function PostContentRenderer({ content }: { content: string }) {
-  return (
-    <div
-      className="leading-relaxed text-gray-900 prose prose-lg max-w-none"
-      dangerouslySetInnerHTML={{ __html: renderMarkdown(content) }}
-    />
-  );
 }
 
 export default async function DetailPage({
@@ -108,11 +80,12 @@ export default async function DetailPage({
   return (
     <div className="space-y-6">
       <BackToListButton currentUrl={"board"} />
+
       {/* 게시글 카드 */}
-      <div className=" bg-white border border-gray-200 rounded-lg shadow-lg mt-6 ">
+      <div className="bg-white border border-gray-200 rounded-lg shadow-lg mt-6">
         {/* 게시글 헤더 */}
         <div className="p-6 pb-0">
-          <div className="flex  items-start justify-between mb-4">
+          <div className="flex items-start justify-between mb-4">
             <div className="flex items-center gap-3">
               {data.isNotice && <Pin className="w-4 h-4 text-cert-red" />}
               <DefaultBadge
@@ -129,7 +102,7 @@ export default async function DetailPage({
             {data.title}
           </h1>
 
-          <div className="flex items-center justify-between ">
+          <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 font-medium">
@@ -144,7 +117,7 @@ export default async function DetailPage({
                       {data.authorInfo.role}
                     </DefaultBadge>
                   </div>
-                  <div className="flex items-center gap-2 text-sm text-gray-500">
+                  <div className="flex mt-1 items-center gap-2 text-sm text-gray-500">
                     <Calendar className="w-3 h-3" />
                     {data.date}
                   </div>
@@ -152,9 +125,9 @@ export default async function DetailPage({
               </div>
             </div>
 
-            <div className="flex items-center gap-4 text-sm text-cert-dark-red ">
+            <div className="flex items-center gap-4 text-sm text-cert-dark-red">
               <div className="flex items-center gap-1">
-                <Eye className="w-4 h-4 " />
+                <Eye className="w-4 h-4" />
                 {data.views}
               </div>
               <div className="flex items-center gap-1">
@@ -166,7 +139,7 @@ export default async function DetailPage({
         </div>
 
         {/* 게시글 본문 */}
-        <div className="p-6 ">
+        <div className="p-6">
           {/* 태그 */}
           <div className="flex gap-2 mb-8 pt-6 border-t border-gray-300">
             {data.tags.map((tag) => (
@@ -180,9 +153,9 @@ export default async function DetailPage({
             ))}
           </div>
 
-          {/* 마크다운 콘텐츠 (서버 컴포넌트) */}
+          {/* React-Markdown으로 렌더링 - Tailwind Typography 사용 */}
           <div className="max-w-none mb-8">
-            <PostContentRenderer content={data.detailContent} />
+            <MarkdownRenderer content={data.detailContent} />
           </div>
 
           {/* 첨부파일 */}
@@ -203,7 +176,6 @@ export default async function DetailPage({
                       <p className="font-medium text-gray-900">{file.name}</p>
                       <p className="text-sm text-gray-500">{file.size}</p>
                     </div>
-                    {/* 파일 다운로드 버튼 (서버 컴포넌트) */}
                     <DownloadButton fileName={file.name} />
                   </div>
                 ))}
