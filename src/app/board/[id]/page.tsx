@@ -1,18 +1,18 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import BackToListButton from "@/components/board/detail/SCBackToListButton";
-import MarkdownRenderer from "@/components/ui/SCMarkdownRenderer";
+import BackToListButton from "@/components/detail/SCBackToListButton";
+import MarkdownRenderer from "@/components/ui/defaultMarkdownRenderer";
 import { mockBoardData } from "@/mocks/mockBoardData";
 import { mockBoardDetailData } from "@/mocks/mockBoardDetailData";
 import { getCategoryColor } from "@/utils/boardUtils";
-import DownloadButton from "@/components/board/detail/SCDownloadButton";
+import DownloadButton from "@/components/detail/SCDownloadButton";
 import { Calendar, Eye, Heart, Pin, Tag, Download } from "lucide-react";
 import DefaultBadge from "@/components/ui/defaultBadge";
 
-import KebabMenuButton from "@/components/board/detail/CCKebabMenu";
-import LikeButton from "@/components/board/detail/CCLikeButton";
-import BookmarkButton from "@/components/board/detail/CCBookmarkButton";
-import ShareButton from "@/components/board/detail/CCShareButton";
+import KebabMenuButton from "@/components/detail/CCKebabMenu";
+import LikeButton from "@/components/detail/CCLikeButton";
+import BookmarkButton from "@/components/detail/CCBookmarkButton";
+import ShareButton from "@/components/detail/CCShareButton";
 
 async function getDataById(id: string) {
   const dataId = parseInt(id, 10);
