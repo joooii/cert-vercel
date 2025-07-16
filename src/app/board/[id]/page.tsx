@@ -16,6 +16,7 @@ import ShareButton from "@/components/detail/CCShareButton";
 
 async function getDataById(id: string) {
   const dataId = parseInt(id, 10);
+  // api 요청 ...
   const baseData = mockBoardData.find((item) => item.id === dataId);
   const detailData = mockBoardDetailData.find((item) => item.id === dataId);
 

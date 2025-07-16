@@ -1,0 +1,26 @@
+import EditForm from "@/components/write/CCEditForm";
+import React from "react";
+
+async function getId(id: string) {
+  const dataId = parseInt(id, 10);
+  return dataId;
+}
+
+export default async function BoardEditPage({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const dataId = await getId(params.id);
+  return (
+    <div className="space-y-6">
+      <div className="bg-white border border-gray-200 rounded-lg shadow-lg ">
+        <div className="p-6 ">
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">게시글 수정</h1>
+          <div className="border-t border-gray-300 mb-5 mt-5"></div>
+          <EditForm type="board" dataId={dataId} />
+        </div>
+      </div>
+    </div>
+  );
+}
