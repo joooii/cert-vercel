@@ -1,11 +1,8 @@
-import BackToListButton from "@/components/detail/SCBackToListButton";
 import WriteForm from "@/components/write/CCWriteForm";
 export default function BoardWrtiePage() {
   return (
     <div className="space-y-6">
-      <BackToListButton currentUrl="board" />
-
-      <div className="bg-white border border-gray-200 rounded-lg shadow-lg mt-6">
+      <div className="bg-white border border-gray-200 rounded-lg shadow-lg ">
         <div className="p-6 ">
           <h1 className="text-2xl font-bold text-gray-900 mb-2">
             새 게시글 작성
