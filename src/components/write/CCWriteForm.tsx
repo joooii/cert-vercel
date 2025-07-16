@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import DefaultButton from "@/components/ui/defaultButton";
-import { Calendar, ChevronDown, Check } from "lucide-react";
+import { Calendar, ChevronDown } from "lucide-react";
 import TagInput from "@/components/write/CCTagInput";
 import FileUpload from "@/components/write/CCFileUpload";
 import MarkdownEditor from "./CCMarkdownEditor";
