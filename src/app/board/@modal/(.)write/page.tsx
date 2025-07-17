@@ -1,9 +1,9 @@
 import NewPageModal from "@/components/write/CCNewPageModal";
-import BoardWrtiePage from "../../write/page";
+import BoardWritePage from "@/app/board/write/page";
 export default function WriteModalPage() {
   return (
     <NewPageModal>
-      <BoardWrtiePage />
+      <BoardWritePage />
     </NewPageModal>
   );
 }
