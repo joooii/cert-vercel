@@ -123,11 +123,9 @@ export default function EditForm({ type, dataId }: EditFormProps) {
         }),
       };
 
-      // API 요청 예시
-      // await updatePost(type, updateData);
-
+      // api ...
       console.log("수정 데이터:", updateData);
-      router.push(`/${type}`);
+      router.push(`/${type}/${dataId}`);
     } catch (error) {
       console.error("수정 실패:", error);
       // 에러 처리
@@ -135,7 +133,8 @@ export default function EditForm({ type, dataId }: EditFormProps) {
   };
 
   const handleCancel = () => {
-    router.push(`/${type}`);
+    // api ...
+    router.push(`/${type}/${dataId}`);
   };
 
   // 로딩 중일 때 표시
