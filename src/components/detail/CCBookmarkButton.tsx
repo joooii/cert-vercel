@@ -16,7 +16,9 @@ export default function BookmarkButton() {
       variant="outline"
       size="sm"
       onClick={handleBookmark}
-      className={isBookmarked ? "bg-cert-red text-white border-cert-red" : ""}
+      className={`${
+        isBookmarked ? "text-cert-red " : ""
+      } border-0 hover:bg-white hover:text-cert-red`}
     >
       <Bookmark className="h-4 w-4 mr-2" />
       북마크
