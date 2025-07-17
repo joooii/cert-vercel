@@ -59,12 +59,13 @@ export default function WriteForm({ type }: WriteFormProps) {
   };
 
   const handleSubmit = async () => {
-    router.push(`/${type}`);
+    router.replace(`/${type}`);
+    router.refresh();
     // api 요청 ...
   };
 
   const handleCancel = () => {
-    router.push(`/${type}`);
+    router.back();
   };
 
   return (
