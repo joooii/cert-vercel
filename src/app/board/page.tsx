@@ -7,6 +7,7 @@ import BoardPagination from "@/components/board/SCBoardPagination";
 import PlusSVG from "/public/icons/plus.svg";
 import { boardCategories, BoardCategoryType } from "@/types/board";
 import { filterBoardData } from "@/utils/boardUtils";
+import Link from "next/link";
 const ITEMS_PER_PAGE = 4;
 
 interface BoardPageProps {
@@ -61,9 +62,12 @@ export default async function BoardPage({ searchParams }: BoardPageProps) {
       <div className="mb-6 flex flex-col sm:flex-row gap-4">
         <BoardSearchBar currentSearch={currentSearch} />
         <BoardCategory selectedCategory={currentCategory} />
-        <button className="inline-flex items-center gap-2 px-4 py-2 bg-cert-red text-white rounded-md hover:bg-cert-red/80">
+        <Link
+          href="/board/write"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-cert-red text-white rounded-md hover:bg-cert-red/80"
+        >
           <PlusSVG className="w-4 h-4" />새 글 작성
-        </button>
+        </Link>
       </div>
 
       <BoardCardList contents={paginatedContents} />
