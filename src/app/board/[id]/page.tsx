@@ -14,7 +14,7 @@ import LikeButton from "@/components/detail/CCLikeButton";
 import BookmarkButton from "@/components/detail/CCBookmarkButton";
 import ShareButton from "@/components/detail/CCShareButton";
 
-async function getDataById(id: string) {
+function getDataById(id: string) {
   const dataId = parseInt(id, 10);
   // api 요청 ...
   const baseData = mockBoardData.find((item) => item.id === dataId);
@@ -34,9 +34,10 @@ async function getDataById(id: string) {
 export async function generateMetadata({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }): Promise<Metadata> {
-  const data = await getDataById(params.id);
+  const { id } = await params;
+  const data = getDataById(id);
 
   if (!data) {
     return {

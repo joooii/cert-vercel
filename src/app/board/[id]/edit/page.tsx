@@ -1,7 +1,7 @@
 import EditForm from "@/components/write/CCEditForm";
 import React from "react";
 
-async function getId(id: string) {
+function getId(id: string) {
   const dataId = parseInt(id, 10);
   return dataId;
 }
@@ -9,9 +9,10 @@ async function getId(id: string) {
 export default async function BoardEditPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const dataId = await getId(params.id);
+  const { id } = await params;
+  const dataId = getId(id);
   return (
     <div className="space-y-6">
       <div className="bg-white border border-gray-200 rounded-lg shadow-lg ">
