@@ -20,7 +20,7 @@ export default function BookmarkButton() {
         isBookmarked ? "text-cert-red " : ""
       } border-0 hover:bg-white hover:text-cert-red`}
     >
-      <Bookmark className="h-4 w-4 mr-2" />
+      <Bookmark className="h-4 w-4" />
       북마크
     </DefaultButton>
   );

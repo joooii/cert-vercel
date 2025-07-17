@@ -34,8 +34,6 @@ export default function NewPageModal({ children }: { children: ReactNode }) {
       className={`
     fixed inset-0 z-50 flex items-center justify-center p-4
     bg-cert-black/50 
-    transition-all duration-300 ease-out
-    ${isVisible ? "opacity-100" : "opacity-0"}
   `}
       onClick={() => router.back()}
     >
@@ -43,11 +41,7 @@ export default function NewPageModal({ children }: { children: ReactNode }) {
         className={`
     bg-white rounded-lg shadow-xl w-full max-w-5xl 
     transform transition-all duration-300 ease-out
-    ${
-      isVisible
-        ? "opacity-100 scale-100 translate-y-0"
-        : "opacity-0 scale-95 translate-y-4"
-    }
+    ${isVisible ? "opacity-100 scale-100 " : "opacity-0 scale-75 "}
   `}
         onClick={(e) => e.stopPropagation()}
       >

@@ -18,17 +18,17 @@ export default function WriteForm({ type }: WriteFormProps) {
   const [category, setCategory] = useState("");
   const [tags, setTags] = useState<string[]>([]);
   const [attachments, setAttachments] = useState<File[]>([]);
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
+  const [startDate, setStartDate] = useState<string>("");
+  const [endDate, setEndDate] = useState<string>("");
   const [maxParticipants, setMaxParticipants] = useState("");
   const [isCategoryOpen, setIsCategoryOpen] = useState<boolean>(false);
   const categoryRef = useRef<HTMLDivElement>(null); // 컴포넌트 외부 클릭 감지 추가
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
+    const handleClickOutside = (e: MouseEvent) => {
       if (
         categoryRef.current &&
-        !categoryRef.current.contains(event.target as Node)
+        !categoryRef.current.contains(e.target as Node)
       ) {
         setIsCategoryOpen(false);
       }
