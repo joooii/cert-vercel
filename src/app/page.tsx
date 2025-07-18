@@ -54,13 +54,13 @@ const Home = () => {
           </>
           <>
             <div className="absolute top-32 left-10 animate-bounce opacity-20">
-              <LockSVG width={24} />
+              <LockSVG width={24} className="stroke-cert-dark-red" />
             </div>
             <div className="absolute bottom-20 right-10 animate-bounce opacity-20">
-              <ShieldSVG width={35} />
+              <ShieldSVG width={35} className="stroke-cert-dark-red" />
             </div>
             <div className="absolute top-1/3 right-20 animate-bounce opacity-20">
-              <EyeSVG width={30} />
+              <EyeSVG width={30} className="text-cert-dark-red" />
             </div>
             <div className="absolute bottom-1/3 left-20 animate-bounce opacity-15 text-cert-dark-red">
               <BugSVG width={30} />
@@ -94,7 +94,9 @@ const Home = () => {
               text={
                 "암호학 이론과 실습을 통한 데이터 보호 기술 및 암호화 시스템을 구축합니다"
               }
-              svgComponent={<LockSVG width={64} />}
+              svgComponent={
+                <LockSVG width={64} className="stroke-cert-dark-red" />
+              }
             />
             <DefaultCard
               title={"Digital Forensics"}

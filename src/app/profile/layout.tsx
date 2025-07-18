@@ -11,7 +11,7 @@ export default function ProfileLayout({
       <PageLayout
         title={"Profile"}
         description={"개인 정보와 활동 내역을 관리하세요."}
-        icon={<ProfileSVG />}
+        icon={<ProfileSVG className="w-8 stroke-cert-dark-red" />}
       >
         {children}
       </PageLayout>

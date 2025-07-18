@@ -10,6 +10,7 @@ const defaultButtonVariants = cva(
         default: "bg-cert-red hover:bg-cert-red/80 text-white",
         outline:
           "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
+        ghost: "hover:bg-accent hover:text-accent-foreground",
       },
       size: {
         default: "h-10 px-4 py-2",
