@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import LockSVG from "/public/icons/lock.svg";
-import { UserPlus } from "lucide-react";
+import { UserPlus, LockOpen } from "lucide-react";
 
 type AuthSwitchPromptProps = {
   type: "login" | "signup";
@@ -35,7 +35,7 @@ export default function SCAuthSwitchButton({ type }: AuthSwitchPromptProps) {
               </>
             ) : (
               <>
-                <LockSVG className="w-4 h-4 mr-2 stroke-cert-red" />
+                <LockOpen className="w-4 h-4 mr-2 stroke-cert-red" />
                 로그인
               </>
             )}

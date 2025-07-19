@@ -1,12 +1,11 @@
 "use client";
 
 import DefaultButton from "@/components/ui/defaultButton";
-import ShieldSVG from "/public/icons/shield.svg";
 import LockSVG from "/public/icons/lock.svg";
 import ProfileSVG from "/public/icons/profile.svg";
 import { loginAction } from "@/actions/auth/LoginServerAction";
 import { useAuth } from "@/hooks/useAuth";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, LockOpen } from "lucide-react";
 
 export default function CCLoginInput() {
   const { showPassword, setShowPassword, loginFormData, setLoginFormData } =
@@ -106,7 +105,7 @@ export default function CCLoginInput() {
         type="submit"
         className="w-full h-12 bg-cert-dark-red text-white font-medium shadow-lg hover:bg-cert-dark-red/80"
       >
-        <ShieldSVG className="w-4 h-4 stroke-white" />
+        <LockOpen className="w-4 h-4 stroke-white" />
         로그인
       </DefaultButton>
     </form>
