@@ -19,7 +19,7 @@ export default function BoardLayout({
       <PageLayout
         title={"Security Board"}
         description={"보안 정보와 기술 자료를 공유하는 전문 게시판입니다."}
-        icon={<ShieldSVG />}
+        icon={<ShieldSVG className="stroke-cert-dark-red" />}
       >
         {children}
         {modal}

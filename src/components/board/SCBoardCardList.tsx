@@ -11,7 +11,7 @@ export default function BoardCardList({
   if (contents.length === 0) {
     return (
       <DefaultNoneResultUi
-        icon={<ShieldSVG />}
+        icon={<ShieldSVG className="stroke-cert-dark-red" />}
         title="검색 결과가 없습니다."
         description="검색어를 확인하거나 다른 카테고리를 선택해보세요."
       />
