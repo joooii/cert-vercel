@@ -9,8 +9,10 @@ export const metadata: Metadata = {
 
 export default function BoardLayout({
   children,
+  modal,
 }: {
   children: React.ReactNode;
+  modal: React.ReactNode;
 }) {
   return (
     <div>
@@ -20,6 +22,7 @@ export default function BoardLayout({
         icon={<ShieldSVG className="stroke-cert-dark-red" />}
       >
         {children}
+        {modal}
       </PageLayout>
     </div>
   );
