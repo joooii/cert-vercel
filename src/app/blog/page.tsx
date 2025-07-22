@@ -1,7 +1,8 @@
 import { Metadata } from "next";
 import { mockBlogPosts } from "@/data/blogData";
 import CCBlogPagination from "@/components/blog/CCBlogPagination";
-import { Plus, Search } from "lucide-react";
+import CCBlogCategoryFilter from "@/components/blog/CCBlogCategoryFilter";
+import { Plus } from "lucide-react";
 import {
   BLOG_CATEGORIES,
   BlogCategory as BlogCategoryType,
@@ -9,6 +10,7 @@ import {
 } from "@/types/blog";
 import { filterBlogPosts } from "@/utils/blog/blogUtils";
 import Link from "next/link";
+import ProjectSearchBar from "@/components/project/CCProjectSearchBar";
 
 interface BlogPageProps {
   searchParams: Promise<{
@@ -87,41 +89,18 @@ export default async function BlogPage({
           <div className="bg-white rounded-lg mb-6">
             <div className="flex flex-col lg:flex-row gap-4 items-center">
               {/* 검색바 */}
-              <div className="flex-1 relative">
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                  <input
-                    type="text"
-                    placeholder="제목, 내용, 작성자로 검색..."
-                    defaultValue={currentSearch}
-                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none"
-                  />
-                </div>
-              </div>
+              <ProjectSearchBar currentSearch={currentSearch} />
 
-              {/* 카테고리 필터 */}
-              <div className="flex items-center gap-2">
-                {BLOG_CATEGORIES.map((cat) => (
-                  <Link
-                    key={cat}
-                    href={`/blog?category=${cat}${
-                      currentSearch ? `&search=${currentSearch}` : ""
-                    }`}
-                    className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                      currentCategory === cat
-                        ? "bg-red-500 text-white"
-                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                    }`}
-                  >
-                    {cat}
-                  </Link>
-                ))}
-              </div>
+              {/* 카테고리 필터 - 클라이언트 컴포넌트로 분리 */}
+              <CCBlogCategoryFilter
+                currentCategory={currentCategory}
+                currentSearch={currentSearch}
+              />
 
               {/* 새 글 작성 버튼 */}
               <Link
                 href="/blog/write"
-                className="inline-flex items-center gap-2 px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors font-medium whitespace-nowrap"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-md hover:bg-red-600 transition-colors font-slim whitespace-nowrap"
               >
                 <Plus className="w-4 h-4" />새 글 작성
               </Link>
