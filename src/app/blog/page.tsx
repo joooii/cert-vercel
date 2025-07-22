@@ -10,7 +10,7 @@ import {
 } from "@/types/blog";
 import { filterBlogPosts } from "@/utils/blog/blogUtils";
 import Link from "next/link";
-import ProjectSearchBar from "@/components/project/CCProjectSearchBar";
+import BlogSearchBar from "@/components/blog/CCBlogSearchBar";
 
 interface BlogPageProps {
   searchParams: Promise<{
@@ -89,7 +89,7 @@ export default async function BlogPage({
           <div className="bg-white rounded-lg mb-6">
             <div className="flex flex-col lg:flex-row gap-4 items-center">
               {/* 검색바 */}
-              <ProjectSearchBar currentSearch={currentSearch} />
+              <BlogSearchBar currentSearch={currentSearch} />
 
               {/* 카테고리 필터 - 클라이언트 컴포넌트로 분리 */}
               <CCBlogCategoryFilter
