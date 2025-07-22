@@ -67,11 +67,7 @@ export default async function BlogPage({
   const currentCategory: BlogCategoryType =
     category && isValidCategory(category) ? category : "전체";
 
-  const filteredContents = filterBlogPosts(
-    mockBlogPosts,
-    currentSearch,
-    currentCategory
-  );
+  const filteredContents = filterBlogPosts(mockBlogPosts, currentCategory);
 
   const totalItems = filteredContents.length;
   const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
