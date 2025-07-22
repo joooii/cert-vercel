@@ -36,7 +36,7 @@ export default function BoardSearchBar({ currentSearch }: BoardSearchBarProps) {
       params.delete("page"); // 검색 시 첫 페이지로
 
       const queryString = params.toString();
-      const newUrl = queryString ? `/board?${queryString}` : "/board";
+      const newUrl = queryString ? `/blog?${queryString}` : "/blog";
       router.push(newUrl);
     }, DEBOUNCE_DELAY);
 
