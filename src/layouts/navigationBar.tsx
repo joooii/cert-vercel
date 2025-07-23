@@ -2,6 +2,7 @@ import Link from "next/link";
 import BugReport from "@/components/nav/bugReport";
 import NavBarItems from "@/components/nav/navBarItems";
 import LogoSVG from "/public/icons/logo-white.svg";
+import LoginButton from "@/components/nav/loginButton";
 
 const navBarList = [
   { name: "Home", href: "/" },
@@ -42,6 +43,7 @@ const NavigationBar = () => {
         <div className="hidden md:flex flex-row items-center">
           <NavBarItems navBarList={navBarList} />
           <BugReport />
+          <LoginButton />
         </div>
 
         {/* 햄버거 메뉴 추가 예정 */}

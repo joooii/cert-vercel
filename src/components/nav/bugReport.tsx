@@ -7,13 +7,10 @@ const BugReport = () => {
         href="https://docs.google.com/forms/d/e/1FAIpQLSdTj_umu9UGkrO6tPGB13lJGAAaDAF0X--1_GvnFEmFwYuCTg/viewform?usp=header"
         target="_blank"
         rel="noopener noreferrer"
-        className="flex items-center px-3 py-1.5 group text-sm border border-[#c78d88] rounded-md transition-all duration-300 shadow-cert-navbar over:shadow-lg hover:bg-cert-dark-red hover:border-cert-dark-red"
+        className="flex items-center px-3 py-1.5 group text-sm border border-[#c78d88] rounded-md transition-all duration-300 shadow-cert-navbar over:shadow-lg hover:bg-cert-red/10 hover:border-cert-dark-red"
       >
-        <BugSVG
-          width={16}
-          className="text-cert-dark-red group-hover:text-white"
-        />
-        <div className="text-cert-dark-red group-hover:text-white ml-4">
+        <BugSVG className="w-4 h-4 text-cert-dark-red group-hover:text-cert-dark-red" />
+        <div className="text-cert-dark-red group-hover:text-cert-dark-red ml-4">
           Bug Report
         </div>
       </a>

@@ -246,15 +246,6 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
           </div>
         )}
 
-        {/* 목록으로 돌아가기 버튼 */}
-        <div className="mt-12 text-center">
-          <Link
-            href="/blog"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors font-medium"
-          >
-            블로그 목록으로 돌아가기
-          </Link>
-        </div>
       </div>
     </div>
   );

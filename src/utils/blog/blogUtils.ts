@@ -5,7 +5,6 @@ import { BlogPost, BlogCategory } from "@/types/blog";
  */
 export const filterBlogPosts = (
   posts: BlogPost[],
-  searchTerm: string = "",
   category: BlogCategory = "전체"
 ): BlogPost[] => {
   let filteredPosts = [...posts];
@@ -13,21 +12,6 @@ export const filterBlogPosts = (
   // 카테고리 필터링
   if (category !== "전체") {
     filteredPosts = filteredPosts.filter((post) => post.category === category);
-  }
-
-  // 검색어 필터링
-  if (searchTerm.trim()) {
-    const lowercaseSearchTerm = searchTerm.toLowerCase().trim();
-    filteredPosts = filteredPosts.filter(
-      (post) =>
-        post.title.toLowerCase().includes(lowercaseSearchTerm) ||
-        post.excerpt.toLowerCase().includes(lowercaseSearchTerm) ||
-        post.author.toLowerCase().includes(lowercaseSearchTerm) ||
-        post.content?.toLowerCase().includes(lowercaseSearchTerm) ||
-        post.tags?.some((tag) =>
-          tag.toLowerCase().includes(lowercaseSearchTerm)
-        )
-    );
   }
 
   // 최신순으로 정렬 (게시된 포스트만)
