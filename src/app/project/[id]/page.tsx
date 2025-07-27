@@ -1,22 +1,21 @@
 import { notFound } from "next/navigation";
-import Link from "next/link";
 import { Metadata } from "next";
 import { ProjectMaterial } from "@/types/project";
-import { ArrowLeft } from "lucide-react";
-import ChainSVG from "/public/icons/chain.svg";
 import AttachedFilesDownload from "@/components/project/SCAttachedFilesDownload";
-import { Globe, FileText, BookText } from "lucide-react";
+import { Globe, BookText } from "lucide-react";
+import Image from "next/image";
 
 import { getProjectMaterials } from "@/mocks/mockProjectData";
+import BackToListButton from "@/components/detail/SCBackToListButton";
+import KebabMenu from "@/components/detail/CCKebabMenu";
+import ShareButton from "@/components/detail/CCShareButton";
 
 interface ProjectDetailPageProps {
   params: Promise<{ id: string }>;
 }
 
-const getProjectById = async (
-  id: string
-): Promise<ProjectMaterial | undefined> => {
-  const projects = await getProjectMaterials();
+const getProjectById = (id: string): ProjectMaterial | undefined => {
+  const projects = getProjectMaterials();
   return projects.find((p) => p.id === id);
 };
 
@@ -25,7 +24,7 @@ export async function generateMetadata({
   params,
 }: ProjectDetailPageProps): Promise<Metadata> {
   const resolvedParams = await params;
-  const project = await getProjectById(resolvedParams.id);
+  const project = getProjectById(resolvedParams.id);
 
   if (!project) {
     return { title: "프로젝트를 찾을 수 없음" };
@@ -103,7 +102,8 @@ export default async function ProjectDetailPage({
   params,
 }: ProjectDetailPageProps) {
   const resolvedParams = await params;
-  const project = await getProjectById(resolvedParams.id);
+  const id = parseInt(resolvedParams.id, 10);
+  const project = getProjectById(resolvedParams.id);
 
   if (!project) {
     notFound();
@@ -112,22 +112,16 @@ export default async function ProjectDetailPage({
   return (
     <div className="mx-auto max-w-full bg-white">
       {/* 뒤로가기 버튼 */}
-      <Link
-        href="/project"
-        className="mb-8 inline-flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-red-600"
-      >
-        <ArrowLeft className="w-4 h-4" />
-        목록으로 돌아가기
-      </Link>
-
+      <BackToListButton currentUrl="project" />
       <article>
         {/* 프로젝트 이미지 */}
-        <div className="relative h-96 mb-8 bg-gradient-to-br from-purple-400 to-indigo-600 overflow-hidden rounded-lg">
+        <div className="relative h-96 mb-8 bg-gradient-to-br from-purple-400 to-indigo-600 overflow-hidden mt-6 rounded-lg">
           {project.image ? (
-            <img
+            <Image
               src={project.image}
               alt={project.title}
               className="w-full h-full object-cover"
+              fill
             />
           ) : (
             <div className="w-full h-full bg-gradient-to-br from-red-400 to-primary flex items-center justify-center">
@@ -150,7 +144,7 @@ export default async function ProjectDetailPage({
         </div>
 
         {/* 헤더 */}
-        <header className="mb-8 border-b pb-6">
+        <header className=" border-b pb-6">
           <div className="flex flex-wrap gap-2 mb-4">
             {project.customTags.map((tag, index) => (
               <span
@@ -190,7 +184,7 @@ export default async function ProjectDetailPage({
           </div>
 
           {/* 프로젝트 기간 및 참가 정보 */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-gray-50 rounded-lg">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-gray-100 rounded-lg">
             <div>
               <h4 className="font-semibold text-gray-700 mb-1">
                 프로젝트 기간
@@ -205,20 +199,15 @@ export default async function ProjectDetailPage({
                 {project.currentParticipants} / {project.maxParticipants}명
               </p>
             </div>
-            {project.stars && (
-              <div>
-                <h4 className="font-semibold text-gray-700 mb-1">
-                  GitHub Stars
-                </h4>
-                <p className="text-sm text-gray-600">⭐ {project.stars}</p>
-              </div>
-            )}
           </div>
         </header>
 
         {/* 본문 */}
-        <div className="prose prose-lg max-w-none mb-8">
-          <h2>프로젝트 소개</h2>
+        <div className="mt-16  max-w-none mb-8">
+          <div className="flex items-center justify-between mb-4  ">
+            <h2 className="text-3xl font-bold">프로젝트 소개</h2>
+            <KebabMenu currentId={id} currentUrl="project" />
+          </div>
           <p className="text-lg leading-relaxed">{project.description}</p>
         </div>
 
@@ -280,7 +269,7 @@ export default async function ProjectDetailPage({
 
         {/* 외부 문서/링크 섹션 */}
         {project.externalLinks && project.externalLinks.length > 0 && (
-          <div className="mb-8">
+          <div className="mb-8 flex justify-between">
             <div className="flex flex-wrap gap-3">
               {project.externalLinks.map((link, idx) => (
                 <a
@@ -295,6 +284,7 @@ export default async function ProjectDetailPage({
                 </a>
               ))}
             </div>
+            <ShareButton></ShareButton>
           </div>
         )}
       </article>
