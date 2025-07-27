@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import DefaultButton from "@/components/ui/defaultButton";
-import { Calendar, ChevronDown } from "lucide-react";
+import { Info, ChevronDown } from "lucide-react";
 import TagInput from "@/components/write/CCTagInput";
 import FileUpload from "@/components/write/CCFileUpload";
 import MarkdownEditor from "@/components/write/CCMarkdownEditor";
@@ -10,15 +10,17 @@ import { mockBoardData } from "@/mocks/mockBoardData";
 import { mockBoardDetailData } from "@/mocks/mockBoardDetailData";
 import { mockBlogPosts } from "@/mocks/blogData";
 import { mockStudyDetailData } from "@/mocks/mockStudyDetailData";
+import { getProjectMaterials } from "@/mocks/mockProjectData";
 
 interface EditFormProps {
-  type: "board" | "blog" | "study";
+  type: "board" | "blog" | "study" | "project";
   dataId: number;
 }
 
 export default function EditForm({ type, dataId }: EditFormProps) {
   const router = useRouter();
   const [title, setTitle] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
   const [content, setContent] = useState<string>("");
   const [category, setCategory] = useState<string>("");
   const [tags, setTags] = useState<string[]>([]);
@@ -29,6 +31,14 @@ export default function EditForm({ type, dataId }: EditFormProps) {
   const [isCategoryOpen, setIsCategoryOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const categoryRef = useRef<HTMLDivElement>(null);
+
+  // 프로젝트 전용 필드들
+  const [githubUrl, setGithubUrl] = useState<string>("");
+  const [demoUrl, setDemoUrl] = useState<string>("");
+  const [externalLinks, setExternalLinks] = useState<
+    { label: string; url: string }[]
+  >([]);
+  const [projectImage, setProjectImage] = useState<File | null>(null);
 
   // 초기 데이터 로드
   useEffect(() => {
@@ -79,17 +89,42 @@ export default function EditForm({ type, dataId }: EditFormProps) {
               maxParticipants: String(studyData.maxParticipants || ""),
             };
           }
+        } else if (type === "project") {
+          const projectData = getProjectMaterials().find(
+            (item) => item.id === dataId.toString()
+          );
+          if (projectData) {
+            initialData = {
+              title: projectData.title,
+              description: projectData.description,
+              content: projectData.description, // 프로젝트는 description을 content로 사용
+              category: projectData.category,
+              tags: projectData.customTags?.map((tag) => tag.name) || [],
+              attachments: projectData.attachedFiles || [],
+              startDate: projectData.startDate,
+              endDate: projectData.endDate || "",
+              maxParticipants: String(projectData.maxParticipants || ""),
+              githubUrl: projectData.githubUrl || "",
+              demoUrl: projectData.demoUrl || "",
+              externalLinks: projectData.externalLinks || [],
+            };
+          }
         }
+
         // 초기 데이터가 존재하면 state 설정
         if (initialData) {
           setTitle(initialData.title || "");
+          setDescription(initialData.description || "");
           setContent(initialData.content || "");
           setCategory(initialData.category || "");
           setTags(initialData.tags || []);
-          setAttachments(initialData.attachments || []); // 향후 타입 수정
+          setAttachments(initialData.attachments || []);
           setStartDate(initialData.startDate || "");
           setEndDate(initialData.endDate || "");
           setMaxParticipants(initialData.maxParticipants || "");
+          setGithubUrl(initialData.githubUrl || "");
+          setDemoUrl(initialData.demoUrl || "");
+          setExternalLinks(initialData.externalLinks || []);
         }
       } catch (error) {
         console.error("데이터 로드 실패:", error);
@@ -132,9 +167,71 @@ export default function EditForm({ type, dataId }: EditFormProps) {
           "네트워크 보안",
           "기타",
         ];
+      case "project":
+        return [
+          "웹 보안",
+          "모의해킹",
+          "암호학",
+          "디지털 포렌식",
+          "네트워크 보안",
+          "기타",
+        ];
       default:
         return [];
     }
+  };
+
+  const getDescriptionPlaceholder = () => {
+    switch (type) {
+      case "board":
+        return "게시글에 대한 간단한 설명을 입력하세요...";
+      case "blog":
+        return "블로그 포스트에 대한 간단한 설명을 입력하세요...";
+      case "study":
+        return "스터디 목표, 진행 방식, 준비물 등에 대한 설명을 입력하세요...";
+      case "project":
+        return "프로젝트 목표, 필요 기술, 역할 분담 등에 대한 설명을 입력하세요...";
+      default:
+        return "간단한 설명을 입력하세요...";
+    }
+  };
+
+  const addExternalLink = () => {
+    setExternalLinks([...externalLinks, { label: "", url: "" }]);
+  };
+
+  const updateExternalLink = (index: number, field: string, value: string) => {
+    const updated = externalLinks.map((link, i) =>
+      i === index ? { ...link, [field]: value } : link
+    );
+    setExternalLinks(updated);
+  };
+
+  const removeExternalLink = (index: number) => {
+    setExternalLinks(externalLinks.filter((_, i) => i !== index));
+  };
+
+  const getPeriodPolicyInfo = () => {
+    if (type === "study") {
+      return {
+        title: "스터디 기간 정책",
+        items: [
+          "스터디: 1주 ~ 2개월 수행 가능",
+          "2주 이하: 모든 주제 가능 (운동, 노래, 시험공부 등)",
+          "2주 이상: 보안 또는 컴퓨터 관련 주제만 가능",
+        ],
+      };
+    } else if (type === "project") {
+      return {
+        title: "프로젝트 기간 정책",
+        items: [
+          "프로젝트: 2주 ~ 6개월 수행 가능",
+          "모든 프로젝트는 보안 또는 컴퓨터 관련 주제만 가능",
+          "장기 프로젝트의 경우 중간 점검이 있을 수 있습니다",
+        ],
+      };
+    }
+    return null;
   };
 
   const handleSubmit = async () => {
@@ -143,30 +240,41 @@ export default function EditForm({ type, dataId }: EditFormProps) {
       const updateData = {
         id: dataId,
         title,
+        ...(type === "project" && { description }),
         content,
         category,
         tags,
-        ...(type === "study" && {
+        ...((type === "study" || type === "project") && {
           startDate,
           endDate,
           maxParticipants: maxParticipants
             ? parseInt(maxParticipants)
             : undefined,
         }),
+        ...(type === "project" && {
+          githubUrl,
+          demoUrl,
+          externalLinks: externalLinks.filter((link) => link.label && link.url),
+          projectImage,
+        }),
       };
 
-      // api ...
       console.log("수정 데이터:", updateData);
       router.push(`/${type}/${dataId}`);
     } catch (error) {
       console.error("수정 실패:", error);
-      // 에러 처리
     }
   };
 
   const handleCancel = () => {
-    // api ...
     router.push(`/${type}/${dataId}`);
+  };
+
+  const isFormValid = () => {
+    const baseValid = title.trim() && content.trim() && category;
+    const dateValid =
+      type === "study" || type === "project" ? startDate && endDate : true;
+    return baseValid && dateValid;
   };
 
   // 로딩 중일 때 표시
@@ -181,6 +289,7 @@ export default function EditForm({ type, dataId }: EditFormProps) {
 
   return (
     <div className="space-y-6">
+      {/* 제목 */}
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
           제목 *
@@ -195,6 +304,25 @@ export default function EditForm({ type, dataId }: EditFormProps) {
         />
       </div>
 
+      {/* 설명란 */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          설명
+        </label>
+        <textarea
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          rows={2}
+          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent resize-none"
+          placeholder={getDescriptionPlaceholder()}
+        />
+        <p className="text-xs text-gray-500 mt-1">
+          선택사항이지만, 다른 사용자들이 내용을 빠르게 파악할 수 있도록
+          도와줍니다.
+        </p>
+      </div>
+
+      {/* 카테고리 및 최대 참가자 수 */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="relative" ref={categoryRef}>
           <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -204,7 +332,7 @@ export default function EditForm({ type, dataId }: EditFormProps) {
             <button
               type="button"
               onClick={() => setIsCategoryOpen(!isCategoryOpen)}
-              className="flex h-10 w-full items-center justify-between rounded-md border border-gray-300 bg-white px-3 py-2 text-sm transition-colors focus:outline-none focus:ring-1 focus:ring-cert-red "
+              className="flex h-10 w-full items-center justify-between rounded-md border border-gray-300 bg-white px-3 py-2 text-sm transition-colors focus:outline-none focus:ring-1 focus:ring-cert-red"
             >
               <span className={category ? "text-gray-900" : "text-gray-500"}>
                 {category || "카테고리 선택"}
@@ -217,7 +345,7 @@ export default function EditForm({ type, dataId }: EditFormProps) {
             </button>
 
             {isCategoryOpen && (
-              <div className="absolute z-50 mt-1 w-full rounded-md border border-gray-200 bg-white shadow-lg animate-in fade-in-0 ">
+              <div className="absolute z-50 mt-1 w-full rounded-md border border-gray-200 bg-white shadow-lg animate-in fade-in-0">
                 <div className="max-h-60 overflow-auto p-1">
                   {getCategories().map((categoryItem) => (
                     <button
@@ -227,7 +355,7 @@ export default function EditForm({ type, dataId }: EditFormProps) {
                         setCategory(categoryItem);
                         setIsCategoryOpen(false);
                       }}
-                      className="relative flex w-full cursor-pointer select-none items-center rounded-sm py-2 px-2 text-sm outline-none transition-colors hover:bg-cert-red hover:text-white focus:bg-cert-red focus:text-white "
+                      className="relative flex w-full cursor-pointer select-none items-center rounded-sm py-2 px-2 text-sm outline-none transition-colors hover:bg-cert-red hover:text-white focus:bg-cert-red focus:text-white"
                     >
                       <span className="truncate">{categoryItem}</span>
                     </button>
@@ -237,7 +365,8 @@ export default function EditForm({ type, dataId }: EditFormProps) {
             )}
           </div>
         </div>
-        {type === "study" && (
+
+        {(type === "study" || type === "project") && (
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               최대 참가자 수
@@ -249,14 +378,119 @@ export default function EditForm({ type, dataId }: EditFormProps) {
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
               placeholder="최대 참가자 수"
               min="1"
-              max="20"
+              max={type === "study" ? "20" : "10"}
             />
           </div>
         )}
       </div>
 
-      {/* 스터디 기간 */}
-      {type === "study" && (
+      {/* 프로젝트 이미지 업로드 */}
+      {type === "project" && (
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            프로젝트 대표 이미지
+          </label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setProjectImage(e.target.files?.[0] || null)}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
+          />
+          <p className="text-xs text-gray-500 mt-1">
+            새 이미지를 선택하지 않으면 기존 이미지가 유지됩니다.
+          </p>
+        </div>
+      )}
+
+      {/* GitHub URL 및 Demo URL (프로젝트 전용) */}
+      {type === "project" && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              GitHub 저장소 URL
+            </label>
+            <input
+              type="url"
+              value={githubUrl}
+              onChange={(e) => setGithubUrl(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
+              placeholder="https://github.com/username/repository"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              데모 사이트 URL
+            </label>
+            <input
+              type="url"
+              value={demoUrl}
+              onChange={(e) => setDemoUrl(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
+              placeholder="https://your-demo-site.com"
+            />
+          </div>
+        </div>
+      )}
+
+      {/* 외부 링크 섹션 (프로젝트 전용) */}
+      {type === "project" && (
+        <div>
+          <div className="flex items-center justify-between mb-2">
+            <label className="block text-sm font-medium text-gray-700">
+              외부 문서/링크
+            </label>
+            <button
+              type="button"
+              onClick={addExternalLink}
+              className="px-3 py-1 text-sm bg-cert-red text-white rounded hover:bg-red-700 transition-colors"
+            >
+              + 링크 추가
+            </button>
+          </div>
+          <div className="space-y-3">
+            {externalLinks.map((link, index) => (
+              <div key={index} className="flex gap-2 items-end">
+                <div className="flex-1">
+                  <input
+                    type="text"
+                    value={link.label}
+                    onChange={(e) =>
+                      updateExternalLink(index, "label", e.target.value)
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
+                    placeholder="링크 제목"
+                  />
+                </div>
+                <div className="flex-1">
+                  <input
+                    type="url"
+                    value={link.url}
+                    onChange={(e) =>
+                      updateExternalLink(index, "url", e.target.value)
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
+                    placeholder="https://..."
+                  />
+                </div>
+                <button
+                  type="button"
+                  onClick={() => removeExternalLink(index)}
+                  className="px-3 py-2 text-red-600 hover:text-red-800"
+                >
+                  ✕
+                </button>
+              </div>
+            ))}
+          </div>
+          <p className="text-xs text-gray-500 mt-1">
+            노션, 구글 독스, 피그마 등의 외부 문서나 관련 링크를 추가할 수
+            있습니다.
+          </p>
+        </div>
+      )}
+
+      {/* 스터디 및 프로젝트 기간 */}
+      {(type === "study" || type === "project") && (
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
@@ -285,15 +519,18 @@ export default function EditForm({ type, dataId }: EditFormProps) {
             </div>
           </div>
 
+          {/* 기간 정책 안내 */}
           <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
             <div className="flex items-start gap-2">
-              <Calendar className="w-5 h-5 text-blue-600 mt-0.5" />
+              <Info className="w-5 h-5 text-blue-600 mt-0.5" />
               <div className="text-sm text-blue-800">
-                <p className="font-medium mb-1">스터디 기간 정책</p>
+                <p className="font-medium mb-1">
+                  {getPeriodPolicyInfo()?.title}
+                </p>
                 <ul className="space-y-1 text-xs">
-                  <li>• 스터디: 1주 ~ 2개월 수행 가능</li>
-                  <li>• 2주 이하: 모든 주제 가능 (운동, 노래, 시험공부 등)</li>
-                  <li>• 2주 이상: 보안 또는 컴퓨터 관련 주제만 가능</li>
+                  {getPeriodPolicyInfo()?.items.map((item, index) => (
+                    <li key={index}>• {item}</li>
+                  ))}
                 </ul>
               </div>
             </div>
@@ -309,7 +546,8 @@ export default function EditForm({ type, dataId }: EditFormProps) {
         <TagInput tags={tags} setTags={setTags} />
       </div>
 
-      {(type === "study" || type === "board") && (
+      {/* 파일 업로드 */}
+      {(type === "study" || type === "board" || type === "project") && (
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
             첨부 파일
@@ -334,15 +572,7 @@ export default function EditForm({ type, dataId }: EditFormProps) {
         <DefaultButton variant="outline" onClick={handleCancel}>
           취소
         </DefaultButton>
-        <DefaultButton
-          onClick={handleSubmit}
-          disabled={
-            !title.trim() ||
-            !content.trim() ||
-            !category ||
-            (type === "study" && (!startDate || !endDate))
-          }
-        >
+        <DefaultButton onClick={handleSubmit} disabled={!isFormValid()}>
           수정하기
         </DefaultButton>
       </div>
