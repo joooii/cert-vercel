@@ -1,8 +1,12 @@
 "use client";
 
-import { useState, useTransition, useRef, useCallback, useEffect } from "react";
+import { useState, useTransition, useRef, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Search, ChevronDown, Plus } from "lucide-react";
+import { ChevronDown, Plus, X } from "lucide-react";
+import DefaultSearchBar from "@/components/ui/defaultSearchBar";
+import SearchSVG from "/public/icons/search.svg";
+import { useEffect } from "react";
+
 import type {
   StudyFilterProps,
   FilterKey,
@@ -89,35 +93,31 @@ export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       const target = e.target as Node;
-
       if (
         semesterRef.current?.contains(target) ||
         techniqueRef.current?.contains(target) ||
         statusRef.current?.contains(target)
       ) {
-        return; // 내부 클릭이면 무시
+        return;
       }
-
-      // 외부 클릭이면 닫기
       closeAllDropdowns();
     };
-
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [closeAllDropdowns]);
 
   return (
     <div className="mb-4">
-      {/* 검색바 */}
-      <div className="mb-4">
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-          <input
-            type="text"
-            placeholder="제목, 내용, 작성자로 검색하세요..."
+      {/* 검색바와 필터들을 한 줄로 배치 */}
+      <div className="flex gap-3 mb-4">
+        {/* 검색바 */}
+        <div className="flex-1 relative">
+          <SearchSVG className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+          <DefaultSearchBar
+            placeholder="스터디 제목, 설명, 작성자로 검색하세요..."
             defaultValue={currentFilters.search}
             onChange={handleSearchChange}
-            className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg bg-white text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-red-500 focus:border-transparent"
+            className="pl-10 w-full"
           />
           {isPending && (
             <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
@@ -125,12 +125,9 @@ export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
             </div>
           )}
         </div>
-      </div>
 
-      {/* 필터 그리드 */}
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
         {/* 학기별 필터 */}
-        <div className="relative" ref={semesterRef}>
+        <div className="relative min-w-36" ref={semesterRef}>
           <button
             type="button"
             onClick={() => {
@@ -138,7 +135,7 @@ export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
               setShowTechniqueDropdown(false);
               setShowStatusDropdown(false);
             }}
-            className="w-full flex items-center justify-between px-3 py-3 border border-gray-300 rounded-lg bg-white hover:bg-gray-50 focus:ring-2 focus:ring-red-500 transition-colors text-sm"
+            className="w-full flex items-center justify-between h-10 px-3 py-2 border border-gray-300 rounded-md bg-white hover:bg-gray-50 focus:ring-2 focus:ring-red-500 transition-colors text-sm"
           >
             <span className="text-gray-700 truncate pr-1">
               {SEMESTER_LABELS[currentFilters.semester]}
@@ -169,7 +166,7 @@ export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
           )}
         </div>
         {/* 기법 필터 */}
-        <div className="relative" ref={techniqueRef}>
+        <div className="relative min-w-36" ref={techniqueRef}>
           <button
             type="button"
             onClick={() => {
@@ -177,7 +174,7 @@ export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
               setShowSemesterDropdown(false);
               setShowStatusDropdown(false);
             }}
-            className="w-full flex items-center justify-between px-3 py-3 border border-gray-300 rounded-lg bg-white hover:bg-gray-50 focus:ring-2 focus:ring-red-500 transition-colors text-sm"
+            className="w-full flex items-center justify-between h-10 px-3 py-2 border border-gray-300 rounded-md bg-white hover:bg-gray-50 focus:ring-2 focus:ring-red-500 transition-colors text-sm"
           >
             <span className="text-gray-700 truncate pr-1">
               {TECHNIQUE_LABELS[currentFilters.technique]}
@@ -208,7 +205,7 @@ export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
         </div>
 
         {/* 상태 필터 */}
-        <div className="relative" ref={statusRef}>
+        <div className="relative min-w-36" ref={statusRef}>
           <button
             type="button"
             onClick={() => {
@@ -216,7 +213,7 @@ export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
               setShowSemesterDropdown(false);
               setShowTechniqueDropdown(false);
             }}
-            className="w-full flex items-center justify-between px-3 py-3 border border-gray-300 rounded-lg bg-white hover:bg-gray-50 focus:ring-2 focus:ring-red-500 transition-colors text-sm"
+            className="w-full flex items-center justify-between h-10 px-3 py-2 border border-gray-300 rounded-md bg-white hover:bg-gray-50 focus:ring-2 focus:ring-red-500 transition-colors text-sm"
           >
             <span className="text-gray-700 truncate pr-1">
               {STATUS_LABELS[currentFilters.status]}
@@ -249,10 +246,10 @@ export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
         {/* 서버 컴포넌트 분리 필요해 보임 */}
         <Link
           href={"/study/write"}
-          className="inline-flex items-center justify-center gap-4 px-6 text-white rounded-md action-button"
+          className="inline-flex items-center justify-center gap-2 px-6 h-10 text-white rounded-md action-button whitespace-nowrap"
         >
           <Plus className="w-4 h-4" />
-          <span>스터디 생성</span>
+          <span>새 스터디 생성</span>
         </Link>
       </div>
 
@@ -266,7 +263,7 @@ export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
               onClick={() => updateFilter("search", "")}
               className="ml-2 inline-flex items-center justify-center w-4 h-4 rounded-full hover:bg-purple-200"
             >
-              ×
+              <X className="w-3" />
             </button>
           </span>
         )}
@@ -278,7 +275,7 @@ export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
               onClick={() => updateFilter("semester", "all")}
               className="ml-2 inline-flex items-center justify-center w-4 h-4 rounded-full hover:bg-red-200"
             >
-              ×
+              <X className="w-3" />
             </button>
           </span>
         )}
@@ -290,7 +287,7 @@ export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
               onClick={() => updateFilter("technique", "all")}
               className="ml-2 inline-flex items-center justify-center w-4 h-4 rounded-full hover:bg-blue-200"
             >
-              ×
+              <X className="w-3" />
             </button>
           </span>
         )}
@@ -302,7 +299,7 @@ export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
               onClick={() => updateFilter("status", "all")}
               className="ml-2 inline-flex items-center justify-center w-4 h-4 rounded-full hover:bg-green-200"
             >
-              ×
+              <X className="w-3" />
             </button>
           </span>
         )}
