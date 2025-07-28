@@ -9,7 +9,9 @@ export default function NewPageModal({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     // 컴포넌트 마운트 시 애니메이션 시작
-    setIsVisible(true);
+    setTimeout(() => {
+      setIsVisible(true);
+    }, 100); // 애니메이션 딜레이 (painting issue 방지)
 
     // ESC 키 처리
     const handleEsc = (e: KeyboardEvent) => {

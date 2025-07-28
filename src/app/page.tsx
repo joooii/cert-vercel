@@ -87,7 +87,9 @@ const Home = () => {
               text={
                 "실제 시스템 취약점 분석과 모의해킹을 통한 보안 강화 기법을 학습합니다"
               }
-              svgComponent={<ShieldSVG width={64} />}
+              svgComponent={
+                <ShieldSVG width={64} className="text-cert-dark-red" />
+              }
             />
             <DefaultCard
               title={"Cryptography"}
