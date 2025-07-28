@@ -17,7 +17,7 @@ interface HamburgerMenuProps {
 }
 
 export default function HamburgerMenu({ navBarList }: HamburgerMenuProps) {
-  const [isOpen, setIsOpen] = useState<boolean>(true);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isClosing, setIsClosing] = useState<boolean>(false);
   const pathname = usePathname();
 
