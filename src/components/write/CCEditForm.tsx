@@ -11,9 +11,16 @@ import { mockBoardDetailData } from "@/mocks/mockBoardDetailData";
 import { mockBlogPosts } from "@/mocks/blogData";
 import { mockStudyDetailData } from "@/mocks/mockStudyDetailData";
 import { getProjectMaterials } from "@/mocks/mockProjectData";
+import { NewPageCategoryType } from "@/types/newPageForm";
+import {
+  getCategories,
+  getPeriodPolicyInfo,
+  getDescriptionPlaceholder,
+  isFormValid,
+} from "@/utils/newPageFormUtils";
 
 interface EditFormProps {
-  type: "board" | "blog" | "study" | "project";
+  type: NewPageCategoryType;
   dataId: number;
 }
 
@@ -152,50 +159,6 @@ export default function EditForm({ type, dataId }: EditFormProps) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const getCategories = () => {
-    switch (type) {
-      case "board":
-        return ["공지사항", "보안이슈", "기술자료", "스터디", "프로젝트"];
-      case "blog":
-        return ["개발", "학습", "활동", "가이드", "디자인"];
-      case "study":
-        return [
-          "웹 보안",
-          "모의해킹",
-          "암호학",
-          "디지털 포렌식",
-          "네트워크 보안",
-          "기타",
-        ];
-      case "project":
-        return [
-          "웹 보안",
-          "모의해킹",
-          "암호학",
-          "디지털 포렌식",
-          "네트워크 보안",
-          "기타",
-        ];
-      default:
-        return [];
-    }
-  };
-
-  const getDescriptionPlaceholder = () => {
-    switch (type) {
-      case "board":
-        return "게시글에 대한 간단한 설명을 입력하세요...";
-      case "blog":
-        return "블로그 포스트에 대한 간단한 설명을 입력하세요...";
-      case "study":
-        return "스터디 목표, 진행 방식, 준비물 등에 대한 설명을 입력하세요...";
-      case "project":
-        return "프로젝트 목표, 필요 기술, 역할 분담 등에 대한 설명을 입력하세요...";
-      default:
-        return "간단한 설명을 입력하세요...";
-    }
-  };
-
   const addExternalLink = () => {
     setExternalLinks([...externalLinks, { label: "", url: "" }]);
   };
@@ -209,29 +172,6 @@ export default function EditForm({ type, dataId }: EditFormProps) {
 
   const removeExternalLink = (index: number) => {
     setExternalLinks(externalLinks.filter((_, i) => i !== index));
-  };
-
-  const getPeriodPolicyInfo = () => {
-    if (type === "study") {
-      return {
-        title: "스터디 기간 정책",
-        items: [
-          "스터디: 1주 ~ 2개월 수행 가능",
-          "2주 이하: 모든 주제 가능 (운동, 노래, 시험공부 등)",
-          "2주 이상: 보안 또는 컴퓨터 관련 주제만 가능",
-        ],
-      };
-    } else if (type === "project") {
-      return {
-        title: "프로젝트 기간 정책",
-        items: [
-          "프로젝트: 2주 ~ 6개월 수행 가능",
-          "모든 프로젝트는 보안 또는 컴퓨터 관련 주제만 가능",
-          "장기 프로젝트의 경우 중간 점검이 있을 수 있습니다",
-        ],
-      };
-    }
-    return null;
   };
 
   const handleSubmit = async () => {
@@ -268,13 +208,6 @@ export default function EditForm({ type, dataId }: EditFormProps) {
 
   const handleCancel = () => {
     router.push(`/${type}/${dataId}`);
-  };
-
-  const isFormValid = () => {
-    const baseValid = title.trim() && content.trim() && category;
-    const dateValid =
-      type === "study" || type === "project" ? startDate && endDate : true;
-    return baseValid && dateValid;
   };
 
   // 로딩 중일 때 표시
@@ -314,7 +247,7 @@ export default function EditForm({ type, dataId }: EditFormProps) {
           onChange={(e) => setDescription(e.target.value)}
           rows={2}
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent resize-none"
-          placeholder={getDescriptionPlaceholder()}
+          placeholder={getDescriptionPlaceholder(type)}
         />
         <p className="text-xs text-gray-500 mt-1">
           선택사항이지만, 다른 사용자들이 내용을 빠르게 파악할 수 있도록
@@ -347,7 +280,7 @@ export default function EditForm({ type, dataId }: EditFormProps) {
             {isCategoryOpen && (
               <div className="absolute z-50 mt-1 w-full rounded-md border border-gray-200 bg-white shadow-lg animate-in fade-in-0">
                 <div className="max-h-60 overflow-auto p-1">
-                  {getCategories().map((categoryItem) => (
+                  {getCategories(type).map((categoryItem) => (
                     <button
                       key={categoryItem}
                       type="button"
@@ -525,10 +458,10 @@ export default function EditForm({ type, dataId }: EditFormProps) {
               <Info className="w-5 h-5 text-blue-600 mt-0.5" />
               <div className="text-sm text-blue-800">
                 <p className="font-medium mb-1">
-                  {getPeriodPolicyInfo()?.title}
+                  {getPeriodPolicyInfo(type)?.title}
                 </p>
                 <ul className="space-y-1 text-xs">
-                  {getPeriodPolicyInfo()?.items.map((item, index) => (
+                  {getPeriodPolicyInfo(type)?.items.map((item, index) => (
                     <li key={index}>• {item}</li>
                   ))}
                 </ul>
@@ -572,7 +505,20 @@ export default function EditForm({ type, dataId }: EditFormProps) {
         <DefaultButton variant="outline" onClick={handleCancel}>
           취소
         </DefaultButton>
-        <DefaultButton onClick={handleSubmit} disabled={!isFormValid()}>
+        <DefaultButton
+          onClick={handleSubmit}
+          disabled={
+            !isFormValid(
+              title,
+              content,
+              category,
+              type,
+              maxParticipants,
+              startDate,
+              endDate
+            )
+          }
+        >
           수정하기
         </DefaultButton>
       </div>
