@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useMemo } from "react";
 import type { StudySearchParams } from "@/types/study";
-import { createPageUrl } from "@/utils/study/studyHelper";
+import { createPageUrl } from "@/utils/studyHelper";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface CCStudyPaginationProps {

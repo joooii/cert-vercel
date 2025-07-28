@@ -1,4 +1,4 @@
-import { NewPageCategoryType, NewPageFormData } from "@/types/newPageForm";
+import { NewPageCategoryType } from "@/types/newPageForm";
 
 // type에 따라 목록을 반환하는 함수
 export const getCategories = (type: NewPageCategoryType) => {
