@@ -44,9 +44,9 @@ const NavigationBar = () => {
           <div className="hidden md:flex flex-row items-center">
             <NavBarItems navBarList={navBarList} />
             <div className="pl-6 ml-2 border-l border-gray-300">
-              <BugReport />
+              <BugReport className="text-sm" />
             </div>
-            <LoginButton className="" />
+            <LoginButton className="text-sm" />
           </div>
 
           {/* 모바일 메뉴 */}

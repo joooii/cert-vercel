@@ -17,32 +17,38 @@ interface HamburgerMenuProps {
 }
 
 export default function HamburgerMenu({ navBarList }: HamburgerMenuProps) {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState<boolean>(true);
+  const [isClosing, setIsClosing] = useState<boolean>(false);
   const pathname = usePathname();
+
+  const handleClose = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      setIsOpen(false);
+      setIsClosing(false);
+    }, 300);
+  };
 
   return (
     <>
-      {isOpen && (
-        <div
-          className="fixed w-screen md:hidden bg-black/50 top-16 left-0 right-0 h-[calc(100vh)]"
-          onClick={() => setIsOpen(false)}
-        />
-      )}
-
       <div className="flex md:hidden relative z-10">
         <DefaultButton
           variant="ghost"
           size="sm"
-          onClick={() => setIsOpen(!isOpen)}
+          onClick={() => (isOpen ? handleClose() : setIsOpen(true))}
           className="text-gray-900 p-2 transition-all duration-300 hover:text-cert-dark-red hover:bg-cert-dark-red/5"
         >
           {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </DefaultButton>
       </div>
 
-      <div className="fixed left-0 top-16 w-full z-5 md:hidden animate-slide-in border-b border-gray-200">
-        {isOpen && (
-          <div className="px-4 pt-3 pb-5 space-y-1 border-t text-center border-gray-200 bg-white transition-colors duration-300">
+      {isOpen && (
+        <div
+          className={`fixed left-0 top-16 w-full h-screen z-50 md:hidden bg-white ${
+            isClosing ? "animate-slide-out" : "animate-slide-in"
+          }`}
+        >
+          <div className="px-4 pt-3 pb-5 space-y-2 border-t text-center border-gray-200 bg-white h-full transition-colors duration-300">
             {navBarList.map((item) => (
               <Link
                 key={item.name}
@@ -51,21 +57,24 @@ export default function HamburgerMenu({ navBarList }: HamburgerMenuProps) {
                   pathname === item.href
                     ? "text-cert-dark-red bg-cert-dark-red/5 shadow-lg"
                     : "text-gray-900"
-                } 
+                }
                 `}
-                onClick={() => setIsOpen(false)}
+                onClick={handleClose}
               >
                 {item.name}
               </Link>
             ))}
             <div className="border-t border-gray-300 mt-4 mx-6" />
-            <div className="grid grid-cols-2 items-center justify-center mt-4 px-12 gap-2">
-              <BugReport className="w-full min-w-0 text-sm rounded-md flex items-center justify-center" />
-              <LoginButton className="w-full min-w-0 text-sm rounded-md flex items-center justify-center" />
+            <div className="grid grid-cols-2 items-center justify-center mt-6 px-12 gap-2">
+              <BugReport className="w-full h-10 min-w-0 text-md rounded-md flex items-center justify-center" />
+              <LoginButton
+                onClick={handleClose}
+                className="w-full h-10 min-w-0 text-md rounded-md flex items-center justify-center"
+              />
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </>
   );
 }
