@@ -5,15 +5,11 @@ import Link from "next/link";
 
 interface LoginButtonProps {
   className?: string;
-  onClick?: () => void;
 }
 
-export default function LoginButton({
-  className = "",
-  onClick,
-}: LoginButtonProps) {
+export default function LoginButton({ className = "" }: LoginButtonProps) {
   return (
-    <Link href="/login" onClick={onClick}>
+    <Link href="/login">
       <div
         className={`px-3 ml-4 text-white flex items-center bg-cert-dark-red py-1.5 group border border-cert-dark-red rounded-md transition-all duration-300 shadow-cert-navbar hover:shadow-lg hover:bg-cert-dark-red/80 hover:border-cert-dark-red ${className}`}
       >

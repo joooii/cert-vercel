@@ -5,7 +5,7 @@ import DefaultButton from "@/components/ui/defaultButton";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface NavItem {
   name: string;
@@ -28,6 +28,13 @@ export default function HamburgerMenu({ navBarList }: HamburgerMenuProps) {
       setIsClosing(false);
     }, 300);
   };
+
+  // pathname이 변경되면 메뉴 닫기 (로고 클릭이나 다른 링크 클릭 시)
+  useEffect(() => {
+    if (isOpen) {
+      handleClose();
+    }
+  }, [pathname]);
 
   return (
     <>
@@ -67,10 +74,7 @@ export default function HamburgerMenu({ navBarList }: HamburgerMenuProps) {
             <div className="border-t border-gray-300 mt-4 mx-6" />
             <div className="grid grid-cols-2 items-center justify-center mt-6 px-12 gap-2">
               <BugReport className="w-full h-10 min-w-0 text-md rounded-md flex items-center justify-center" />
-              <LoginButton
-                onClick={handleClose}
-                className="w-full h-10 min-w-0 text-md rounded-md flex items-center justify-center"
-              />
+              <LoginButton className="w-full h-10 min-w-0 text-md rounded-md flex items-center justify-center" />
             </div>
           </div>
         </div>
