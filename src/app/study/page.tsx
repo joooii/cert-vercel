@@ -3,7 +3,7 @@ import CCStudyFilter from "@/components/study/CCStudyFilter";
 import SCStudyContent from "@/components/study/SCStudyContent";
 import SCStudySkeleton from "@/components/study/SCStudySkeleton";
 import type { StudyPageProps, CurrentFilters } from "@/types/study";
-import { parseSearchParams } from "@/utils/study/studyHelper";
+import { parseSearchParams } from "@/utils/studyHelper";
 
 export default async function StudyPage({ searchParams }: StudyPageProps) {
   // 🚀 Next.js 15: searchParams를 await 해서 사용
