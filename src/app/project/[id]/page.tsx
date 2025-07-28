@@ -2,9 +2,8 @@ import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { ProjectMaterial } from "@/types/project";
 import AttachedFilesDownload from "@/components/project/SCAttachedFilesDownload";
-import { Globe, BookText } from "lucide-react";
+import { Globe, BookText,ArrowLeft } from "lucide-react";
 import Image from "next/image";
-
 import { getProjectMaterials } from "@/mocks/mockProjectData";
 import BackToListButton from "@/components/detail/SCBackToListButton";
 import KebabMenu from "@/components/detail/CCKebabMenu";
@@ -255,7 +254,7 @@ export default async function ProjectDetailPage({
             </a>
           )}
 
-          <button className="inline-flex items-center gap-2 px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
+          <button className="action-button inline-flex items-center gap-2 px-6 py-2">
             프로젝트 참가하기
           </button>
         </div>

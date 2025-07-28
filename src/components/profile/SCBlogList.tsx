@@ -9,6 +9,7 @@ import CommentSVG from "/public/icons/comment.svg";
 import { BlogCategoryType, ProfileBlogDataType } from "@/types/profile";
 import { getBlogCategoryColor } from "@/utils/profileUtils";
 import Link from "next/link";
+import { Plus } from "lucide-react";
 
 interface SCBlogListProps {
   searchParams: Promise<{
@@ -29,26 +30,20 @@ export default async function SCBlogList({
   return (
     <>
       {currentTab === "blog" && (
-        <div className="space-y-4 mt-6 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+        <div className="space-y-4 mt-8 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
           <div className="flex justify-between items-center">
             <h3 className="text-lg font-semibold text-gray-900 transition-colors duration-300">
               내가 작성한 블로그 포스트
             </h3>
             <Link href="/blog">
-              <DefaultButton
-                size="sm"
-                className="bg-red-600 hover:bg-red-700 text-white transition-all duration-300"
-              >
-                새 포스트 작성
+              <DefaultButton size="sm" className="transition-all duration-300">
+                <Plus className="w-4 h-4" />새 포스트 작성
               </DefaultButton>
             </Link>
           </div>
 
           {blogs.map((blog) => (
-            <div
-              key={blog.id}
-              className="rounded-lg border text-card-foreground shadow-sm hover:shadow-lg transition-all duration-300 bg-white border-gray-200 hover:border-red-300 dark:hover:border-red-500 group"
-            >
+            <div key={blog.id} className="card-list text-card-foreground group">
               <div className="flex flex-col space-y-1.5 p-6">
                 <div className="flex items-start justify-between">
                   <div>
@@ -58,7 +53,7 @@ export default async function SCBlogList({
                     <div className="flex items-center gap-4 mt-2 text-sm text-gray-600 transition-colors duration-300">
                       <span>{blog.date}</span>
                       <DefaultBadge
-                        className={`border-gray-200 text-gray-600 hover:text-gray-900 hover:border-red-300 transition-colors ${getBlogCategoryColor(
+                        className={`border-gray-200 text-gray-600 ${getBlogCategoryColor(
                           blog.category as BlogCategoryType
                         )}`}
                       >
@@ -78,15 +73,15 @@ export default async function SCBlogList({
               </div>
               <div className="p-6 pt-0">
                 <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400 transition-colors duration-300">
-                  <div className="flex items-center gap-1 hover:text-gray-900 dark:hover:text-gray-200 transition-colors">
+                  <div className="flex items-center gap-1">
                     <EyeSVG className="w-4 h-4" />
                     {blog.views}
                   </div>
-                  <div className="flex items-center gap-1 hover:text-red-600 dark:hover:text-red-400 transition-colors">
+                  <div className="flex items-center gap-1">
                     <ThumbsUpSVG />
                     {blog.likes}
                   </div>
-                  <div className="flex items-center gap-1 hover:text-red-600 dark:hover:text-red-400 transition-colors">
+                  <div className="flex items-center gap-1">
                     <CommentSVG className="stroke-gray-600" />
                     {blog.comments}
                   </div>

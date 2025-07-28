@@ -4,6 +4,7 @@ import DefaultButton from "@/components/ui/defaultButton";
 import { mockProfileData } from "@/mocks/mockProfileData";
 import { RefObject, useState } from "react";
 import Image from "next/image";
+import { X } from "lucide-react";
 
 interface ModalProps {
   closeModal: () => void;
@@ -17,7 +18,7 @@ export default function CCProfileModal({ closeModal, modalRef }: ModalProps) {
   return (
     <div
       ref={modalRef}
-      className="fixed inset-0 bg-black/80 flex justify-center items-center z-20 "
+      className="fixed inset-0 bg-cert-black/50  flex justify-center items-center z-20"
     >
       <div className="rounded-lg border bg-white border-gray-200 shadow-sm w-96 relative animate-pop-in">
         <div className="flex flex-col space-y-1.5 p-6 text-center pb-6">
@@ -26,7 +27,7 @@ export default function CCProfileModal({ closeModal, modalRef }: ModalProps) {
               onClick={closeModal}
               className="absolute top-4 right-4 text-md hover:bg-gray-100 w-8 h-8 rounded-full flex items-center justify-center"
             >
-              X
+              <X />
             </button>
             <p className="text-gray-900">프로필 수정</p>
             <p className="text-gray-500 text-sm">
@@ -106,7 +107,7 @@ export default function CCProfileModal({ closeModal, modalRef }: ModalProps) {
             <DefaultButton
               variant="outline"
               onClick={closeModal}
-              className="border-gray-300 text-gray-600 hover:border-red-400 hover:bg-cert-red/0 hover:text-red-600 "
+              className="border-gray-300 text-gray-600 hover:border-red-400 hover:bg-cert-red/0 hover:text-red-600"
             >
               취소
             </DefaultButton>
