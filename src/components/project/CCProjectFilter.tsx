@@ -82,7 +82,7 @@ export default function CCProjectFilter({
 
         <div className="flex flex-row flex-wrap gap-3">
           {/* 학기 필터 */}
-          <div className="relative min-w-36" ref={semesterRef}>
+          <div className="relative sm:min-w-36 min-w-30" ref={semesterRef}>
             <button
               type="button"
               onClick={() => {
@@ -122,7 +122,7 @@ export default function CCProjectFilter({
           </div>
 
           {/* 기법 필터 */}
-          <div className="relative min-w-36" ref={techniqueRef}>
+          <div className="relative sm:min-w-36 min-w-30" ref={techniqueRef}>
             <button
               type="button"
               onClick={() => {
@@ -161,7 +161,7 @@ export default function CCProjectFilter({
           </div>
 
           {/* 상태 필터 */}
-          <div className="relative min-w-36" ref={statusRef}>
+          <div className="relative sm:min-w-36 min-w-30" ref={statusRef}>
             <button
               type="button"
               onClick={() => {

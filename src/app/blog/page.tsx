@@ -89,8 +89,9 @@ export default async function BlogPage({
           <div className="bg-white rounded-lg mb-6">
             <div className="flex flex-col lg:flex-row gap-4 items-center">
               {/* 검색바 */}
-              <BlogSearchBar currentSearch={currentSearch} />
-
+              <div className="flex-1 w-full">
+                <BlogSearchBar currentSearch={currentSearch} />
+              </div>
               {/* 카테고리 필터 - 클라이언트 컴포넌트로 분리 */}
               <CCBlogCategoryFilter
                 currentCategory={currentCategory}
@@ -100,7 +101,7 @@ export default async function BlogPage({
               {/* 새 글 작성 버튼 */}
               <Link
                 href="/blog/write"
-                className="action-button inline-flex gap-2 px-4 py-2 whitespace-nowrap "
+                className="action-button inline-flex gap-2 px-4 py-2 whitespace-nowrap sm:w-auto w-full justify-center"
               >
                 <Plus className="w-4 h-4" />새 글 작성
               </Link>
