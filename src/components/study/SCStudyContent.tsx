@@ -9,7 +9,7 @@ import {
   getStatusColor,
   getProgressColor,
   parseSearchParams,
-} from "@/utils/study/studyHelper";
+} from "@/utils/studyHelper";
 import { downloadFile } from "@/actions/study/StudyDownloadFileServerAction";
 import { joinStudy } from "@/actions/study/StudyJoinServerAction";
 

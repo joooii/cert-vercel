@@ -2,18 +2,26 @@
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import DefaultButton from "@/components/ui/defaultButton";
-import { Calendar, ChevronDown } from "lucide-react";
+import { ChevronDown, Info } from "lucide-react";
 import TagInput from "@/components/write/CCTagInput";
 import FileUpload from "@/components/write/CCFileUpload";
 import MarkdownEditor from "./CCMarkdownEditor";
+import { NewPageCategoryType } from "@/types/newPageForm";
+import {
+  getCategories,
+  getPeriodPolicyInfo,
+  getDescriptionPlaceholder,
+  isFormValid,
+} from "@/utils/newPageFormUtils";
 
 interface WriteFormProps {
-  type: "board" | "blog" | "study" | "project";
+  type: NewPageCategoryType;
 }
 
 export default function WriteForm({ type }: WriteFormProps) {
   const router = useRouter();
   const [title, setTitle] = useState<string>("");
+  const [description, setDescription] = useState<string>(""); // 설명란 추가
   const [content, setContent] = useState<string>("");
   const [category, setCategory] = useState("");
   const [tags, setTags] = useState<string[]>([]);
@@ -22,7 +30,16 @@ export default function WriteForm({ type }: WriteFormProps) {
   const [endDate, setEndDate] = useState<string>("");
   const [maxParticipants, setMaxParticipants] = useState("");
   const [isCategoryOpen, setIsCategoryOpen] = useState<boolean>(false);
-  const categoryRef = useRef<HTMLDivElement>(null); // 컴포넌트 외부 클릭 감지 추가
+  const categoryRef = useRef<HTMLDivElement>(null);
+
+  // 프로젝트 전용 필드들
+  const [githubUrl, setGithubUrl] = useState<string>("");
+  const [demoUrl, setDemoUrl] = useState<string>("");
+  const [externalLinks, setExternalLinks] = useState<
+    { label: string; url: string; type?: string }[]
+  >([]);
+  const [projectImage, setProjectImage] = useState<File | null>(null);
+  const [semester, setSemester] = useState<string>("");
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -38,39 +55,53 @@ export default function WriteForm({ type }: WriteFormProps) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const getCategories = () => {
-    switch (type) {
-      case "board":
-        return ["공지사항", "보안이슈", "기술자료", "스터디", "프로젝트"];
-      case "blog":
-        return ["개발", "학습", "활동"];
-      case "study":
-        return [
-          "웹 보안",
-          "모의해킹",
-          "암호학",
-          "디지철 포렌식",
-          "네트워크 보안",
-          "기타",
-        ];
-      case "project":
-        return [
-          "웹 보안",
-          "모의해킹",
-          "암호학",
-          "디지철 포렌식",
-          "네트워크 보안",
-          "기타",
-        ];
-      default:
-        return [];
-    }
+  const addExternalLink = () => {
+    setExternalLinks([
+      ...externalLinks,
+      { label: "", url: "", type: "website" },
+    ]);
+  };
+
+  const updateExternalLink = (index: number, field: string, value: string) => {
+    const updated = externalLinks.map((link, i) =>
+      i === index ? { ...link, [field]: value } : link
+    );
+    setExternalLinks(updated);
+  };
+
+  const removeExternalLink = (index: number) => {
+    setExternalLinks(externalLinks.filter((_, i) => i !== index));
   };
 
   const handleSubmit = async () => {
+    // API 요청 시 description도 함께 전송
+    const submitData = {
+      title,
+      description,
+      content,
+      category,
+      tags,
+      attachments,
+      ...(type === "study" || type === "project" ? { startDate, endDate } : {}),
+      ...(type === "study" || type === "project" ? { maxParticipants } : {}),
+      ...(type === "project"
+        ? {
+            githubUrl,
+            demoUrl,
+            externalLinks: externalLinks.filter(
+              (link) => link.label && link.url
+            ),
+            projectImage,
+            semester,
+          }
+        : {}),
+    };
+
+    console.log("Submit data:", submitData);
+
     router.replace(`/${type}`);
     router.refresh();
-    // api 요청 ...
+    // API 요청 구현
   };
 
   const handleCancel = () => {
@@ -79,6 +110,7 @@ export default function WriteForm({ type }: WriteFormProps) {
 
   return (
     <div className="space-y-6">
+      {/* 제목 */}
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
           제목 *
@@ -93,6 +125,24 @@ export default function WriteForm({ type }: WriteFormProps) {
         />
       </div>
 
+      {/* 설명란 - 모든 도메인에 추가 */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          설명
+        </label>
+        <textarea
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent resize-none"
+          placeholder={getDescriptionPlaceholder(type)}
+        />
+        <p className="text-xs text-gray-500 mt-1">
+          선택사항이지만, 다른 사용자들이 내용을 빠르게 파악할 수 있도록
+          도와줍니다.
+        </p>
+      </div>
+
+      {/* 카테고리 및 최대 참가자 수 */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="relative" ref={categoryRef}>
           <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -102,7 +152,7 @@ export default function WriteForm({ type }: WriteFormProps) {
             <button
               type="button"
               onClick={() => setIsCategoryOpen(!isCategoryOpen)}
-              className="flex h-10 w-full items-center justify-between rounded-md border border-gray-300 bg-white px-3 py-2 text-sm transition-colors focus:outline-none focus:ring-1 focus:ring-cert-red "
+              className="flex h-10 w-full items-center justify-between rounded-md border border-gray-300 bg-white px-3 py-2 text-sm transition-colors focus:outline-none focus:ring-1 focus:ring-cert-red"
             >
               <span className={category ? "text-gray-900" : "text-gray-500"}>
                 {category || "카테고리 선택"}
@@ -115,9 +165,9 @@ export default function WriteForm({ type }: WriteFormProps) {
             </button>
 
             {isCategoryOpen && (
-              <div className="absolute z-50 mt-1 w-full rounded-md border border-gray-200 bg-white shadow-lg animate-in fade-in-0 ">
+              <div className="absolute z-50 mt-1 w-full rounded-md border border-gray-200 bg-white shadow-lg animate-in fade-in-0">
                 <div className="max-h-60 overflow-auto p-1">
-                  {getCategories().map((categoryItem) => (
+                  {getCategories(type).map((categoryItem) => (
                     <button
                       key={categoryItem}
                       type="button"
@@ -125,7 +175,7 @@ export default function WriteForm({ type }: WriteFormProps) {
                         setCategory(categoryItem);
                         setIsCategoryOpen(false);
                       }}
-                      className="relative flex w-full cursor-pointer select-none items-center rounded-sm py-2 px-2 text-sm outline-none transition-colors hover:bg-cert-red hover:text-white focus:bg-cert-red focus:text-white "
+                      className="relative flex w-full cursor-pointer select-none items-center rounded-sm py-2 px-2 text-sm outline-none transition-colors hover:bg-cert-red hover:text-white focus:bg-cert-red focus:text-white"
                     >
                       <span className="truncate">{categoryItem}</span>
                     </button>
@@ -135,7 +185,8 @@ export default function WriteForm({ type }: WriteFormProps) {
             )}
           </div>
         </div>
-        {type === "study" && (
+
+        {(type === "study" || type === "project") && (
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               최대 참가자 수
@@ -147,14 +198,115 @@ export default function WriteForm({ type }: WriteFormProps) {
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
               placeholder="최대 참가자 수"
               min="1"
-              max="20"
+              max={type === "study" ? "20" : "10"}
             />
           </div>
         )}
       </div>
 
-      {/* 스터디 기간 */}
-      {type === "study" && (
+      {/* 프로젝트 이미지 업로드 */}
+      {type === "project" && (
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            프로젝트 대표 이미지
+          </label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setProjectImage(e.target.files?.[0] || null)}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
+          />
+          <p className="text-xs text-gray-500 mt-1">
+            선택하지 않으면 제목의 첫 글자로 기본 이미지가 생성됩니다.
+          </p>
+        </div>
+      )}
+
+      {/* GitHub URL 및 Demo URL (프로젝트 전용) */}
+      {type === "project" && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              GitHub 저장소 URL
+            </label>
+            <input
+              type="url"
+              value={githubUrl}
+              onChange={(e) => setGithubUrl(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
+              placeholder="https://github.com/username/repository"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              데모 사이트 URL
+            </label>
+            <input
+              type="url"
+              value={demoUrl}
+              onChange={(e) => setDemoUrl(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
+              placeholder="https://your-demo-site.com"
+            />
+          </div>
+        </div>
+      )}
+
+      {/* 외부 링크 섹션 (프로젝트 전용) */}
+      {type === "project" && (
+        <div>
+          <div className="flex items-center justify-between mb-2">
+            <label className="block text-sm font-medium text-gray-700">
+              외부 문서/링크
+            </label>
+            <DefaultButton type="button" size="sm" onClick={addExternalLink}>
+              + 링크 추가
+            </DefaultButton>
+          </div>
+          <div className="space-y-3">
+            {externalLinks.map((link, index) => (
+              <div key={index} className="flex gap-2 items-end">
+                <div className="flex-1">
+                  <input
+                    type="text"
+                    value={link.label}
+                    onChange={(e) =>
+                      updateExternalLink(index, "label", e.target.value)
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
+                    placeholder="링크 제목"
+                  />
+                </div>
+                <div className="flex-1">
+                  <input
+                    type="url"
+                    value={link.url}
+                    onChange={(e) =>
+                      updateExternalLink(index, "url", e.target.value)
+                    }
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
+                    placeholder="https://..."
+                  />
+                </div>
+                <button
+                  type="button"
+                  onClick={() => removeExternalLink(index)}
+                  className="px-3 py-2 text-red-600 hover:text-red-800"
+                >
+                  ✕
+                </button>
+              </div>
+            ))}
+          </div>
+          <p className="text-xs text-gray-500 mt-1">
+            노션, 구글 독스, 피그마 등의 외부 문서나 관련 링크를 추가할 수
+            있습니다.
+          </p>
+        </div>
+      )}
+
+      {/* 스터디 및 프로젝트 기간 */}
+      {(type === "study" || type === "project") && (
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
@@ -183,15 +335,18 @@ export default function WriteForm({ type }: WriteFormProps) {
             </div>
           </div>
 
+          {/* 기간 정책 안내 */}
           <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
             <div className="flex items-start gap-2">
-              <Calendar className="w-5 h-5 text-blue-600 mt-0.5" />
+              <Info className="w-5 h-5 text-blue-600 mt-0.5" />
               <div className="text-sm text-blue-800">
-                <p className="font-medium mb-1">스터디 기간 정책</p>
+                <p className="font-medium mb-1">
+                  {getPeriodPolicyInfo(type)?.title}
+                </p>
                 <ul className="space-y-1 text-xs">
-                  <li>• 스터디: 1주 ~ 2개월 수행 가능</li>
-                  <li>• 2주 이하: 모든 주제 가능 (운동, 노래, 시험공부 등)</li>
-                  <li>• 2주 이상: 보안 또는 컴퓨터 관련 주제만 가능</li>
+                  {getPeriodPolicyInfo(type)?.items.map((item, index) => (
+                    <li key={index}>• {item}</li>
+                  ))}
                 </ul>
               </div>
             </div>
@@ -207,8 +362,8 @@ export default function WriteForm({ type }: WriteFormProps) {
         <TagInput tags={tags} setTags={setTags} />
       </div>
 
-      {/* 파일 업로드  */}
-      {(type === "study" || type === "board") && (
+      {/* 파일 업로드 */}
+      {(type === "study" || type === "board" || type === "project") && (
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
             첨부 파일
@@ -236,13 +391,22 @@ export default function WriteForm({ type }: WriteFormProps) {
         <DefaultButton
           onClick={handleSubmit}
           disabled={
-            !title.trim() ||
-            !content.trim() ||
-            !category ||
-            (type === "study" && (!startDate || !endDate))
+            !isFormValid(
+              title,
+              content,
+              category,
+              type,
+              maxParticipants,
+              startDate,
+              endDate
+            )
           }
         >
-          {type === "study" ? "스터디 개설" : "게시하기"}
+          {type === "study"
+            ? "스터디 개설"
+            : type === "project"
+            ? "프로젝트 생성"
+            : "게시하기"}
         </DefaultButton>
       </div>
     </div>
