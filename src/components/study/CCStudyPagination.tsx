@@ -1,5 +1,7 @@
+"use client";
+
 import Link from "next/link";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import type { StudySearchParams } from "@/types/study";
 import { createPageUrl } from "@/utils/study/studyHelper";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -15,6 +17,12 @@ export default function CCStudyPagination({
   totalPages,
   searchParams,
 }: CCStudyPaginationProps) {
+  // 페이지 변경 시 스크롤 제어
+  useEffect(() => {
+    // 페이지 최상단으로 부드럽게 스크롤
+    window.scrollTo({ top: 0 });
+  }, [currentPage]);
+
   const getVisiblePages = useMemo(() => {
     const maxVisible = 5;
     let start = Math.max(1, currentPage - Math.floor(maxVisible / 2));

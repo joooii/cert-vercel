@@ -1,7 +1,10 @@
+"use client";
+
 import Link from "next/link";
 import { getPageNumbers } from "@/utils/paginationUtils";
 import { SemesterType, TechniqueType, StatusType } from "@/types/project";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useEffect } from "react";
 
 interface ProjectPaginationProps {
   currentPage: number;
@@ -20,6 +23,12 @@ export default function ProjectPagination({
   currentTechnique,
   currentStatus,
 }: ProjectPaginationProps) {
+  // 페이지 변경 시 스크롤 제어
+  useEffect(() => {
+    // 페이지 최상단으로 부드럽게 스크롤
+    window.scrollTo({ top: 0 });
+  }, [currentPage]);
+
   if (totalPages <= 1) return null;
 
   const createPageUrl = (page: number) => {
