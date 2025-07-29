@@ -141,29 +141,7 @@ export default async function StudyMaterialDetailPage({
               <div className="w-full h-px bg-gray-200 dark:bg-gray-700"></div>
 
               {/* Study Details */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="flex items-center gap-3">
-                  <Calendar className="w-5 h-5 text-cert-red" />
-                  <div>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">
-                      일정
-                    </p>
-                    <p className="font-medium text-black dark:text-white">
-                      {studyData.schedule.day}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Clock className="w-5 h-5 text-cert-red" />
-                  <div>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">
-                      시간
-                    </p>
-                    <p className="font-medium text-black dark:text-white">
-                      {studyData.schedule.time}
-                    </p>
-                  </div>
-                </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="flex items-center gap-3">
                   <Users className="w-5 h-5 text-cert-red" />
                   <div>
