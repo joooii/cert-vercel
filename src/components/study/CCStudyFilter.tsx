@@ -22,6 +22,8 @@ import {
   TECHNIQUE_LABELS,
   STATUS_LABELS,
 } from "@/types/study";
+import DefaultButton from "@/components/ui/defaultButton";
+import { cn } from "@/lib/utils";
 
 export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
   const router = useRouter();
@@ -127,16 +129,21 @@ export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
 
         {/* 필터 버튼들 */}
         <div className="flex flex-row flex-wrap gap-3">
-          {/* 학기별 필터 */}
+          {/* 학기 필터 */}
           <div className="relative sm:min-w-36 min-w-30" ref={semesterRef}>
-            <button
-              type="button"
+            <DefaultButton
+              variant="outline"
+              size="default"
+              className={cn(
+                "w-full justify-between text-left font-normal transition-all duration-200 cursor-pointer ",
+                "bg-white border-gray-300 hover:border-cert-red hover:bg-white hover:text-cert-black",
+                "focus:border-cert-red focus:ring-2 focus:ring-cert-red/20"
+              )}
               onClick={() => {
                 setShowSemesterDropdown(!showSemesterDropdown);
                 setShowTechniqueDropdown(false);
                 setShowStatusDropdown(false);
               }}
-              className="w-full flex items-center justify-between h-10 px-3 py-2 border border-gray-300 rounded-md bg-white hover:bg-gray-50 focus:ring-2 focus:ring-red-500 transition-colors text-sm"
             >
               <span className="text-gray-700 truncate pr-1">
                 {SEMESTER_LABELS[currentFilters.semester]}
@@ -146,15 +153,15 @@ export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
                   showSemesterDropdown ? "rotate-180" : ""
                 }`}
               />
-            </button>
+            </DefaultButton>
 
             {showSemesterDropdown && (
               <div className="absolute top-full mt-1 w-full bg-white border border-gray-300 rounded-lg shadow-lg z-20 max-h-48 overflow-y-auto">
-                {SEMESTER_OPTIONS.map((option: SemesterType) => (
+                {SEMESTER_OPTIONS.map((option) => (
                   <button
                     key={option}
                     type="button"
-                    className="w-full px-4 py-2 text-left hover:bg-gray-50 text-gray-900 first:rounded-t-lg last:rounded-b-lg text-sm"
+                    className="w-full px-4 py-2 text-left text-gray-900 first:rounded-t-lg last:rounded-b-lg text-sm hover:bg-cert-red hover:text-white duration-100 hover:first:rounded-md hover:rounded-md"
                     onClick={() => {
                       updateFilter("semester", option);
                       closeAllDropdowns();
@@ -166,16 +173,22 @@ export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
               </div>
             )}
           </div>
+
           {/* 기법 필터 */}
           <div className="relative sm:min-w-36 min-w-30" ref={techniqueRef}>
-            <button
-              type="button"
+            <DefaultButton
+              variant="outline"
+              size="default"
+              className={cn(
+                "w-full justify-between text-left font-normal transition-all duration-200 cursor-pointer ",
+                "bg-white border-gray-300 hover:border-cert-red hover:bg-white hover:text-cert-black",
+                "focus:border-cert-red focus:ring-2 focus:ring-cert-red/20"
+              )}
               onClick={() => {
                 setShowTechniqueDropdown(!showTechniqueDropdown);
                 setShowSemesterDropdown(false);
                 setShowStatusDropdown(false);
               }}
-              className="w-full flex items-center justify-between h-10 px-3 py-2 border border-gray-300 rounded-md bg-white hover:bg-gray-50 focus:ring-2 focus:ring-red-500 transition-colors text-sm"
             >
               <span className="text-gray-700 truncate pr-1">
                 {TECHNIQUE_LABELS[currentFilters.technique]}
@@ -185,14 +198,15 @@ export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
                   showTechniqueDropdown ? "rotate-180" : ""
                 }`}
               />
-            </button>
+            </DefaultButton>
+
             {showTechniqueDropdown && (
               <div className="absolute top-full mt-1 w-full bg-white border border-gray-300 rounded-lg shadow-lg z-20 max-h-48 overflow-y-auto">
-                {TECHNIQUE_OPTIONS.map((option: TechniqueType) => (
+                {TECHNIQUE_OPTIONS.map((option) => (
                   <button
                     key={option}
                     type="button"
-                    className="w-full px-4 py-2 text-left hover:bg-gray-50 text-gray-900 first:rounded-t-lg last:rounded-b-lg text-sm"
+                    className="w-full px-4 py-2 text-left text-gray-900 first:rounded-t-lg last:rounded-b-lg text-sm hover:bg-cert-red hover:text-white duration-100 hover:first:rounded-md hover:rounded-md"
                     onClick={() => {
                       updateFilter("technique", option);
                       closeAllDropdowns();
@@ -207,14 +221,19 @@ export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
 
           {/* 상태 필터 */}
           <div className="relative sm:min-w-36 min-w-30" ref={statusRef}>
-            <button
-              type="button"
+            <DefaultButton
+              variant="outline"
+              size="default"
+              className={cn(
+                "w-full justify-between text-left font-normal transition-all duration-200 cursor-pointer ",
+                "bg-white border-gray-300 hover:border-cert-red hover:bg-white hover:text-cert-black",
+                "focus:border-cert-red focus:ring-2 focus:ring-cert-red/20"
+              )}
               onClick={() => {
                 setShowStatusDropdown(!showStatusDropdown);
                 setShowSemesterDropdown(false);
                 setShowTechniqueDropdown(false);
               }}
-              className="w-full flex items-center justify-between h-10 px-3 py-2 border border-gray-300 rounded-md bg-white hover:bg-gray-50 focus:ring-2 focus:ring-red-500 transition-colors text-sm"
             >
               <span className="text-gray-700 truncate pr-1">
                 {STATUS_LABELS[currentFilters.status]}
@@ -224,15 +243,14 @@ export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
                   showStatusDropdown ? "rotate-180" : ""
                 }`}
               />
-            </button>
-
+            </DefaultButton>
             {showStatusDropdown && (
               <div className="absolute top-full mt-1 w-full bg-white border border-gray-300 rounded-lg shadow-lg z-20 max-h-48 overflow-y-auto">
-                {STATUS_OPTIONS.map((option: StatusType) => (
+                {STATUS_OPTIONS.map((option) => (
                   <button
                     key={option}
                     type="button"
-                    className="w-full px-4 py-2 text-left hover:bg-gray-50 text-gray-900 first:rounded-t-lg last:rounded-b-lg text-sm"
+                    className="w-full px-4 py-2 text-left text-gray-900 first:rounded-t-lg last:rounded-b-lg text-sm hover:bg-cert-red hover:text-white duration-100 hover:first:rounded-md hover:rounded-md"
                     onClick={() => {
                       updateFilter("status", option);
                       closeAllDropdowns();
