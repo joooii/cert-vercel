@@ -1,16 +1,23 @@
 import { Metadata } from "next";
-import CCProjectSearchBar from "@/components/project/CCProjectSearchBar"; // board에서 project로 변경
-import CCProjectCategory from "@/components/project/CCProjectCategory";
-import PlusSVG from "/public/icons/plus.svg";
-import { PROJECT_CATEGORIES, ProjectCategoryType } from "@/types/project";
+import {
+  PROJECT_CATEGORIES,
+  ProjectCategoryType,
+  CurrentFilters,
+} from "@/types/project";
+import SCProjectList from "@/components/project/SCProjectList";
+import { parseSearchParams } from "@/utils/projectUtils";
+import CCProjectFilter from "@/components/project/CCProjectFilter";
 import Link from "next/link";
-import SCProjectContent from "@/components/project/SCProjectContent";
+import { Plus } from "lucide-react";
 
 interface ProjectPageProps {
   searchParams: Promise<{
-    page?: string;
     search?: string;
-    category?: string; // category 파라미터 추가
+    category?: string;
+    semester?: string;
+    technique?: string;
+    status?: string;
+    page?: string;
   }>;
 }
 
@@ -36,27 +43,25 @@ export async function generateMetadata({
 }
 
 export default async function ProjectPage({ searchParams }: ProjectPageProps) {
-  const { search, category } = await searchParams;
+  const resolvedSearchParams = await searchParams;
 
-  const currentSearch = search || "";
-  const currentCategory: ProjectCategoryType =
-    category && isValidCategory(category) ? category : "전체";
+  const filters: CurrentFilters = parseSearchParams(resolvedSearchParams);
 
   return (
-    <div className="space-y-6">
-      <div className="mb-6 flex flex-col sm:flex-row gap-4">
-        <CCProjectSearchBar currentSearch={currentSearch} />
-        <CCProjectCategory selectedCategory={currentCategory} />
+    <div className="space-y-6 sm:space-y-0">
+      <div className="flex flex-col sm:flex-row gap-0 sm:gap-4 ">
+        <div className="flex-1">
+          <CCProjectFilter currentFilters={filters} />
+        </div>
         <Link
           scroll={false}
           href="/project/write"
-          className="inline-flex items-center gap-2 px-4 py-2  text-white rounded-md action-button"
+          className="inline-flex items-center justify-center gap-2 px-6 h-10 action-button whitespace-nowrap"
         >
-          <PlusSVG className="w-4 h-4" />새 프로젝트 작성
+          <Plus className="w-4 h-4" />새 프로젝트 생성
         </Link>
       </div>
-
-      <SCProjectContent searchParams={searchParams} />
+      <SCProjectList searchParams={searchParams} />
     </div>
   );
 }
