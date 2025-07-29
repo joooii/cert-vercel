@@ -1,4 +1,4 @@
-"use client";
+"server-only";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -9,11 +9,11 @@ import GithubSVG from "/public/icons/github.svg";
 import ChainSVG from "/public/icons/chain.svg";
 import type { ProjectMaterial } from "@/types/project";
 
-interface CCProjectContentProps {
+interface SCProjectContentProps {
   materials: ProjectMaterial[];
 }
 
-export default function CCProjectContent({ materials }: CCProjectContentProps) {
+export default function SCProjectContent({ materials }: SCProjectContentProps) {
   return (
     <>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
@@ -114,13 +114,13 @@ export default function CCProjectContent({ materials }: CCProjectContentProps) {
                 <span className="text-sm text-gray-500">{project.author}</span>
               </div>
 
-              <div className="flex items-center gap-2 relative z-10">
+              <div className="flex items-center gap-2">
                 {project.githubUrl && (
                   <a
                     href={project.githubUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+                    className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors relative z-10"
                     title="GitHub 저장소"
                   >
                     <GithubSVG className="w-5 h-5" />
@@ -132,7 +132,7 @@ export default function CCProjectContent({ materials }: CCProjectContentProps) {
                     href={project.demoUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+                    className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors relative z-10"
                     title="데모 사이트"
                   >
                     <ChainSVG className="w-5 h-5" />
@@ -141,7 +141,6 @@ export default function CCProjectContent({ materials }: CCProjectContentProps) {
 
                 <button
                   type="button"
-                  onClick={(e) => e.preventDefault()}
                   className="px-4 py-2 action-button text-sm"
                 >
                   참가하기

@@ -4,7 +4,7 @@ import { parseSearchParams } from "@/utils/projectUtils";
 import { getProjectMaterials } from "@/mocks/mockProjectData";
 import type { CurrentFilters } from "@/types/project";
 import SCStudySearchResultNotFound from "@/components/study/SCStudySearchResultNotFound";
-import CCProjectContent from "@/components/project/CCProjectContent";
+import SCProjectContent from "@/components/project/SCProjectContent";
 import CCProjectPagination from "@/components/project/CCProjectPagination";
 
 interface SCProjectListProps {
@@ -87,7 +87,7 @@ export default async function SCProjectList({
     return (
       <>
         <div className="mb-8">
-          <CCProjectContent materials={currentMaterials} />
+          <SCProjectContent materials={currentMaterials} />
         </div>
         {totalPages > 1 && (
           <CCProjectPagination
