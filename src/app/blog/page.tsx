@@ -8,7 +8,7 @@ import {
   BlogCategory as BlogCategoryType,
   ITEMS_PER_PAGE,
 } from "@/types/blog";
-import { filterBlogPosts } from "@/utils/blog/blogUtils";
+import { filterBlogPosts } from "@/utils/blogUtils";
 import Link from "next/link";
 import BlogSearchBar from "@/components/blog/CCBlogSearchBar";
 
