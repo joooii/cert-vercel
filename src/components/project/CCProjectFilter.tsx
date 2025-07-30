@@ -39,7 +39,7 @@ export default function CCProjectFilter({
     (key: string, value: string) => {
       const params = new URLSearchParams(searchParams.toString());
 
-      if (value === "전체" || value === "all" || value === "") {
+      if (value === "all" || value === "") {
         params.delete(key);
       } else {
         params.set(key, value);
