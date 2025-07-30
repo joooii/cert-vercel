@@ -4,7 +4,7 @@ import DefaultButton from "@/components/ui/defaultButton";
 import { mockProfileData } from "@/mocks/mockProfileData";
 import { RefObject, useState } from "react";
 import Image from "next/image";
-import { X } from "lucide-react";
+import { X, Upload, Trash2 } from "lucide-react";
 
 interface ModalProps {
   closeModal: () => void;
@@ -14,6 +14,49 @@ interface ModalProps {
 export default function CCProfileModal({ closeModal, modalRef }: ModalProps) {
   const user = mockProfileData[0];
   const [editedUser, setEditedUser] = useState(user);
+  const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
+  const [previewImage, setPreviewImage] = useState<string | null>(
+    user.profileImage || null
+  );
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      // 파일 크기 체크
+      if (file.size > 1 * 1024 * 1024) {
+        alert("파일 크기는 1MB 이하로 업로드해주세요.");
+        return;
+      }
+      // 이미지 파일 타입 체크
+      const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
+      if (!allowedTypes.includes(file.type)) {
+        alert("JPG, PNG 파일만 업로드 가능합니다. (GIF 제외)");
+        return;
+      }
+
+      setProfileImageFile(file);
+
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const imageUrl = event.target?.result as string;
+        setPreviewImage(imageUrl);
+        setEditedUser({
+          ...editedUser,
+          profileImage: imageUrl,
+        });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const removeImage = () => {
+    setProfileImageFile(null);
+    setPreviewImage(null);
+    setEditedUser({
+      ...editedUser,
+      profileImage: "",
+    });
+  };
 
   return (
     <div
@@ -35,10 +78,60 @@ export default function CCProfileModal({ closeModal, modalRef }: ModalProps) {
             </p>
           </div>
           <div className="space-y-4 text-left my-6">
+            {/* 프로필 사진 */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                프로필 사진
+              </label>
+              <div className="flex gap-4">
+                <div className="relative flex shrink-0 overflow-hidden rounded-full w-16 h-16 border border-gray-200 ml-2 mb-1">
+                  {previewImage ? (
+                    <Image
+                      src={previewImage}
+                      alt="프로필 미리보기"
+                      width={64}
+                      height={64}
+                      className="w-full h-full object-cover rounded-full"
+                    />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center bg-gray-100 text-gray-400 text-xs">
+                      {editedUser.name?.[0] || "사진"}
+                    </div>
+                  )}
+                </div>
+                <div className="flex gap-2 items-center">
+                  <label className="cursor-pointer">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      className="hidden"
+                    />
+                    <div className="flex items-center h-7 gap-1 px-2 text-xs border border-gray-300 rounded-md hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent">
+                      <Upload className="w-3 h-3" />
+                      업로드
+                    </div>
+                  </label>
+
+                  <button
+                    type="button"
+                    onClick={removeImage}
+                    className="flex items-center gap-1 px-2 h-7 text-xs text-red-600 border border-red-300 rounded-md hover:bg-red-50 transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                  >
+                    <Trash2 className="w-3 h-3" />
+                    제거
+                  </button>
+                </div>
+              </div>
+              <p className="text-xs text-gray-500 mt-1">
+                JPG, PNG 파일만 업로드 가능합니다. (최대 1MB)
+              </p>
+            </div>
+
             <div>
               <p className="text-sm mb-1.5">이름</p>
               <input
-                defaultValue={user?.name ?? ""}
+                value={editedUser.name}
                 onChange={(e) =>
                   setEditedUser({
                     ...editedUser,
@@ -65,7 +158,16 @@ export default function CCProfileModal({ closeModal, modalRef }: ModalProps) {
               <p className="text-sm mb-1.5">기술스택</p>
               <input
                 defaultValue={user?.skills ?? ""}
+                onChange={(e) =>
+                  setEditedUser({
+                    ...editedUser,
+                    skills: e.target.value
+                      .split(",")
+                      .map((skill) => skill.trim()),
+                  })
+                }
                 className="required text-sm flex h-10 w-full rounded-md border px-3 py-2 bg-white border-gray-300 text-gray-900"
+                placeholder="React, Node.js, Python (쉼표로 구분)"
               />
             </div>
             <div className="grid grid-cols-2 gap-4 z-10"></div>
@@ -79,17 +181,18 @@ export default function CCProfileModal({ closeModal, modalRef }: ModalProps) {
                 <div className="relative flex shrink-0 overflow-hidden rounded-full w-12 h-12 mx-auto mb-2 border border-gray-200">
                   <div className="aspect-square h-full w-full">
                     <div className="flex h-full w-full items-center justify-center rounded-full">
-                      {user.profileImage ? (
+                      {previewImage ? (
                         <Image
-                          src={user.profileImage}
-                          alt={`${user.name} 프로필`}
-                          width={80}
-                          height={80}
-                          priority={false}
-                          className="relative rounded-full object-cover"
+                          src={previewImage}
+                          alt={`${editedUser.name} 프로필`}
+                          width={48}
+                          height={48}
+                          className="w-full h-full object-cover rounded-full"
                         />
                       ) : (
-                        <div>{user.name}</div>
+                        <div className="bg-gray-100 text-gray-500 text-xs w-full h-full flex items-center justify-center rounded-full">
+                          {editedUser.name?.[0] || "사진"}
+                        </div>
                       )}
                     </div>
                   </div>
