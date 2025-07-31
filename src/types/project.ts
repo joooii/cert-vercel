@@ -210,9 +210,9 @@ export const TECHNIQUE_LABELS: Record<TechniqueType, string> = {
 
 export const STATUS_LABELS: Record<StatusType, string> = {
   all: "전체",
-  not_started: "시작 예정",
+  not_started: "시작 전",
   in_progress: "진행 중",
-  completed: "완료",
+  completed: "종료",
 };
 
 export const AUTHOR_STATUS_LABELS: Record<

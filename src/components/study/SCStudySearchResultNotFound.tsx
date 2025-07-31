@@ -1,12 +1,14 @@
 "server-only";
 
 import { resetStudyFilters } from "@/actions/study/StudySearchServerAction";
+import { resetProjectFilters } from "@/actions/project/ProjectSearchServerAction";
 
 interface SCStudySearchResultNotFoundProps {
   title?: string;
   description?: string;
   icon?: React.ReactNode;
   showResetButton?: boolean;
+  mode?: "study" | "project"; // 추가
 }
 
 export default async function SCStudySearchResultNotFound({
@@ -14,6 +16,7 @@ export default async function SCStudySearchResultNotFound({
   description = "검색 조건을 변경하거나 필터를 초기화해보세요.",
   icon,
   showResetButton = true,
+  mode = "study", // 기본값은 study
 }: SCStudySearchResultNotFoundProps) {
   const searchIcon = (
     <svg
@@ -46,13 +49,17 @@ export default async function SCStudySearchResultNotFound({
           {description}
         </p>
 
-        {/* 액션 버튼들 */}
+        {/* 액션 버튼 */}
         {showResetButton && (
           <div className="space-y-3">
-            <form action={resetStudyFilters}>
+            <form
+              action={
+                mode === "project" ? resetProjectFilters : resetStudyFilters
+              }
+            >
               <button
                 type="submit"
-                className="inline-flex items-center px-4 py-2 bg-cert-red text-white text-sm font-medium rounded-lg hover:bg-red-600 transition-colors focus:outline-none focus:ring-2 focus:ring-cert-red focus:ring-offset-2"
+                className="inline-flex items-center px-4 py-2 bg-cert-red text-white text-sm font-medium rounded-lg hover:bg-red-700 transition-colors focus:outline-none focus:ring-2 focus:ring-cert-red focus:ring-offset-2"
               >
                 <svg
                   className="w-4 h-4 mr-2"

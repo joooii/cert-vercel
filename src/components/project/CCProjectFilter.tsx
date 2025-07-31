@@ -1,53 +1,43 @@
 "use client";
 
-import { useState, useTransition, useRef, useCallback } from "react";
+import { useState, useTransition, useRef, useCallback, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ChevronDown, X } from "lucide-react";
-import DefaultSearchBar from "@/components/ui/defaultSearchBar";
-import SearchSVG from "/public/icons/search.svg";
-import { useEffect } from "react";
-
-import type {
-  StudyFilterProps,
-  FilterKey,
-  SemesterType,
-  TechniqueType,
-  StatusType,
-} from "@/types/study";
+import CCProjectSearchBar from "@/components/project/CCProjectSearchBar";
 import {
+  CurrentFilters,
   SEMESTER_OPTIONS,
   TECHNIQUE_OPTIONS,
   STATUS_OPTIONS,
   SEMESTER_LABELS,
   TECHNIQUE_LABELS,
   STATUS_LABELS,
-} from "@/types/study";
+} from "@/types/project";
 import DefaultButton from "@/components/ui/defaultButton";
 import { cn } from "@/lib/utils";
 
-export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
+interface ProjectCategoryProps {
+  currentFilters: CurrentFilters;
+}
+
+export default function CCProjectFilter({
+  currentFilters,
+}: ProjectCategoryProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
 
-  // 검색 디바운스를 위한 ref
-  const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-
-  // 로컬 상태
-  const [showSemesterDropdown, setShowSemesterDropdown] =
-    useState<boolean>(false);
-  const [showTechniqueDropdown, setShowTechniqueDropdown] =
-    useState<boolean>(false);
-  const [showStatusDropdown, setShowStatusDropdown] = useState<boolean>(false);
+  const [showSemesterDropdown, setShowSemesterDropdown] = useState(false);
+  const [showTechniqueDropdown, setShowTechniqueDropdown] = useState(false);
+  const [showStatusDropdown, setShowStatusDropdown] = useState(false);
 
   const semesterRef = useRef<HTMLDivElement>(null);
   const techniqueRef = useRef<HTMLDivElement>(null);
   const statusRef = useRef<HTMLDivElement>(null);
 
-  // URL 파라미터 업데이트 함수 (영어 값으로 저장)
   const updateFilter = useCallback(
-    (key: FilterKey, value: string): void => {
-      const params = new URLSearchParams(searchParams);
+    (key: string, value: string) => {
+      const params = new URLSearchParams(searchParams.toString());
 
       if (value === "all" || value === "") {
         params.delete(key);
@@ -55,42 +45,22 @@ export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
         params.set(key, value);
       }
 
-      // 필터 변경 시 페이지를 1로 리셋
       params.delete("page");
 
+      const newUrl = `/project?${params.toString()}`;
       startTransition(() => {
-        router.push(`/study?${params.toString()}`);
+        router.push(newUrl);
       });
     },
     [searchParams, router]
   );
 
-  // 검색 디바운스 처리 (개선된 버전)
-  const handleSearchChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>): void => {
-      const searchTerm: string = e.target.value;
-
-      // 이전 타이머 클리어
-      if (searchTimeoutRef.current) {
-        clearTimeout(searchTimeoutRef.current);
-      }
-
-      // 새 타이머 설정
-      searchTimeoutRef.current = setTimeout(() => {
-        updateFilter("search", searchTerm);
-      }, 300);
-    },
-    [updateFilter]
-  );
-
-  // 드롭다운 닫기 함수
   const closeAllDropdowns = useCallback(() => {
     setShowSemesterDropdown(false);
     setShowTechniqueDropdown(false);
     setShowStatusDropdown(false);
   }, []);
 
-  // 외부 클릭 감지
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       const target = e.target as Node;
@@ -109,25 +79,9 @@ export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
 
   return (
     <div className="mb-1 sm:mb-4">
-      {/* 검색바와 필터들을 한 줄로 배치 */}
       <div className="flex flex-col sm:flex-row gap-3 mb-4">
-        {/* 검색바 */}
-        <div className="flex-1 relative">
-          <SearchSVG className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-          <DefaultSearchBar
-            placeholder="스터디 제목, 설명, 작성자로 검색하세요..."
-            defaultValue={currentFilters.search}
-            onChange={handleSearchChange}
-            className="pl-10 w-full"
-          />
-          {isPending && (
-            <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-red-500" />
-            </div>
-          )}
-        </div>
+        <CCProjectSearchBar currentSearch={currentFilters.search} />
 
-        {/* 필터 버튼들 */}
         <div className="flex flex-row flex-wrap gap-3">
           {/* 학기 필터 */}
           <div className="relative sm:min-w-36 min-w-30" ref={semesterRef}>
@@ -264,7 +218,7 @@ export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
           </div>
         </div>
       </div>
-      {/* 활성 필터 태그 (한국어 표시) */}
+      {/* 활성 필터 태그 */}
       <div className="flex flex-wrap gap-2 mt-2">
         {currentFilters.search && (
           <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800 mb-3 sm:mb-0">
