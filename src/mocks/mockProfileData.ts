@@ -27,10 +27,11 @@ export const mockProfileData: ProfileDataType[] = [
 export const mockProfileStudyData: ProfileStudyDataType[] = [
   {
     id: 1,
-    title: "교내 사물함 대여 서비스",
+    title: "교내 사물함 대여 서비스1",
     date: "2024-01-15",
     category: "Project",
     tags: ["React", "Frontend", "JavaScript"],
+    status: "진행중",
   },
   {
     id: 2,
@@ -38,13 +39,15 @@ export const mockProfileStudyData: ProfileStudyDataType[] = [
     date: "2024-01-10",
     category: "Study",
     tags: ["Algorithm", "CodingTest"],
+    status: "진행중",
   },
   {
     id: 3,
-    title: "교내 사물함 대여 서비스",
+    title: "교내 사물함 대여 서비스2",
     date: "2024-01-15",
     category: "Project",
     tags: ["React", "Frontend", "JavaScript"],
+    status: "완료",
   },
   {
     id: 4,
@@ -52,6 +55,7 @@ export const mockProfileStudyData: ProfileStudyDataType[] = [
     date: "2024-01-10",
     category: "Study",
     tags: ["Algorithm", "CodingTest"],
+    status: "완료",
   },
   {
     id: 5,
@@ -59,6 +63,7 @@ export const mockProfileStudyData: ProfileStudyDataType[] = [
     date: "2024-01-15",
     category: "Project",
     tags: ["React", "Frontend", "JavaScript"],
+    status: "완료",
   },
   {
     id: 6,
@@ -66,6 +71,23 @@ export const mockProfileStudyData: ProfileStudyDataType[] = [
     date: "2024-01-10",
     category: "Study",
     tags: ["Algorithm", "CodingTest"],
+    status: "완료",
+  },
+  {
+    id: 7,
+    title: "교내 사물함 대여 서비스3",
+    date: "2024-01-15",
+    category: "Project",
+    tags: ["React", "Frontend", "JavaScript"],
+    status: "완료",
+  },
+  {
+    id: 8,
+    title: "코테 스터디3",
+    date: "2024-01-10",
+    category: "Study",
+    tags: ["Algorithm", "CodingTest"],
+    status: "완료",
   },
 ];
 

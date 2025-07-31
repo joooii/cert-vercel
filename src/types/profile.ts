@@ -19,7 +19,7 @@ export const TAB_CONFIG: Record<
   { label: string; Icon: React.ElementType }
 > = {
   study: {
-    label: "내 스터디",
+    label: "내 스터디 / 프로젝트",
     Icon: BookSVG,
   },
   blog: {
@@ -38,7 +38,12 @@ export interface ProfileStudyDataType {
   date: string;
   category: StudyCategoryType;
   tags: string[];
+  status: string; // "진행중", "완료"
 }
+
+// study, project status category
+export const studyStatus = ["전체", "진행중", "완료"] as const;
+export type StudyStatusType = (typeof studyStatus)[number];
 
 // blog category
 export const BlogCategories = ["개발", "활동", "회고", "기타"] as const;

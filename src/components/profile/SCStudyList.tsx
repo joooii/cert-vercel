@@ -1,15 +1,18 @@
 "server-only";
 
-import DefaultButton from "@/components/ui/defaultButton";
 import DefaultBadge from "@/components/ui/defaultBadge";
 import { getStudyCategoryColor } from "@/utils/profileUtils";
 import { ProfileStudyDataType, StudyCategoryType } from "@/types/profile";
 import Link from "next/link";
-import { Plus, Tag } from "lucide-react";
+import { Tag } from "lucide-react";
+import CCProfileStudyStatusFilter from "@/components/profile/CCProfileStudyStatusFilter";
+import CCCreateDropdown from "@/components/profile/CCCreateDropdown";
+import { StudyStatusType, studyStatus } from "@/types/profile";
 
 interface SCStudyListProps {
   searchParams: Promise<{
     tab?: string;
+    status?: string;
   }>;
   studies: ProfileStudyDataType[];
 }
@@ -18,27 +21,40 @@ export default async function SCStudyList({
   searchParams,
   studies,
 }: SCStudyListProps) {
-  const { tab } = await searchParams;
+  const { tab, status } = await searchParams;
   const currentTab = tab || "study";
 
   if (currentTab !== "study") return null;
 
+  const isValidStatus = (status: string): status is StudyStatusType =>
+    studyStatus.includes(status as StudyStatusType);
+
+  const selectedStatus: StudyStatusType =
+    status && isValidStatus(status) ? status : "전체";
+
+  const filteredStudies =
+    selectedStatus === "전체"
+      ? studies
+      : studies.filter((study) => study.status === selectedStatus);
+
   return (
     <>
-      {currentTab === "study" && (
-        <div className="space-y-4 mt-8 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
-          <div className="flex justify-between items-center">
-            <h3 className="text-lg font-semibold text-gray-900 transition-colors duration-300">
-              참여중인 스터디/프로젝트 목록
-            </h3>
-            <Link href="/study">
-              <DefaultButton className="transition-all duration-300" size="sm">
-                <Plus className="w-4 h-4" />새 자료 작성
-              </DefaultButton>
-            </Link>
-          </div>
+      <div className="space-y-4 mt-8 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+        <div className="flex items-center justify-between flex-wrap gap-2 sm:flex-row">
+          <h3 className="text-lg font-semibold text-gray-900 transition-colors duration-300">
+            내 스터디/프로젝트 목록
+          </h3>
 
-          {studies.map((study) => (
+          <div className="flex flex-row items-center gap-4 sm:justify-between justify-center">
+            <CCProfileStudyStatusFilter selectedStatus={selectedStatus} />
+            {/* 새 자료 생성 버튼 -> 드롭다운 통해서 스터디/프로젝트 선택 */}
+            <CCCreateDropdown />
+          </div>
+        </div>
+
+        {/* ✅ 필터링된 목록 출력 */}
+        {filteredStudies.length > 0 ? (
+          filteredStudies.map((study) => (
             <div
               key={study.id}
               className="card-list text-card-foreground group"
@@ -54,9 +70,9 @@ export default async function SCStudyList({
                         <span>{study.date}</span>
                         <DefaultBadge
                           className={`border-gray-200 text-gray-600 hover:text-gray-900 cursor-auto
-                           ${getStudyCategoryColor(
-                             study.category as StudyCategoryType
-                           )}`}
+                          ${getStudyCategoryColor(
+                            study.category as StudyCategoryType
+                          )}`}
                         >
                           {study.category}
                         </DefaultBadge>
@@ -79,9 +95,13 @@ export default async function SCStudyList({
                 </div>
               </Link>
             </div>
-          ))}
-        </div>
-      )}
+          ))
+        ) : (
+          <div className="text-center text-sm text-gray-500 py-8">
+            해당 상태의 스터디/프로젝트가 없습니다.
+          </div>
+        )}
+      </div>
     </>
   );
 }
