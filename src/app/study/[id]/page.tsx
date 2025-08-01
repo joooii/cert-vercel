@@ -38,13 +38,13 @@ function getStatusColor(status: string) {
   }
 }
 
-// 메타데이터 생성
+// 메타데이터 생성 - params 타입을 Promise로 수정
 export async function generateMetadata({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>; // Promise 타입으로 변경
 }): Promise<Metadata> {
-  const { id } = await params;
+  const { id } = await params; // await 추가
   const studyData = getStudyDataById(id);
 
   if (!studyData) {
@@ -185,7 +185,7 @@ export default async function StudyMaterialDetailPage({
             </div>
           </div>
           <MeetingMinutes
-            studyId={"1"} // 임시로 ID 설정, 실제로는 params에서 받아와야 함 현재 스터디 ID를 나타내는 ID
+            studyId={id} // params에서 받은 id 사용
             currentUserId={1} // 임시로 현재 사용자 ID 설정, 실제로는 로그인 정보에서 받아와야 함
             studyLeaderId={1} // 임시로 스터디 리더 ID 설정, 실제로는 스터디 데이터에서 받아와야 함
           />
