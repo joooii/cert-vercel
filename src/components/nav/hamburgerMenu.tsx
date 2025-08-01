@@ -5,7 +5,7 @@ import DefaultButton from "@/components/ui/defaultButton";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 interface NavItem {
   name: string;
@@ -21,39 +21,22 @@ export default function HamburgerMenu({ navBarList }: HamburgerMenuProps) {
   const [isClosing, setIsClosing] = useState<boolean>(false);
   const pathname = usePathname();
 
-  // useEffect(() => {
-  //   if (!isOpen) return;
-
-  //   setIsClosing(true);
-  //   const timer = setTimeout(() => {
-  //     setIsOpen(false);
-  //     setIsClosing(false);
-  //   }, 300);
-
-  //   return () => clearTimeout(timer); // ✅ cleanup 명시적
-  // }, [pathname]);
-
-  // const handleClose = useCallback(() => {
-  //   setIsClosing(true);
-  //   setTimeout(() => {
-  //     setIsOpen(false);
-  //     setIsClosing(false);
-  //   }, 300);
-  // }, []);
+  // 👇 상태 대신 ref로 현재 isOpen 상태를 추적
+  const isOpenRef = useRef(false);
 
   const handleClose = useCallback(() => {
     setIsClosing(true);
-    return setTimeout(() => {
+    setTimeout(() => {
       setIsOpen(false);
       setIsClosing(false);
+      isOpenRef.current = false;
     }, 300);
   }, []);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
-    if (!isOpen) return;
-    const timer = handleClose();
-    return () => clearTimeout(timer);
+    if (isOpenRef.current) {
+      handleClose();
+    }
   }, [pathname]);
 
   return (
