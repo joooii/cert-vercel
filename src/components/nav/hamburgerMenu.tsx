@@ -30,6 +30,7 @@ export default function HamburgerMenu({ navBarList }: HamburgerMenuProps) {
   };
 
   // pathname이 변경되면 메뉴 닫기 (로고 클릭이나 다른 링크 클릭 시)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (isOpen) {
       handleClose();

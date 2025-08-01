@@ -51,6 +51,7 @@ interface LinkItem {
 }
 
 export default function MeetingMinutes({
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   studyId,
   currentUserId,
   studyLeaderId,

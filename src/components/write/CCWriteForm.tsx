@@ -5,7 +5,7 @@ import DefaultButton from "@/components/ui/defaultButton";
 import { ChevronDown, Info } from "lucide-react";
 import TagInput from "@/components/write/CCTagInput";
 import FileUpload from "@/components/write/CCFileUpload";
-import MarkdownEditor from "./CCMarkdownEditor";
+import MarkdownEditor from "@/components/write/CCMarkdownEditor";
 import { NewPageCategoryType } from "@/types/newPageForm";
 import {
   getCategories,
@@ -39,6 +39,7 @@ export default function WriteForm({ type }: WriteFormProps) {
     { label: string; url: string; type?: string }[]
   >([]);
   const [projectImage, setProjectImage] = useState<File | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [semester, setSemester] = useState<string>("");
 
   useEffect(() => {
