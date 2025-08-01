@@ -21,7 +21,6 @@ export default function HamburgerMenu({ navBarList }: HamburgerMenuProps) {
   const [isClosing, setIsClosing] = useState<boolean>(false);
   const pathname = usePathname();
 
-  // 👇 상태 대신 ref로 현재 isOpen 상태를 추적
   const isOpenRef = useRef(false);
 
   const handleClose = useCallback(() => {
@@ -33,11 +32,17 @@ export default function HamburgerMenu({ navBarList }: HamburgerMenuProps) {
     }, 300);
   }, []);
 
+  // isOpen 상태가 변경될 때 ref도 업데이트
+  useEffect(() => {
+    isOpenRef.current = isOpen;
+  }, [isOpen]);
+
+  // pathname이 변경될 때 메뉴 닫기
   useEffect(() => {
     if (isOpenRef.current) {
       handleClose();
     }
-  }, [pathname]);
+  }, [pathname, handleClose]); // handleClose를 의존성 배열에 추가
 
   return (
     <>
@@ -45,7 +50,14 @@ export default function HamburgerMenu({ navBarList }: HamburgerMenuProps) {
         <DefaultButton
           variant="ghost"
           size="sm"
-          onClick={() => (isOpen ? handleClose() : setIsOpen(true))}
+          onClick={() => {
+            if (isOpen) {
+              handleClose();
+            } else {
+              setIsOpen(true);
+              isOpenRef.current = true;
+            }
+          }}
           className="text-gray-900 p-2 transition-all duration-300 hover:text-cert-dark-red hover:bg-cert-dark-red/5"
         >
           {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
