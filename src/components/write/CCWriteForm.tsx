@@ -13,6 +13,7 @@ import {
   getDescriptionPlaceholder,
   isFormValid,
 } from "@/utils/newPageFormUtils";
+import { AttachedFile } from "@/types/attachFile";
 
 interface WriteFormProps {
   type: NewPageCategoryType;
@@ -25,7 +26,7 @@ export default function WriteForm({ type }: WriteFormProps) {
   const [content, setContent] = useState<string>("");
   const [category, setCategory] = useState("");
   const [tags, setTags] = useState<string[]>([]);
-  const [attachments, setAttachments] = useState<File[]>([]);
+  const [attachments, setAttachments] = useState<AttachedFile[]>([]);
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
   const [maxParticipants, setMaxParticipants] = useState("");
@@ -370,7 +371,7 @@ export default function WriteForm({ type }: WriteFormProps) {
             첨부 파일
           </label>
           <FileUpload
-            attachments={attachments}
+            attachedFiles={attachments}
             onAttachmentsChange={setAttachments}
           />
         </div>
