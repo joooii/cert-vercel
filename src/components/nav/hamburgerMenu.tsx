@@ -5,7 +5,7 @@ import DefaultButton from "@/components/ui/defaultButton";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 interface NavItem {
   name: string;
@@ -21,20 +21,39 @@ export default function HamburgerMenu({ navBarList }: HamburgerMenuProps) {
   const [isClosing, setIsClosing] = useState<boolean>(false);
   const pathname = usePathname();
 
-  const handleClose = () => {
+  // useEffect(() => {
+  //   if (!isOpen) return;
+
+  //   setIsClosing(true);
+  //   const timer = setTimeout(() => {
+  //     setIsOpen(false);
+  //     setIsClosing(false);
+  //   }, 300);
+
+  //   return () => clearTimeout(timer); // ✅ cleanup 명시적
+  // }, [pathname]);
+
+  // const handleClose = useCallback(() => {
+  //   setIsClosing(true);
+  //   setTimeout(() => {
+  //     setIsOpen(false);
+  //     setIsClosing(false);
+  //   }, 300);
+  // }, []);
+
+  const handleClose = useCallback(() => {
     setIsClosing(true);
-    setTimeout(() => {
+    return setTimeout(() => {
       setIsOpen(false);
       setIsClosing(false);
     }, 300);
-  };
+  }, []);
 
-  // pathname이 변경되면 메뉴 닫기 (로고 클릭이나 다른 링크 클릭 시)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
-    if (isOpen) {
-      handleClose();
-    }
+    if (!isOpen) return;
+    const timer = handleClose();
+    return () => clearTimeout(timer);
   }, [pathname]);
 
   return (

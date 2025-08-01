@@ -433,7 +433,7 @@ export default function MeetingMinutes({
 
                   {newMinute.links.length === 0 && (
                     <p className="text-sm text-gray-500 italic">
-                      링크를 추가하려면 "링크 추가" 버튼을 클릭하세요.
+                      링크를 추가하려면 &quot;링크 추가&quot; 버튼을 클릭하세요.
                     </p>
                   )}
                 </div>
