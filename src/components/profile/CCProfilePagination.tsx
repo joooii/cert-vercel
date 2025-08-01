@@ -21,12 +21,14 @@ export default function CCProfilePagination({
 
   const searchParams = useSearchParams();
   const tab = searchParams.get("tab") ?? "study";
+  const status = searchParams.get("status"); // ✅ 추가
 
   const createPageUrl = (page: number): string => {
-    const queryParams = new URLSearchParams({
-      ...(tab && { tab }),
-      ...(page > 1 && { page: page.toString() }),
-    });
+    const queryParams = new URLSearchParams();
+
+    if (tab) queryParams.set("tab", tab);
+    if (tab === "study" && status) queryParams.set("status", status);
+    if (page > 1) queryParams.set("page", page.toString());
 
     return `/profile?${queryParams.toString()}`;
   };
