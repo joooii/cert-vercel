@@ -162,14 +162,14 @@ export default async function DetailPage({
           </div>
 
           {/* 첨부파일 */}
-          {data.attachments && data.attachments.length > 0 && (
+          {data.attachedFiles && data.attachedFiles.length > 0 && (
             <div className="border-t border-gray-300 pt-6 mb-6">
               <h4 className="font-medium text-gray-900 mb-4 flex items-center gap-2">
                 <Download className="w-4 h-4" />
-                첨부파일 ({data.attachments.length})
+                첨부파일 ({data.attachedFiles.length})
               </h4>
               <div className="space-y-3">
-                {data.attachments.map((file, index) => (
+                {data.attachedFiles.map((file, index) => (
                   <div
                     key={index}
                     className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"

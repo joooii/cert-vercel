@@ -1,3 +1,5 @@
+import { AttachedFile } from "@/types/attachFile";
+
 // 타입 정의
 export interface StudyDetailData {
   id: number;
@@ -22,7 +24,8 @@ export interface StudyDetailData {
   author: string;
   authorStatus: "student" | "graduate";
   semester: string;
-  files: { name: string; size: string; type: string }[];
+  // files: { name: string; size: number; type: string }[];
+  attachedFiles?: AttachedFile[];
   category: string;
   hackingTechnique: string;
   startDate: string;
@@ -84,9 +87,27 @@ export const mockStudyDetailData: StudyDetailData[] = [
     author: "김보안",
     authorStatus: "student",
     semester: "2025-2",
-    files: [
-      { name: "OWASP_Top10_2023_Analysis.pdf", size: "3.2MB", type: "pdf" },
-      { name: "Exploit_Examples.zip", size: "1.8MB", type: "zip" },
+    attachedFiles: [
+      {
+        id: "file_1_1",
+        name: "해커톤_기획서.pdf",
+        size: 2547892,
+        type: "application/pdf",
+        category: "document",
+        downloadUrl: "/api/files/download/hackathon_plan.pdf",
+        uploadDate: "2025-01-15T09:30:00Z",
+        description: "해커톤 전체 기획서 및 일정표",
+      },
+      {
+        id: "file_1_2",
+        name: "해커톤_기획서.pdf",
+        size: 3427892,
+        type: "application/pdf",
+        category: "document",
+        downloadUrl: "/api/files/download/hackathon_plan.pdf",
+        uploadDate: "2025-01-15T09:30:00Z",
+        description: "해커톤 전체 기획서 및 일정표",
+      },
     ],
     category: "Web Security",
     hackingTechnique: "web_security",
@@ -167,9 +188,27 @@ export const mockStudyDetailData: StudyDetailData[] = [
     author: "이해커",
     authorStatus: "graduate",
     semester: "2025-2",
-    files: [
-      { name: "Metasploit_Guide.pdf", size: "5.1MB", type: "pdf" },
-      { name: "Lab_Environment.ova", size: "2.3GB", type: "ova" },
+    attachedFiles: [
+      {
+        id: "file_1_1",
+        name: "해커톤_기획서.pdf",
+        size: 2547892,
+        type: "application/pdf",
+        category: "document",
+        downloadUrl: "/api/files/download/hackathon_plan.pdf",
+        uploadDate: "2025-01-15T09:30:00Z",
+        description: "해커톤 전체 기획서 및 일정표",
+      },
+      {
+        id: "file_1_2",
+        name: "해커톤_기획서.pdf",
+        size: 3427892,
+        type: "application/pdf",
+        category: "document",
+        downloadUrl: "/api/files/download/hackathon_plan.pdf",
+        uploadDate: "2025-01-15T09:30:00Z",
+        description: "해커톤 전체 기획서 및 일정표",
+      },
     ],
     category: "Penetration Testing",
     hackingTechnique: "penetration_testing",
@@ -230,9 +269,27 @@ Metasploit Framework는 침투 테스팅과 보안 연구를 위한 강력한 �
     author: "박암호",
     authorStatus: "student",
     semester: "2025-2",
-    files: [
-      { name: "Cryptography_Basics.pdf", size: "2.7MB", type: "pdf" },
-      { name: "RSA_Implementation.py", size: "15KB", type: "py" },
+    attachedFiles: [
+      {
+        id: "file_1_1",
+        name: "해커톤_기획서.pdf",
+        size: 2547892,
+        type: "application/pdf",
+        category: "document",
+        downloadUrl: "/api/files/download/hackathon_plan.pdf",
+        uploadDate: "2025-01-15T09:30:00Z",
+        description: "해커톤 전체 기획서 및 일정표",
+      },
+      {
+        id: "file_1_2",
+        name: "해커톤_기획서.pdf",
+        size: 3427892,
+        type: "application/pdf",
+        category: "document",
+        downloadUrl: "/api/files/download/hackathon_plan.pdf",
+        uploadDate: "2025-01-15T09:30:00Z",
+        description: "해커톤 전체 기획서 및 일정표",
+      },
     ],
     category: "Cryptography",
     hackingTechnique: "cryptography",

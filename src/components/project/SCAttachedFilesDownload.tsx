@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { AttachedFile, FileCategory } from "@/types/project";
+import { FileCategory } from "@/types/project";
 import {
   Download,
   File,
@@ -19,6 +19,7 @@ import {
   CheckCircle2,
   DownloadCloud,
 } from "lucide-react";
+import { AttachedFile } from "@/types/attachFile";
 
 interface AttachedFilesDownloadProps {
   files: AttachedFile[];

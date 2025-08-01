@@ -1,27 +1,39 @@
 "use client";
+
+import { AttachedFile } from "@/types/attachFile";
 import DefaultButton from "@/components/ui/defaultButton";
 import { Upload, Trash2 } from "lucide-react";
 
 interface FileUploadProps {
-  attachments: File[];
-  onAttachmentsChange: (files: File[]) => void;
+  attachedFiles: AttachedFile[];
+  onAttachmentsChange: (files: AttachedFile[]) => void;
 }
 
+const convertFileToAttachedFile = (file: File): AttachedFile => ({
+  id: crypto.randomUUID(),
+  name: file.name,
+  size: file.size,
+  type: file.type,
+  category: "other",
+  downloadUrl: "",
+  uploadDate: new Date().toISOString(),
+});
+
 export default function FileUpload({
-  attachments,
+  attachedFiles,
   onAttachmentsChange,
 }: FileUploadProps) {
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files) return;
 
-    const newFiles = Array.from(files);
-    onAttachmentsChange([...attachments, ...newFiles]);
+    const newAttachedFiles = Array.from(files).map(convertFileToAttachedFile);
+    onAttachmentsChange([...attachedFiles, ...newAttachedFiles]);
     e.target.value = "";
   };
 
   const handleRemoveFile = (index: number) => {
-    onAttachmentsChange(attachments.filter((_, i) => i !== index));
+    onAttachmentsChange(attachedFiles.filter((_, i) => i !== index));
   };
 
   const getFileIcon = (type: string) => {
@@ -57,14 +69,14 @@ export default function FileUpload({
         </label>
       </div>
 
-      {attachments.length > 0 && (
+      {attachedFiles.length > 0 && (
         <div className="space-y-2">
           <h4 className="text-sm font-medium text-gray-700">
-            첨부파일 ({attachments.length})
+            첨부파일 ({attachedFiles.length})
           </h4>
-          {attachments.map((file, index) => (
+          {attachedFiles.map((file, index) => (
             <div
-              key={index}
+              key={file.id}
               className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg"
             >
               <span className="text-lg">{getFileIcon(file.type)}</span>

@@ -1,3 +1,5 @@
+import { AttachedFile } from "./attachFile";
+
 export type SemesterType = "all" | "2025-2";
 
 export type TechniqueType =
@@ -48,11 +50,7 @@ export interface StudyMaterial {
   author: string;
   authorStatus: AuthorStatusType;
   semester: SemesterType;
-  files: {
-    name: string;
-    size: string;
-    type: "pdf" | "zip" | "py" | "dd" | "conf" | "ova";
-  }[];
+  attachedFiles?: AttachedFile[];
   category: string;
   hackingTechnique?: TechniqueType;
   status: StatusType;
