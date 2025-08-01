@@ -24,6 +24,49 @@ interface EditFormProps {
   dataId: number;
 }
 
+// Mock 데이터의 attachment 타입 정의
+interface MockAttachment {
+  name: string;
+  size: string;
+  type: string;
+}
+
+interface ProjectAttachedFile {
+  id: string;
+  name: string;
+  size: number;
+  type: string;
+  category: string;
+  downloadUrl: string;
+  uploadDate: string;
+  description: string;
+}
+
+// Mock attachment를 File 객체로 변환하는 함수
+const createFileFromMockAttachment = (
+  mockAttachment: MockAttachment | ProjectAttachedFile
+): File => {
+  let fileName: string;
+  let fileType: string;
+
+  if ("id" in mockAttachment) {
+    // 프로젝트 첨부파일인 경우
+    fileName = mockAttachment.name;
+    fileType = mockAttachment.type;
+  } else {
+    // 일반 mock attachment인 경우
+    fileName = mockAttachment.name;
+    fileType = mockAttachment.type;
+  }
+
+  // Blob을 생성하여 File 객체로 변환
+  const blob = new Blob([], { type: fileType });
+  return new File([blob], fileName, {
+    type: fileType,
+    lastModified: Date.now(),
+  });
+};
+
 export default function EditForm({ type, dataId }: EditFormProps) {
   const router = useRouter();
   const [title, setTitle] = useState<string>("");
@@ -78,6 +121,7 @@ export default function EditForm({ type, dataId }: EditFormProps) {
               content: blogData.content,
               category: blogData.category,
               tags: blogData.tags || [],
+              attachments: [], // 블로그는 첨부파일이 없으므로 빈 배열
             };
           }
         } else if (type === "study") {
@@ -90,7 +134,7 @@ export default function EditForm({ type, dataId }: EditFormProps) {
               content: studyData.detailContent,
               category: studyData.category,
               tags: studyData.tags || [],
-              attachments: studyData.files || [],
+              attachments: studyData.files || [], // files 필드 사용
               startDate: studyData.startDate,
               endDate: studyData.endDate || "",
               maxParticipants: String(studyData.maxParticipants || ""),
@@ -107,7 +151,7 @@ export default function EditForm({ type, dataId }: EditFormProps) {
               content: projectData.description, // 프로젝트는 description을 content로 사용
               category: projectData.category,
               tags: projectData.customTags?.map((tag) => tag.name) || [],
-              attachments: projectData.attachedFiles || [],
+              attachments: projectData.attachedFiles || [], // attachedFiles 필드 사용
               startDate: projectData.startDate,
               endDate: projectData.endDate || "",
               maxParticipants: String(projectData.maxParticipants || ""),
@@ -125,7 +169,20 @@ export default function EditForm({ type, dataId }: EditFormProps) {
           setContent(initialData.content || "");
           setCategory(initialData.category || "");
           setTags(initialData.tags || []);
-          setAttachments(initialData.attachments || []);
+
+          // attachments 처리 - mock 데이터를 File 객체로 변환
+          const processedAttachments = (initialData.attachments || []).map(
+            (attachment: any) => {
+              // 이미 File 객체인 경우 그대로 반환
+              if (attachment instanceof File) {
+                return attachment;
+              }
+              // mock 데이터인 경우 File 객체로 변환
+              return createFileFromMockAttachment(attachment);
+            }
+          );
+          setAttachments(processedAttachments);
+
           setStartDate(initialData.startDate || "");
           setEndDate(initialData.endDate || "");
           setMaxParticipants(initialData.maxParticipants || "");
