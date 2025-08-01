@@ -188,3 +188,20 @@ export interface StudyMaterialsResponse {
 export interface FilterParams extends Omit<CurrentFilters, "page"> {
   page: number;
 }
+
+// Meeting minute type definition
+export interface MeetingMinute {
+  id: number;
+  week: number;
+  title: string;
+  date: string;
+  content: string;
+  attendees: string[];
+  author: string;
+  links: LinkItem[];
+}
+
+export interface LinkItem {
+  title: string;
+  url: string;
+}

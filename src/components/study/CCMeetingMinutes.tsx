@@ -4,9 +4,10 @@ import { useEffect, useState, useRef } from "react";
 import { Plus, Users, Edit, Trash2, Calendar, X } from "lucide-react";
 import DefaultButton from "@/components/ui/defaultButton";
 import ConfirmModal from "@/components/ui/defaultConfirmModal";
+import { LinkItem, MeetingMinute } from "@/types/study";
 
 // Mock data for meeting minutes
-const mockMeetingMinutes = [
+const mockMeetingMinutes: MeetingMinute[] = [
   {
     id: 1,
     week: 1,
@@ -45,20 +46,18 @@ interface MeetingMinutesProps {
   studyLeaderId: number;
 }
 
-interface LinkItem {
-  title: string;
-  url: string;
-}
-
 export default function MeetingMinutes({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   studyId,
   currentUserId,
   studyLeaderId,
 }: MeetingMinutesProps) {
-  const [meetingMinutes, setMeetingMinutes] = useState(mockMeetingMinutes);
+  const [meetingMinutes, setMeetingMinutes] =
+    useState<MeetingMinute[]>(mockMeetingMinutes);
   const [showAddModal, setShowAddModal] = useState<boolean>(false);
-  const [editingMinute, setEditingMinute] = useState(null);
+  const [editingMinute, setEditingMinute] = useState<MeetingMinute | null>(
+    null
+  );
   const [newMinute, setNewMinute] = useState({
     title: "",
     content: "",
@@ -144,7 +143,7 @@ export default function MeetingMinutes({
       (link) => link.title.trim() && link.url.trim()
     );
 
-    const minute = {
+    const minute: MeetingMinute = {
       id: Date.now(),
       week: meetingMinutes.length + 1,
       title: newMinute.title,
@@ -164,7 +163,7 @@ export default function MeetingMinutes({
     setShowAddModal(false);
   };
 
-  const handleEditMinute = (minute) => {
+  const handleEditMinute = (minute: MeetingMinute) => {
     setEditingMinute(minute);
     setNewMinute({
       title: minute.title,
